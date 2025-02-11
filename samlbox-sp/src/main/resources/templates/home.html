@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Welcome2</h1>
+<dl th:each="userAttribute : ${userAttributes}">
+    <dt th:text="${userAttribute.key}"></dt>
+    <dd th:text="${userAttribute.value}"></dd>
+</dl>
+</body>
+</html>
