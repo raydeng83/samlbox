@@ -1,0 +1,13 @@
+.idea
+
+samlbox-idp/target
+samlbox-idp/mvw
+samlbox-idp/mvw.cmd
+samlbox-idp/mvnw
+samlbox-idp/mvnw.cmd
+
+samlbox-sp/target
+samlbox-idp/mvw
+samlbox-idp/mvw.cmd
+samlbox-idp/mvnw
+samlbox-idp/mvnw.cmd
