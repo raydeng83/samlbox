@@ -1,0 +1,19 @@
+<!-- src/main/resources/templates/index.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SAML SP</title>
+</head>
+<body>
+<h1>Configured Identity Providers</h1>
+<ul>
+    <li th:each="idp : ${idps}">
+        <span th:text="${idp.entityId}"></span>
+        <a th:href="@{/saml2/service-provider-metadata/{id}(id=${idp.id})}">
+            (SP Metadata)
+        </a>
+    </li>
+</ul>
+<a href="/upload">Upload New IDP Metadata</a>
+</body>
+</html>
