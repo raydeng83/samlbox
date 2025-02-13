@@ -1,5 +1,8 @@
 package com.bostonidentity.samlboxspmultiidp;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +46,22 @@ public class MetadataController {
         metadataService.saveMetadata(file.getOriginalFilename(), file.getInputStream());
         repo.reloadRegistrations();
         return "redirect:/";
+    }
+
+    @GetMapping("/saml/login")
+    public String initiateSamlLogin(@RequestParam("idp") String idpId, HttpServletRequest request) {
+        // Redirect to the SAML2 login endpoint for the selected IDP
+        return "redirect:/saml2/authenticate/?registrationId=" + idpId;
+    }
+
+    @GetMapping("/userinfo")
+    public String userInfo(Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Saml2AuthenticatedPrincipal principal = (Saml2AuthenticatedPrincipal) authentication.getPrincipal();
+            model.addAttribute("username", principal.getName());
+            model.addAttribute("attributes", principal.getAttributes());
+        }
+        return "userinfo";
     }
 
     public record IdpInfo(String id, String entityId) {}

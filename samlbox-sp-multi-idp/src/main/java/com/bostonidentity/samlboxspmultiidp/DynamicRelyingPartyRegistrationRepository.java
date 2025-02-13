@@ -39,29 +39,15 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 
     private RelyingPartyRegistration parseMetadata(Path path) {
         try (InputStream inputStream = Files.newInputStream(path)) {
-            // Create base registration from metadata
-            RelyingPartyRegistration baseRegistration = RelyingPartyRegistrations
+
+            RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
                     .fromMetadata(inputStream)
-                    .registrationId(sanitizeId(path.getFileName().toString()))
+                    .registrationId(spEntityId)
                     .entityId(spEntityId)
-                    .build();
-
-            // Build asserting party details
-//            RelyingPartyRegistration.AssertingPartyDetails assertingPartyDetails =
-//                    RelyingPartyRegistration.AssertingPartyDetails.builder()
-//                            .entityId(baseRegistration.getAssertingPartyDetails().getEntityId())
-//                            .singleSignOnServiceLocation(baseRegistration.getAssertingPartyDetails().getSingleSignOnServiceLocation())
-//                            .wantAuthnRequestsSigned(true) // Adjust based on your IDP's requirements
-//                            .verificationX509Credentials(c -> c.addAll(
-//                                    baseRegistration.getAssertingPartyDetails().getVerificationX509Credentials()
-//                            ))
-//                            .build();
-
-            // Build the final registration
-            return RelyingPartyRegistration
-                    .withAssertingPartyMetadata(baseRegistration.getAssertingPartyMetadata())
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .build();
+
+            return relyingPartyRegistration;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

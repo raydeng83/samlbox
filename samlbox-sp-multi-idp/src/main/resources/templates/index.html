@@ -1,4 +1,3 @@
-<!-- src/main/resources/templates/index.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -12,8 +11,15 @@
         <a th:href="@{/saml2/service-provider-metadata/{id}(id=${idp.id})}">
             (SP Metadata)
         </a>
+        <a th:href="@{/saml/login?idp={id}(id=${idp.id})}">
+            (Login with this IDP)
+        </a>
     </li>
 </ul>
 <a href="/upload">Upload New IDP Metadata</a>
+
+<div th:if="${#authentication.authenticated}">
+    <a href="/userinfo">View User Information</a>
+</div>
 </body>
 </html>

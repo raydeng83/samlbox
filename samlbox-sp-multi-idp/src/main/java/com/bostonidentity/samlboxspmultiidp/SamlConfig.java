@@ -26,7 +26,7 @@ public class SamlConfig {
     private String spEntityId;
 
     @Bean
-    public DynamicRelyingPartyRegistrationRepository relyingPartyRegistrationRepository(
+    public DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository(
             IdpMetadataService metadataService, Saml2X509Credential credential) {
         return new DynamicRelyingPartyRegistrationRepository(
                 metadataService, credential, spEntityId
