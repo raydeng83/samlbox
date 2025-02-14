@@ -2,20 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>SAML SP</title>
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.href = "/logout";
+            }
+        }
+    </script>
 </head>
 <body>
 <h1>Configured Identity Providers</h1>
+<div th:if="${param.uploadSuccess}">
+    <p style="color:green;">IDP metadata uploaded successfully!</p>
+</div>
+
+<div th:if="${#authentication.authenticated}">
+    <p>Logged in as: <span th:text="${#authentication.name}"></span></p>
+    <button onclick="confirmLogout()">Logout</button>
+    <a href="/userinfo">View Profile</a>
+</div>
+
 <ul>
     <li th:each="idp : ${idps}">
         <span th:text="${idp.entityId}"></span>
-        <a th:href="@{/saml2/service-provider-metadata/{id}(id=${idp.id})}">
-            (SP Metadata)
-        </a>
-        <a th:href="@{/saml/login?idp={id}(id=${idp.id})}">
-            (Login with this IDP)
-        </a>
+        <a th:href="@{/saml/login(idp=${idp.id})}">Login with this IDP</a>
+        <form th:action="@{/delete(id=${idp.entityId})}" method="post">
+            <button type="submit">Delete</button>
+        </form>
     </li>
 </ul>
+
 <a href="/upload">Upload New IDP Metadata</a>
 
 <div th:if="${#authentication.authenticated}">

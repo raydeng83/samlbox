@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -31,10 +33,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .saml2Login(saml2 -> saml2
                         .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
+                        .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
                 )
                 .saml2Metadata(withDefaults())
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 );
         return http.build();
     }

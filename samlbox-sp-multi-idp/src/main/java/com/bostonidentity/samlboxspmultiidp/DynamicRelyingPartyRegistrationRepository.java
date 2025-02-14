@@ -28,6 +28,22 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         this.signingCredential = signingCredential;
         this.spEntityId = spEntityId;
         reloadRegistrations();
+
+        if (registrations.isEmpty()) {
+            registrations.add(createDefaultRegistration());
+        }
+    }
+
+    private RelyingPartyRegistration createDefaultRegistration() {
+        return RelyingPartyRegistration.withRegistrationId("default-idp")
+                .entityId(spEntityId)
+                .assertingPartyMetadata(party -> party
+                        .entityId("https://default-idp.example.com")
+                        .singleSignOnServiceLocation("https://default-idp.example.com/sso")
+                        .wantAuthnRequestsSigned(true)
+                )
+                .signingX509Credentials(c -> c.add(signingCredential))
+                .build();
     }
 
     public void reloadRegistrations() {
