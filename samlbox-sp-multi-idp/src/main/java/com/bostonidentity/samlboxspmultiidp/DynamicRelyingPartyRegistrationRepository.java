@@ -8,6 +8,7 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,11 +26,18 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         this.metadataService = metadataService;
         this.signingCredential = signingCredential;
         this.spEntityId = spEntityId;
+
         reloadRegistrations();
 
-        if (registrations.isEmpty()) {
-            registrations.add(createDefaultRegistration());
-        }
+        registrations.add(createDefaultRegistration());
+    }
+
+    public void reloadRegistrations() {
+        // Load all metadata from the database and parse them into RelyingPartyRegistration objects
+        this.registrations = metadataService.getAllMetadata().stream()
+                .map(metadata -> parseMetadata(metadata, signingCredential, spEntityId))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     private RelyingPartyRegistration createDefaultRegistration() {
@@ -44,32 +52,14 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .build();
     }
 
-    public void reloadRegistrations() {
-        registrations = metadataService.loadMetadataFiles().stream()
-                .map(this::parseMetadata)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        boolean foundDefaultIDP = false;
-
-        for (RelyingPartyRegistration registration : registrations) {
-            if (registration.getRegistrationId().equals("default-idp")) {
-                foundDefaultIDP = true;
-                break;
-            }
-        }
-
-        if (!foundDefaultIDP) {
-            registrations.add(createDefaultRegistration());
-        }
-    }
-
-    private RelyingPartyRegistration parseMetadata(Path path) {
-        try (InputStream inputStream = Files.newInputStream(path)) {
+    private RelyingPartyRegistration parseMetadata(IdpMetadata metadata,
+                                                   Saml2X509Credential credential,
+                                                   String spEntityId) {
+        try (InputStream inputStream = Files.newInputStream(Paths.get(metadata.getMetadataFilePath()))) {
 
             RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
                     .fromMetadata(inputStream)
-                    .registrationId(UUID.randomUUID().toString())
+                    .registrationId(metadata.getRegistrationId())
                     .entityId(spEntityId)
                     .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + spEntityId)
                     .signingX509Credentials(c -> c.add(signingCredential))

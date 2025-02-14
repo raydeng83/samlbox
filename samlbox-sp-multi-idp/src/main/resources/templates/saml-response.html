@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SAML Response Details</title>
+    <style>
+        .attribute-table { border-collapse: collapse; width: 100%; }
+        .attribute-table th, .attribute-table td { border: 1px solid #ddd; padding: 8px; }
+        pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<h1>SAML Authentication Successful</h1>
+
+<div th:if="${error}" class="error">
+    <p th:text="${error}"></p>
+</div>
+
+<div th:if="${name}">
+    <h2>User Identity: <span th:text="${name}"></span></h2>
+
+    <h3>SAML Attributes:</h3>
+    <table class="attribute-table">
+        <thead>
+        <tr>
+            <th>Attribute Name</th>
+            <th>Attribute Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${attributes}">
+            <td th:text="${entry.key}"></td>
+            <td>
+                        <span th:if="${#lists.size(entry.value) == 1}"
+                              th:text="${entry.value[0]}"></span>
+                <ul th:if="${#lists.size(entry.value) > 1}">
+                    <li th:each="val : ${entry.value}" th:text="${val}"></li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Raw SAML Response:</h3>
+    <pre th:text="${rawResponse}"></pre>
+</div>
+
+<pre th:text="${rawResponse}"></pre>
+
+<a href="/">Return to Home Page</a>
+</body>
+</html>

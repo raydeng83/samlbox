@@ -8,8 +8,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.provider.service.web.DefaultRelyingPartyRegistrationResolver;
+import org.springframework.security.saml2.provider.service.web.RelyingPartyRegistrationResolver;
+import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -27,22 +32,26 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/upload", "/saml/login", "saml2/metadata/**", "/login/**","/css/**").permitAll()
+                        .requestMatchers(
+                                "/**",
+                                "/upload",
+                                "/delete/**",
+                                "/saml/login",
+                                "saml2/metadata/**",
+                                "/saml-response/**",
+                                "/login/**",
+                                "/css/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .csrf(csrf -> csrf.disable())
                 .saml2Login(saml2 -> saml2
                         .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
-                        .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+                        .successHandler(samlAuthenticationSuccessHandler())
                 )
                 .saml2Metadata(withDefaults())
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
         return http.build();
     }
@@ -50,5 +59,17 @@ public class SecurityConfig {
     @Bean
     public RelyingPartyRegistrationRepository relyingPartyRegistrationRepository() {
         return new InMemoryRelyingPartyRegistrationRepository(repo.getAllRegistrations());
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler samlAuthenticationSuccessHandler() {
+        return new SamlResponseRedirectHandler();
+    }
+
+    @Bean
+    public Saml2AuthenticationTokenConverter saml2AuthenticationTokenConverter() {
+        RelyingPartyRegistrationResolver resolver =
+                new DefaultRelyingPartyRegistrationResolver(repo);
+        return new Saml2AuthenticationTokenConverter(resolver);
     }
 }

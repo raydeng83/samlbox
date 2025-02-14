@@ -44,7 +44,7 @@ public class MetadataController {
 
     @PostMapping("/upload")
     public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        metadataService.saveMetadata(file.getOriginalFilename(), file.getInputStream());
+        metadataService.saveMetadata(file);
         repo.reloadRegistrations();
         return "redirect:/?uploadSuccess=true";
     }
