@@ -8,10 +8,7 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // DynamicRelyingPartyRegistrationRepository.java
@@ -20,6 +17,7 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
     private final IdpMetadataService metadataService;
     private final Saml2X509Credential signingCredential;
     private final String spEntityId;
+
     private List<RelyingPartyRegistration> registrations = new ArrayList<>();
 
     public DynamicRelyingPartyRegistrationRepository(IdpMetadataService metadataService,
@@ -51,6 +49,19 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .map(this::parseMetadata)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+
+        boolean foundDefaultIDP = false;
+
+        for (RelyingPartyRegistration registration : registrations) {
+            if (registration.getRegistrationId().equals("default-idp")) {
+                foundDefaultIDP = true;
+                break;
+            }
+        }
+
+        if (!foundDefaultIDP) {
+            registrations.add(createDefaultRegistration());
+        }
     }
 
     private RelyingPartyRegistration parseMetadata(Path path) {
@@ -58,8 +69,9 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 
             RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
                     .fromMetadata(inputStream)
-                    .registrationId(spEntityId)
+                    .registrationId(UUID.randomUUID().toString())
                     .entityId(spEntityId)
+                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + spEntityId)
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .build();
 
