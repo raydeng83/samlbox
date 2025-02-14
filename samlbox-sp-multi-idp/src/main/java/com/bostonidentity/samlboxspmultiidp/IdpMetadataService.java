@@ -1,6 +1,10 @@
 package com.bostonidentity.samlboxspmultiidp;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
@@ -21,17 +25,21 @@ import java.util.stream.Stream;
 
 @Service
 public class IdpMetadataService {
+
+    private static final Logger logger = LoggerFactory.getLogger(IdpMetadataService.class);
+
     private final Path storageDir = Paths.get("./idp-metadata");
     private final IdpMetadataRepository idpMetadataRepository;
+    private final DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository;
 
-    public IdpMetadataService(IdpMetadataRepository idpMetadataRepository) throws IOException {
+    public IdpMetadataService(IdpMetadataRepository idpMetadataRepository, DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository) throws IOException {
         this.idpMetadataRepository = idpMetadataRepository;
         if (!Files.exists(storageDir)) {
             Files.createDirectories(storageDir);
         }
+        this.dynamicRelyingPartyRegistrationRepository = dynamicRelyingPartyRegistrationRepository;
     }
 
-    @Transactional
     public void saveMetadata(MultipartFile file) throws IOException {
         try {
             // Parse the entity ID from the metadata
@@ -39,14 +47,6 @@ public class IdpMetadataService {
 
             // Generate a unique registrationId
             String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
-
-            // Use a new ByteArrayInputStream to parse XML (to avoid consuming the original stream)
-//            String entityId = parseEntityId(new ByteArrayInputStream(contentBytes));
-            // Encode entityId to a filename-safe format
-//            filename = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes()) + ".xml";
-            // Use another ByteArrayInputStream to copy the original content to storage
-//            Files.copy(new ByteArrayInputStream(contentBytes), storageDir.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-
 
             // Save the metadata file
             String filename = registrationId + ".xml";
@@ -59,8 +59,33 @@ public class IdpMetadataService {
             metadata.setRegistrationId(registrationId);
             metadata.setMetadataFilePath(target.toString());
             idpMetadataRepository.save(metadata);
+
+            dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
         } catch (Exception e) {
             throw new IOException("Invalid metadata", e);
+        }
+    }
+
+    @Transactional
+    public void deleteMetadata(String id) throws IOException {
+        String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(id.getBytes());
+        Path target = storageDir.resolve(registrationId + ".xml");
+        Files.deleteIfExists(target);
+
+        // Find the metadata entry in the database
+        Optional<IdpMetadata> metadata = idpMetadataRepository.findByRegistrationId(registrationId);
+        if (metadata.isPresent()) {
+            // Delete the metadata file from disk
+            Path metadataFilePath = Paths.get(metadata.get().getMetadataFilePath());
+            Files.deleteIfExists(metadataFilePath);
+
+            logger.info("Deleted metadata file: {}", metadataFilePath);
+
+            // Delete the metadata entry from the database
+            idpMetadataRepository.delete(metadata.get());
+        } else {
+            logger.warn("No metadata found for registrationId: {}", registrationId);
+            throw new IllegalArgumentException("No metadata found for registrationId: " + registrationId);
         }
     }
 
@@ -73,19 +98,12 @@ public class IdpMetadataService {
         }
     }
 
-    public void deleteMetadata(String registrationId) throws IOException {
-        Path target = storageDir.resolve(Base64.getUrlEncoder().withoutPadding().encodeToString(registrationId.getBytes()) + ".xml");
-        Files.deleteIfExists(target);
-    }
-
     public String getRegistrationId(String entityId) {
         Optional<IdpMetadata> metadata = idpMetadataRepository.findByEntityId(entityId);
         return metadata.map(IdpMetadata::getRegistrationId).orElse(null);
     }
 
-    public List<IdpMetadata> getAllMetadata() {
-        return idpMetadataRepository.findAll();
-    }
+
 
     private String parseEntityId(InputStream inputStream) throws Exception {
         Document doc = DocumentBuilderFactory.newInstance()

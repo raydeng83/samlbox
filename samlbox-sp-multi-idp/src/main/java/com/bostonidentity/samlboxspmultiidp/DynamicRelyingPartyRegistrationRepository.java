@@ -1,5 +1,6 @@
 package com.bostonidentity.samlboxspmultiidp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
@@ -15,26 +16,32 @@ import java.util.stream.Collectors;
 // DynamicRelyingPartyRegistrationRepository.java
 public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRegistrationRepository {
 
-    private final IdpMetadataService metadataService;
     private final Saml2X509Credential signingCredential;
     private final String spEntityId;
-
+    private final IdpMetadataRepository idpMetadataRepository;
     private List<RelyingPartyRegistration> registrations = new ArrayList<>();
 
-    public DynamicRelyingPartyRegistrationRepository(IdpMetadataService metadataService,
-                                                     Saml2X509Credential signingCredential, String spEntityId) {
-        this.metadataService = metadataService;
+    public DynamicRelyingPartyRegistrationRepository(
+                                                     Saml2X509Credential signingCredential, String spEntityId, IdpMetadataRepository idpMetadataRepository) {
         this.signingCredential = signingCredential;
         this.spEntityId = spEntityId;
+        this.idpMetadataRepository = idpMetadataRepository;
 
         reloadRegistrations();
 
         registrations.add(createDefaultRegistration());
     }
 
+    public List<RelyingPartyRegistration> addRegistration(IdpMetadata metadata) {
+        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential,spEntityId);
+        registrations.add(registration);
+
+        return registrations;
+    }
+
     public void reloadRegistrations() {
         // Load all metadata from the database and parse them into RelyingPartyRegistration objects
-        this.registrations = metadataService.getAllMetadata().stream()
+        this.registrations = getAllMetadata().stream()
                 .map(metadata -> parseMetadata(metadata, signingCredential, spEntityId))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -72,10 +79,6 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         }
     }
 
-    private String sanitizeId(String fileName) {
-        return fileName.replaceAll("[^a-zA-Z0-9-]", "_");
-    }
-
     @Override
     public RelyingPartyRegistration findByRegistrationId(String id) {
         return registrations.stream()
@@ -86,6 +89,10 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 
     public List<RelyingPartyRegistration> getAllRegistrations() {
         return Collections.unmodifiableList(registrations);
+    }
+
+    public List<IdpMetadata> getAllMetadata() {
+        return idpMetadataRepository.findAll();
     }
 }
 

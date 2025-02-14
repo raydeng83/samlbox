@@ -6,6 +6,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +26,14 @@ public class SamlConfig {
     @Value("${sp.entity-id}")
     private String spEntityId;
 
+    @Autowired
+    private IdpMetadataRepository idpMetadataRepository;
+
     @Bean
     public DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository(
-            IdpMetadataService metadataService, Saml2X509Credential credential) {
+            Saml2X509Credential credential) {
         return new DynamicRelyingPartyRegistrationRepository(
-                metadataService, credential, spEntityId
+                credential, spEntityId, idpMetadataRepository
         );
     }
 
