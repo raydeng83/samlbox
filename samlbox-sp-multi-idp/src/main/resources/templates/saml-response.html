@@ -3,50 +3,81 @@
 <head>
     <title>SAML Response Details</title>
     <style>
-        .attribute-table { border-collapse: collapse; width: 100%; }
-        .attribute-table th, .attribute-table td { border: 1px solid #ddd; padding: 8px; }
-        pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
-        .error { color: red; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
-<h1>SAML Authentication Successful</h1>
+<h2>SAML Response Details</h2>
 
-<div th:if="${error}" class="error">
-    <p th:text="${error}"></p>
+<div th:if="${error}">
+    <p style="color: red;" th:text="${error}"></p>
 </div>
 
-<div th:if="${name}">
-    <h2>User Identity: <span th:text="${name}"></span></h2>
+<table th:if="${samlDetails != null}">
+    <tr>
+        <th>Issuer</th>
+        <td th:text="${samlDetails.issuer}"></td>
+    </tr>
+    <tr>
+        <th>Subject (NameID)</th>
+        <td th:text="${samlDetails.subject}"></td>
+    </tr>
+    <tr>
+        <th>Response ID</th>
+        <td th:text="${samlDetails.responseId}"></td>
+    </tr>
+    <tr>
+        <th>Assertion ID</th>
+        <td th:text="${samlDetails.assertionId}"></td>
+    </tr>
+    <tr>
+        <th>Valid From</th>
+        <td th:text="${samlDetails.notBefore}"></td>
+    </tr>
+    <tr>
+        <th>Valid Until</th>
+        <td th:text="${samlDetails.notOnOrAfter}"></td>
+    </tr>
+    <tr>
+        <th>Signature Valid</th>
+        <td th:text="${samlDetails.isSignatureValid} ? 'Yes' : 'No'"></td>
+    </tr>
+</table>
 
-    <h3>SAML Attributes:</h3>
-    <table class="attribute-table">
-        <thead>
-        <tr>
-            <th>Attribute Name</th>
-            <th>Attribute Value</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="entry : ${attributes}">
+<h3>Attributes</h3>
+<table>
+    <tr>
+        <th>Attribute Name</th>
+        <th>Values</th>
+    </tr>
+    <div th:if="${samlDetails != null && samlDetails.attributes != null}">
+    <tr th:each="entry : ${samlDetails.attributes}">
+
             <td th:text="${entry.key}"></td>
-            <td>
-                        <span th:if="${#lists.size(entry.value) == 1}"
-                              th:text="${entry.value[0]}"></span>
-                <ul th:if="${#lists.size(entry.value) > 1}">
-                    <li th:each="val : ${entry.value}" th:text="${val}"></li>
-                </ul>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            <td th:text="${entry.value}"></td>
 
-    <h3>Raw SAML Response:</h3>
-    <pre th:text="${rawResponse}"></pre>
-</div>
-
-<pre th:text="${rawResponse}"></pre>
-
+    </tr>
+    </div>
+</table>
 <a href="/">Return to Home Page</a>
 </body>
 </html>

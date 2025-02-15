@@ -61,7 +61,7 @@ public class SecurityConfig {
 
     @Bean
     public RelyingPartyRegistrationRepository relyingPartyRegistrationRepository(DynamicRelyingPartyRegistrationRepository repo) {
-        return new InMemoryRelyingPartyRegistrationRepository(repo.getAllRegistrations());
+        return repo;
     }
 
 //    @Bean

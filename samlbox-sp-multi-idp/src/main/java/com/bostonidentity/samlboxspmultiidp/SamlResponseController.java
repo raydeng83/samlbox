@@ -2,11 +2,18 @@ package com.bostonidentity.samlboxspmultiidp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.saml2.core.Saml2X509Credential;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.cert.X509Certificate;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Optional;
 
 @Controller
 public class SamlResponseController {
@@ -31,17 +38,11 @@ public class SamlResponseController {
 
         if (samlResponse != null) {
             try {
-                // Decode the SAML response
-//                String decodedSamlResponse = URLDecoder.decode(samlResponse);
-//                Saml2AuthenticatedPrincipal principal = (Saml2AuthenticatedPrincipal) authentication.getPrincipal();
+                SamlResponseDetails samlDetails = SamlResponseProcessor.processSamlResponse(samlResponse);
 
-                // Add attributes to the model
-//                model.addAttribute("attributes", principal.getAttributes());
-//                model.addAttribute("name", principal.getName());
-                    model.addAttribute("rawResponse", samlResponse);
-//                model.addAttribute("error", "Failed to parse SAML response.");
+                model.addAttribute("samlDetails", samlDetails);
             } catch (Exception e) {
-                model.addAttribute("error", "Invalid SAML response: " + e.getMessage());
+                model.addAttribute("error", "Failed to process SAML Response: " + e.getMessage());
             }
         } else {
             model.addAttribute("error", "No SAML response found.");
