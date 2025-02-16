@@ -30,8 +30,7 @@ public class SamlResponseRedirectHandler extends SimpleUrlAuthenticationSuccessH
 
         // Redirect to the SAML response page with the encoded SAML response, relay state, and registration ID
         String redirectUrl = "/saml-response?samlResponse=" + encodedSamlResponse
-                + "&relayState=" + relayState
-                + "&registrationId=" + registrationId;
+                + "&relayState=" + relayState;
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }

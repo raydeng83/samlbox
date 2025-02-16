@@ -32,7 +32,7 @@ public class SamlResponseProcessor {
     }
 
     public static SamlResponseDetails processSamlResponse(String base64SamlResponse) throws Exception {
-        byte[] decodedBytes = Base64.getDecoder().decode(base64SamlResponse);
+        byte[] decodedBytes = Base64.getDecoder().decode(sanitize(base64SamlResponse));
         String decodedXml = new String(decodedBytes, StandardCharsets.UTF_8);
 
         // Parse XML
@@ -112,6 +112,16 @@ public class SamlResponseProcessor {
                     .generateCertificate(new java.io.ByteArrayInputStream(decodedCert));
         }
         return null;
+    }
+
+    public static String sanitize(String input) {
+        StringBuilder sb = new StringBuilder();
+        for (char ch : input.toCharArray()) {
+            if (!Character.isISOControl(ch)) { // Removes all control characters
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
     }
 }
 

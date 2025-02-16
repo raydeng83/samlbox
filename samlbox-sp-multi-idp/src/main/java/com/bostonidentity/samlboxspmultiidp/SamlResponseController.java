@@ -30,8 +30,8 @@ public class SamlResponseController {
     @GetMapping("/saml-response")
     public String showResponse(Model model,
                                @RequestParam(name = "samlResponse", required = false) String samlResponse,
-                               @RequestParam(name = "relayState", required = false) String relayState,
-                               @RequestParam(name = "registrationId", required = false) String registrationId) {
+                               @RequestParam(name = "relayState", required = false) String relayState
+                               ) {
 
         logger.info("SAML Response: {}", samlResponse);
         logger.info("Relay State: {}", relayState);
