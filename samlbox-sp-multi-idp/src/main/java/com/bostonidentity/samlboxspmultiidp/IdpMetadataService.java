@@ -8,6 +8,8 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
@@ -40,7 +42,7 @@ public class IdpMetadataService {
         this.dynamicRelyingPartyRegistrationRepository = dynamicRelyingPartyRegistrationRepository;
     }
 
-    public void saveMetadata(MultipartFile file) throws IOException {
+    public String saveMetadata(MultipartFile file) throws IOException {
         try {
             // Parse the entity ID from the metadata
             String entityId = parseEntityId(file.getInputStream());
@@ -61,6 +63,8 @@ public class IdpMetadataService {
             idpMetadataRepository.save(metadata);
 
             dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
+
+            return registrationId;
         } catch (Exception e) {
             throw new IOException("Invalid metadata", e);
         }
@@ -110,5 +114,46 @@ public class IdpMetadataService {
                 .newDocumentBuilder()
                 .parse(inputStream);
         return doc.getDocumentElement().getAttribute("entityID");
+    }
+
+    // IdpMetadataService.java
+    public IdpMetadataDetails parseMetadataDetails(String registrationId) throws Exception {
+        IdpMetadataDetails details = new IdpMetadataDetails();
+        Optional<IdpMetadata> metadata = idpMetadataRepository.findByRegistrationId(registrationId);
+
+        if (metadata.isPresent()) {
+            Path path = Paths.get(metadata.get().getMetadataFilePath());
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(Files.newInputStream(path));
+
+            // Parse XML elements
+            Element entityDescriptor = doc.getDocumentElement();
+            details.setEntityId(entityDescriptor.getAttribute("entityID"));
+
+            NodeList idpSsoDescriptors = entityDescriptor.getElementsByTagNameNS(
+                    "urn:oasis:names:tc:SAML:2.0:metadata", "IDPSSODescriptor");
+
+            if (idpSsoDescriptors.getLength() > 0) {
+                Element idpSso = (Element) idpSsoDescriptors.item(0);
+                Element ssoService = (Element) idpSso.getElementsByTagNameNS(
+                        "urn:oasis:names:tc:SAML:2.0:metadata", "SingleSignOnService").item(0);
+
+                details.setSsoUrl(ssoService.getAttribute("Location"));
+                details.setProtocolBinding(ssoService.getAttribute("Binding"));
+            }
+
+            // Parse certificates
+            NodeList keyDescriptors = entityDescriptor.getElementsByTagNameNS(
+                    "urn:oasis:names:tc:SAML:2.0:metadata", "KeyDescriptor");
+            for (int i = 0; i < keyDescriptors.getLength(); i++) {
+                Element keyDescriptor = (Element) keyDescriptors.item(i);
+                Element x509Certificate = (Element) keyDescriptor.getElementsByTagNameNS(
+                        "http://www.w3.org/2000/09/xmldsig#", "X509Certificate").item(0);
+                details.getCertificates().add(x509Certificate.getTextContent());
+            }
+        }
+
+        return details;
     }
 }

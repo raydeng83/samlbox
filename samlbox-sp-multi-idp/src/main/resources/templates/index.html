@@ -2,24 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>SAML SP</title>
-    <script>
-        function confirmLogout() {
-            if (confirm("Are you sure you want to logout?")) {
-                window.location.href = "/logout";
-            }
-        }
-    </script>
 </head>
 <body>
 <h1>Configured Identity Providers</h1>
 <div th:if="${param.uploadSuccess}">
     <p style="color:green;">IDP metadata uploaded successfully!</p>
-</div>
-
-<div th:if="${#authentication.authenticated}">
-    <p>Logged in as: <span th:text="${#authentication.name}"></span></p>
-    <button onclick="confirmLogout()">Logout</button>
-    <a href="/userinfo">View Profile</a>
 </div>
 
 <ul>
@@ -33,9 +20,5 @@
 </ul>
 
 <a href="/upload">Upload New IDP Metadata</a>
-
-<div th:if="${#authentication.authenticated}">
-    <a href="/userinfo">View User Information</a>
-</div>
 </body>
 </html>

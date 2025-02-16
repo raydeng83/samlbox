@@ -1,0 +1,43 @@
+<!-- src/main/resources/templates/metadata-summary.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>IDP Metadata Summary</title>
+    <style>
+        .summary-container { max-width: 800px; margin: 20px auto; }
+        .metadata-section { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; }
+        .certificate { font-family: monospace; white-space: pre-wrap; word-break: break-all; }
+    </style>
+</head>
+<body>
+<div class="summary-container">
+    <h1>IDP Metadata Summary</h1>
+
+    <div class="metadata-section">
+        <h2>Basic Information</h2>
+        <p><strong>Entity ID:</strong> <span th:text="${metadata.entityId}"></span></p>
+        <p><strong>Registration ID:</strong> <span th:text="${registrationId}"></span></p>
+    </div>
+
+    <div class="metadata-section">
+        <h2>SSO Configuration</h2>
+        <p><strong>SSO URL:</strong> <span th:text="${metadata.ssoUrl}"></span></p>
+        <p><strong>Protocol Binding:</strong> <span th:text="${metadata.protocolBinding}"></span></p>
+    </div>
+
+    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.certificates)}">
+        <h2>Certificates</h2>
+        <div th:each="cert,iter : ${metadata.certificates}">
+            <h3>Certificate [[${iter.index + 1}]]</h3>
+            <div class="certificate" th:text="${cert}"></div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a th:href="@{/saml/login?idp=${registrationId}}"
+           class="btn btn-primary">Initiate SAML Flow</a>
+        <a href="/" class="btn btn-secondary">Return to List</a>
+    </div>
+</div>
+</body>
+</html>
