@@ -2,23 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>SAML SP</title>
+    <!-- UIKit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css">
+    <!-- Custom CSS for additional styling -->
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+        .idp-list {
+            margin-top: 20px;
+        }
+        .idp-item {
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .idp-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .btn-delete {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-delete:hover {
+            background-color: #e60000;
+        }
+        .btn-upload {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>Configured Identity Providers</h1>
-<div th:if="${param.uploadSuccess}">
-    <p style="color:green;">IDP metadata uploaded successfully!</p>
-</div>
-<p>SP Init SSO Login Endpoint: <strong>/saml/login?idp={your-idp-entity-id}</strong></p>
-<ul>
-    <li th:each="idp : ${idps}">
-        <span th:text="${idp.entityId}"></span>
-        <a th:href="@{/saml/login(idp=${idp.entityId})}">Login with this IDP</a>
-        <form th:action="@{/delete(id=${idp.entityId})}" method="post">
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+<div class="uk-container">
+    <h1 class="uk-text-center">Configured Identity Providers</h1>
+    <div class="uk-alert uk-alert-info">
+        <strong>SP Init SSO Login Endpoint:</strong> <code>/saml/login?idp={your-idp-entity-id}</code>
+    </div>
+    <div class="uk-alert uk-alert-info">
+        <strong>Metadata Endpoint:</strong> <code>/metadata-summary?entityId={your-idp-entity-id}</code>
+    </div>
 
-<a href="/upload">Upload New IDP Metadata</a>
+    <div class="idp-list">
+        <div th:each="idp : ${idps}" class="idp-item">
+<!--            <span th:text="${idp.entityId}" class="uk-text-bold"></span>-->
+            <a th:href="@{/metadata-summary(entityId=${idp.entityId})}" th:text="${idp.entityId}" class="uk-text-bold">Initiate SAML Flow</a>
+
+            <div>
+                <a th:href="@{/saml/login(idp=${idp.entityId})}" class="uk-button uk-button-primary uk-margin-right">Login with this IDP</a>
+                <form th:action="@{/delete(id=${idp.entityId})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-delete">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="uk-text-center uk-margin-top">
+        <a href="/upload" class="uk-button uk-button-success btn-upload">Upload New IDP Metadata</a>
+    </div>
+</div>
+
+<!-- UIKit JS (optional, for interactive components) -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit-icons.min.js"></script>
 </body>
 </html>

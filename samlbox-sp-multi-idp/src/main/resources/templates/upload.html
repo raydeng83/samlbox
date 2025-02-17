@@ -1,15 +1,153 @@
-<!-- src/main/resources/templates/upload.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Upload Metadata</title>
+    <!-- UIKit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .upload-container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .drop-zone {
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone.dragover {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+
+        #file-name {
+            margin-top: 1rem;
+            color: #64748b;
+        }
+
+        .upload-button {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-<h1>Upload IDP Metadata</h1>
-<form method="post" enctype="multipart/form-data" action="/upload">
-    <input type="file" name="file" required>
-    <button type="submit">Upload</button>
-</form>
-<a href="/">Back to list</a>
+<div class="upload-container">
+    <h1>Upload IDP Metadata</h1>
+
+    <!-- Upload Form -->
+    <form method="post" enctype="multipart/form-data" action="/upload" id="uploadForm">
+        <!-- Drag & Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+            <span class="uk-text-muted">Drag and drop files here</span>
+            <div class="uk-margin-small-top">or</div>
+
+            <!-- Hidden File Input -->
+            <input type="file" name="file" id="fileInput" class="hidden" required>
+            <button type="button" class="uk-button uk-button-default uk-margin-small-top"
+                    onclick="document.getElementById('fileInput').click()">
+                Choose File
+            </button>
+
+            <!-- Selected File Name -->
+            <div id="file-name" class="uk-text-small"></div>
+        </div>
+
+        <!-- Upload Button -->
+        <button type="submit" class="uk-button uk-button-primary upload-button">
+            Upload
+        </button>
+    </form>
+
+    <!-- Back Link -->
+    <a href="/" class="back-link">
+        <span uk-icon="arrow-left"></span>
+        Back to list
+    </a>
+</div>
+
+<!-- UIKit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit-icons.min.js"></script>
+
+<!-- Drag & Drop Script -->
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('file-name');
+
+    // Handle file selection
+    fileInput.addEventListener('change', function(e) {
+        handleFiles(this.files);
+    });
+
+    // Drag & Drop handlers
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length) {
+            fileInput.files = files;
+            handleFiles(files);
+        }
+    });
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            fileName.textContent = `Selected file: ${files[0].name}`;
+        }
+    }
+</script>
 </body>
 </html>

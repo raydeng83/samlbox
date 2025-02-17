@@ -2,15 +2,92 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Metadata Summary</title>
+    <!-- UIKit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css">
+    <!-- Custom CSS for additional styling -->
     <style>
-        .summary-container { max-width: 800px; margin: 20px auto; }
-        .metadata-section { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; }
-        .certificate { font-family: monospace; white-space: pre-wrap; word-break: break-all; }
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+        }
+
+        .summary-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-weight: 600;
+            color: #1e293b;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.5rem;
+        }
+
+        .metadata-section {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .metadata-section h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .certificate {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .uk-button-primary {
+            background-color: #2563eb;
+            border-radius: 6px;
+            padding: 8px 20px;
+            transition: all 0.2s;
+        }
+
+        .uk-button-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .uk-button-secondary {
+            background-color: #64748b;
+            border-radius: 6px;
+            padding: 8px 20px;
+            transition: all 0.2s;
+        }
+
+        .uk-button-secondary:hover {
+            background-color: #475569;
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
 <div class="summary-container">
-    <h1>Metadata Summary</h1>
+    <h1 class="uk-text-center">Metadata Summary</h1>
 
     <!-- Basic Info -->
     <div class="metadata-section">
@@ -22,18 +99,26 @@
     <!-- Certificates -->
     <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.signingCertificates)}">
         <h2>Signing Certificates</h2>
-        <div th:each="cert,iter : ${metadata.signingCertificates}">
-            <h3>Certificate [[${iter.index + 1}]]</h3>
-            <div class="certificate" th:text="${cert}"></div>
-        </div>
+        <ul uk-accordion>
+            <li th:each="cert,iter : ${metadata.signingCertificates}">
+                <a class="uk-accordion-title" href="#">Certificate [[${iter.index + 1}]]</a>
+                <div class="uk-accordion-content">
+                    <div class="certificate" th:text="${cert}"></div>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.encryptionCertificates)}">
         <h2>Encryption Certificates</h2>
-        <div th:each="cert,iter : ${metadata.encryptionCertificates}">
-            <h3>Certificate [[${iter.index + 1}]]</h3>
-            <div class="certificate" th:text="${cert}"></div>
-        </div>
+        <ul uk-accordion>
+            <li th:each="cert,iter : ${metadata.encryptionCertificates}">
+                <a class="uk-accordion-title" href="#">Certificate [[${iter.index + 1}]]</a>
+                <div class="uk-accordion-content">
+                    <div class="certificate" th:text="${cert}"></div>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <!-- SSO Services -->
@@ -57,17 +142,19 @@
     <!-- NameID Formats -->
     <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.nameIdFormats)}">
         <h2>NameID Formats</h2>
-        <ul>
+        <ul class="uk-list uk-list-disc">
             <li th:each="format : ${metadata.nameIdFormats}">[[${format}]]</li>
         </ul>
     </div>
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-        <a th:href="@{/saml/login(idp=${entityId})}" class="btn btn-primary">Initiate SAML Flow</a>
-<!--        <a th:href="@{/saml/login(idp=${idp.id})}">Login with this IDP</a>-->
-        <a href="/" class="btn btn-secondary">Return to List</a>
+        <a th:href="@{/saml/login(idp=${entityId})}" class="uk-button uk-button-primary">Initiate SAML Flow</a>
+        <a href="/" class="uk-button uk-button-secondary">Return to List</a>
     </div>
 </div>
+
+<!-- UIKit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
 </body>
 </html>
