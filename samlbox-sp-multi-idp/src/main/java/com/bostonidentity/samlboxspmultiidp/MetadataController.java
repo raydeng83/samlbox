@@ -70,7 +70,8 @@ public class MetadataController {
     public String showMetadataSummary(@PathVariable String registrationId, Model model) {
         try {
             RelyingPartyRegistration registration = repo.findByRegistrationId(registrationId);
-            IdpMetadataDetails details = metadataService.parseMetadataDetails(registrationId);
+//            IdpMetadataDetails details = metadataService.parseMetadataDetails(registrationId);
+            IdpMetadataDetails details = IdpMetadataDetails.fromRelyingPartyRegistration(registration);
             model.addAttribute("metadata", details);
             model.addAttribute("registrationId", registrationId);
             return "metadata-summary";

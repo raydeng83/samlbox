@@ -1,8 +1,7 @@
-<!-- src/main/resources/templates/metadata-summary.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>IDP Metadata Summary</title>
+    <title>Metadata Summary</title>
     <style>
         .summary-container { max-width: 800px; margin: 20px auto; }
         .metadata-section { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; }
@@ -11,31 +10,62 @@
 </head>
 <body>
 <div class="summary-container">
-    <h1>IDP Metadata Summary</h1>
+    <h1>Metadata Summary</h1>
 
+    <!-- Basic Info -->
     <div class="metadata-section">
         <h2>Basic Information</h2>
         <p><strong>Entity ID:</strong> <span th:text="${metadata.entityId}"></span></p>
-        <p><strong>Registration ID:</strong> <span th:text="${registrationId}"></span></p>
+        <p><strong>WantAuthnRequestsSigned:</strong> <span th:text="${metadata.wantAuthnRequestsSigned}"></span></p>
     </div>
 
-    <div class="metadata-section">
-        <h2>SSO Configuration</h2>
-        <p><strong>SSO URL:</strong> <span th:text="${metadata.ssoUrl}"></span></p>
-        <p><strong>Protocol Binding:</strong> <span th:text="${metadata.protocolBinding}"></span></p>
-    </div>
-
-    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.certificates)}">
-        <h2>Certificates</h2>
-        <div th:each="cert,iter : ${metadata.certificates}">
+    <!-- Certificates -->
+    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.signingCertificates)}">
+        <h2>Signing Certificates</h2>
+        <div th:each="cert,iter : ${metadata.signingCertificates}">
             <h3>Certificate [[${iter.index + 1}]]</h3>
             <div class="certificate" th:text="${cert}"></div>
         </div>
     </div>
 
+    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.encryptionCertificates)}">
+        <h2>Encryption Certificates</h2>
+        <div th:each="cert,iter : ${metadata.encryptionCertificates}">
+            <h3>Certificate [[${iter.index + 1}]]</h3>
+            <div class="certificate" th:text="${cert}"></div>
+        </div>
+    </div>
+
+    <!-- SSO Services -->
+    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.singleSignOnServices)}">
+        <h2>Single Sign-On Services</h2>
+        <div th:each="sso : ${metadata.singleSignOnServices}">
+            <p><strong>Binding:</strong> <span th:text="${sso.binding}"></span></p>
+            <p><strong>Location:</strong> <span th:text="${sso.location}"></span></p>
+        </div>
+    </div>
+
+    <!-- SLO Services -->
+    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.singleLogoutServices)}">
+        <h2>Single Logout Services</h2>
+        <div th:each="slo : ${metadata.singleLogoutServices}">
+            <p><strong>Binding:</strong> <span th:text="${slo.binding}"></span></p>
+            <p><strong>Location:</strong> <span th:text="${slo.location}"></span></p>
+        </div>
+    </div>
+
+    <!-- NameID Formats -->
+    <div class="metadata-section" th:if="${not #lists.isEmpty(metadata.nameIdFormats)}">
+        <h2>NameID Formats</h2>
+        <ul>
+            <li th:each="format : ${metadata.nameIdFormats}">[[${format}]]</li>
+        </ul>
+    </div>
+
+    <!-- Action Buttons -->
     <div class="action-buttons">
-        <a th:href="@{/saml/login?idp=${registrationId}}"
-           class="btn btn-primary">Initiate SAML Flow</a>
+        <a th:href="@{/saml/login(idp=${registrationId})}" class="btn btn-primary">Initiate SAML Flow</a>
+<!--        <a th:href="@{/saml/login(idp=${idp.id})}">Login with this IDP</a>-->
         <a href="/" class="btn btn-secondary">Return to List</a>
     </div>
 </div>
