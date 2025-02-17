@@ -39,6 +39,19 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         return registrations;
     }
 
+    public List<RelyingPartyRegistration> updateRegistration(IdpMetadata metadata) {
+        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential,spEntityId);
+
+        for (int i = 0; i < registrations.size(); i++) {
+            if (registration != null && registrations.get(i).getRegistrationId().equals(registration.getRegistrationId())) {
+                registrations.set(i, registration);
+                break; // Stop after the first replacement
+            }
+        }
+
+        return registrations;
+    }
+
     public void reloadRegistrations() {
         // Load all metadata from the database and parse them into RelyingPartyRegistration objects
         this.registrations = getAllMetadata().stream()

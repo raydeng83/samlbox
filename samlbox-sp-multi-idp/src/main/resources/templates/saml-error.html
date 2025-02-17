@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SAML Authentication Error</title>
+</head>
+<body>
+<h1>SSO Login Failed</h1>
+<div th:if="${error}">
+    <p>Error: <span th:text="${error}"></span></p>
+    <p th:if="${exceptionType}">Exception Type: <span th:text="${exceptionType}"></span></p>
+</div>
+<p>Please contact support with the error details.</p>
+</body>
+</html>

@@ -53,23 +53,43 @@ public class IdpMetadataService {
         try {
             // Parse the entity ID from the metadata
             String entityId = parseEntityId(file.getInputStream());
+            String registrationId;
 
-            // Generate a unique registrationId
-            String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
+            // Check if IDP exists
+            IdpMetadata existingIdp = idpMetadataRepository.findByEntityId(entityId).orElse(null);
 
-            // Save the metadata file
-            String filename = registrationId + ".xml";
-            Path target = storageDir.resolve(filename);
-            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+            if (existingIdp != null) {
+                 registrationId = existingIdp.getRegistrationId();
 
-            // Save the metadata to the database
-            IdpMetadata metadata = new IdpMetadata();
-            metadata.setEntityId(entityId);
-            metadata.setRegistrationId(registrationId);
-            metadata.setMetadataFilePath(target.toString());
-            idpMetadataRepository.save(metadata);
+                // Save the metadata file
+                String filename = registrationId + ".xml";
+                Path target = storageDir.resolve(filename);
+                Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
-            dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
+                existingIdp.setEntityId(entityId);
+                existingIdp.setRegistrationId(registrationId);
+                existingIdp.setMetadataFilePath(target.toString());
+                idpMetadataRepository.save(existingIdp);
+
+                dynamicRelyingPartyRegistrationRepository.updateRegistration(existingIdp);
+
+            } else {
+                // Generate a unique registrationId
+                 registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
+
+                // Save the metadata file
+                String filename = registrationId + ".xml";
+                Path target = storageDir.resolve(filename);
+                Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+
+                IdpMetadata metadata = new IdpMetadata();
+                metadata.setEntityId(entityId);
+                metadata.setRegistrationId(registrationId);
+                metadata.setMetadataFilePath(target.toString());
+                idpMetadataRepository.save(metadata);
+
+                dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
+            }
 
             return entityId;
         } catch (Exception e) {
@@ -99,22 +119,6 @@ public class IdpMetadataService {
             throw new IllegalArgumentException("No metadata found for registrationId: " + registrationId);
         }
     }
-
-    public List<Path> loadMetadataFiles() {
-        try (Stream<Path> paths = Files.list(storageDir)) {
-            return paths.filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            return List.of();
-        }
-    }
-
-    public String getRegistrationId(String entityId) {
-        Optional<IdpMetadata> metadata = idpMetadataRepository.findByEntityId(entityId);
-        return metadata.map(IdpMetadata::getRegistrationId).orElse(null);
-    }
-
-
 
     private String parseEntityId(InputStream inputStream) throws Exception {
         Document doc = DocumentBuilderFactory.newInstance()
