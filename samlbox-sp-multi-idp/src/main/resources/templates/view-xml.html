@@ -3,89 +3,69 @@
 <head>
   <title>XML Viewer</title>
   <!-- UIKit CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css" />
   <!-- Prism.js for syntax highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.css">
   <style>
     .xml-container {
-      margin: 20px 0;
-      padding: 15px;
-      border-radius: 8px;
-      background: #f8f9fa;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      background: #f8f8f8;
     }
     pre[class*="language-"] {
       margin: 0;
       padding: 1em;
       overflow: auto;
-      white-space: pre-wrap;
-      border-radius: 6px;
-      background: #fff !important;
-    }
-    .header {
-      padding: 20px 0;
+      white-space: pre-wrap; /* Default to wrapped lines */
     }
     .controls {
-      margin-bottom: 15px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
+      margin-bottom: 20px;
     }
-    .uk-button-group .uk-button {
-      border-radius: 6px;
-    }
-    .uk-checkbox {
-      margin-right: 8px;
-    }
-    body {
-      background-color: #f5f5f5;
+    .controls .uk-button {
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
-<div class="uk-container uk-container-large uk-margin-top uk-margin-bottom">
-  <div class="header">
-    <div class="uk-flex uk-flex-between uk-flex-middle">
-      <h2 class="uk-heading-small uk-margin-remove">
-        Metadata XML for: <span class="uk-text-primary" th:text="${entityId}"></span>
-      </h2>
-      <a th:href="@{/metadata-summary(entityId=${entityId})}"
-         class="uk-button uk-button-default">
-        <span uk-icon="arrow-left"></span> Back to Summary
-      </a>
-    </div>
+<div class="uk-container uk-margin-top">
+  <!-- Header -->
+  <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+    <h2>Metadata XML for: <span th:text="${entityId}"></span></h2>
+    <a th:href="@{/metadata-summary(entityId=${entityId})}" class="uk-button uk-button-default">
+      <span uk-icon="arrow-left"></span> Back to Summary
+    </a>
   </div>
 
+  <!-- Controls -->
   <div class="controls">
-    <div class="uk-button-group">
-      <a th:href="@{/download-xml(entityId=${entityId})}"
-         class="uk-button uk-button-primary">
-        <span uk-icon="download"></span> Download XML
-      </a>
-      <button id="copy-button" class="uk-button uk-button-default">
-        <span uk-icon="copy"></span> Copy to Clipboard
-      </button>
-    </div>
-    <label class="uk-flex uk-flex-middle">
-      <input class="uk-checkbox" type="checkbox" id="toggle-wrap" checked>
-      <span>Wrap Lines</span>
+    <a th:href="@{/download-xml(entityId=${entityId})}" class="uk-button uk-button-primary">
+      <span uk-icon="download"></span> Download XML
+    </a>
+    <button id="copy-button" class="uk-button uk-button-default">
+      <span uk-icon="copy"></span> Copy to Clipboard
+    </button>
+    <label class="uk-form-label">
+      <input class="uk-checkbox" type="checkbox" id="toggle-wrap" checked> Wrap Lines
     </label>
   </div>
 
+  <!-- XML Container -->
   <div class="xml-container">
     <pre class="line-numbers"><code class="language-xml" th:text="${xmlContent}"></code></pre>
   </div>
 </div>
 
 <!-- UIKit JS -->
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit-icons.min.js"></script>
 <!-- Prism.js for syntax highlighting -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-xml-doc.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
 
 <!-- Custom Scripts -->
 <script>
@@ -102,14 +82,20 @@
   copyButton.addEventListener('click', () => {
     navigator.clipboard.writeText(codeBlock.textContent)
             .then(() => {
-              const originalContent = copyButton.innerHTML;
-              copyButton.innerHTML = '<span uk-icon="check"></span> Copied!';
-              setTimeout(() => {
-                copyButton.innerHTML = originalContent;
-              }, 2000);
+              UIkit.notification({
+                message: 'Copied to clipboard!',
+                status: 'success',
+                pos: 'top-right',
+                timeout: 2000
+              });
             })
             .catch(() => {
-              copyButton.innerHTML = '<span uk-icon="warning"></span> Failed to copy';
+              UIkit.notification({
+                message: 'Failed to copy',
+                status: 'danger',
+                pos: 'top-right',
+                timeout: 2000
+              });
             });
   });
 </script>
