@@ -1,21 +1,17 @@
 package com.bostonidentity.samlboxspmultiidp;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 
@@ -86,5 +82,26 @@ public class MetadataController {
     }
 
     public record IdpInfo(String id, String entityId) {
+    }
+
+    @GetMapping("/view-xml")
+    public String viewXmlContent(@RequestParam("entityId") String entityId, Model model) {
+        try {
+            String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
+            String xmlContent = metadataService.getFormattedXml(registrationId);
+            model.addAttribute("xmlContent", xmlContent);
+            model.addAttribute("registrationId", registrationId);
+            model.addAttribute("entityId", entityId);
+            return "view-xml";
+        } catch (Exception e) {
+            return "redirect:/?error=XML+not+found";
+        }
+    }
+
+    @GetMapping("/download-xml")
+    public ResponseEntity<Resource> downloadXml(@RequestParam("entityId") String entityId) throws Exception {
+        String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
+
+        return metadataService.downloadXml(registrationId);
     }
 }

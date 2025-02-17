@@ -88,6 +88,13 @@
 <body>
 <div class="summary-container">
     <h1 class="uk-text-center">Metadata Summary</h1>
+    <!-- Add link in metadata-summary.html -->
+    <div class="action-buttons mt-4">
+        <a th:href="@{/view-xml(entityId=${entityId})}" class="btn btn-info">
+            View Raw XML
+        </a>
+        <!-- Existing buttons -->
+    </div>
 
     <!-- Basic Info -->
     <div class="metadata-section">

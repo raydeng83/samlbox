@@ -3,18 +3,25 @@ package com.bostonidentity.samlboxspmultiidp;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -116,44 +123,49 @@ public class IdpMetadataService {
         return doc.getDocumentElement().getAttribute("entityID");
     }
 
-    // IdpMetadataService.java
-//    public IdpMetadataDetails parseMetadataDetails(String registrationId) throws Exception {
-//        IdpMetadataDetails details = new IdpMetadataDetails();
-//        Optional<IdpMetadata> metadata = idpMetadataRepository.findByRegistrationId(registrationId);
-//
-//        if (metadata.isPresent()) {
-//            Path path = Paths.get(metadata.get().getMetadataFilePath());
-//            Document doc = DocumentBuilderFactory.newInstance()
-//                    .newDocumentBuilder()
-//                    .parse(Files.newInputStream(path));
-//
-//            // Parse XML elements
-//            Element entityDescriptor = doc.getDocumentElement();
-//            details.setEntityId(entityDescriptor.getAttribute("entityID"));
-//
-//            NodeList idpSsoDescriptors = entityDescriptor.getElementsByTagNameNS(
-//                    "urn:oasis:names:tc:SAML:2.0:metadata", "IDPSSODescriptor");
-//
-//            if (idpSsoDescriptors.getLength() > 0) {
-//                Element idpSso = (Element) idpSsoDescriptors.item(0);
-//                Element ssoService = (Element) idpSso.getElementsByTagNameNS(
-//                        "urn:oasis:names:tc:SAML:2.0:metadata", "SingleSignOnService").item(0);
-//
-//                details.setSsoUrl(ssoService.getAttribute("Location"));
-//                details.setProtocolBinding(ssoService.getAttribute("Binding"));
-//            }
-//
-//            // Parse certificates
-//            NodeList keyDescriptors = entityDescriptor.getElementsByTagNameNS(
-//                    "urn:oasis:names:tc:SAML:2.0:metadata", "KeyDescriptor");
-//            for (int i = 0; i < keyDescriptors.getLength(); i++) {
-//                Element keyDescriptor = (Element) keyDescriptors.item(i);
-//                Element x509Certificate = (Element) keyDescriptor.getElementsByTagNameNS(
-//                        "http://www.w3.org/2000/09/xmldsig#", "X509Certificate").item(0);
-//                details.getCertificates().add(x509Certificate.getTextContent());
-//            }
-//        }
-//
-//        return details;
-//    }
+    public String getRawXmlContent(String registrationId) throws Exception {
+        Optional<IdpMetadata> metadata = idpMetadataRepository.findByRegistrationId(registrationId);
+        if (metadata.isPresent()) {
+            Path path = Paths.get(metadata.get().getMetadataFilePath());
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+        }
+        throw new FileNotFoundException("Metadata file not found");
+    }
+
+    public String getFormattedXml(String registrationId) throws Exception {
+        String rawXml = getRawXmlContent(registrationId);
+        return formatXml(rawXml);
+    }
+
+    private String formatXml(String xml) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false); // Prevent XXE
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new InputSource(new StringReader(xml)));
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setAttribute("indent-number", 2); // Set indentation to 2 spaces
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+
+        StringWriter writer = new StringWriter();
+        transformer.transform(new DOMSource(doc), new StreamResult(writer));
+        return writer.toString().trim();
+    }
+
+    public ResponseEntity<Resource> downloadXml(String registrationId) throws Exception {
+        Optional<IdpMetadata> metadata = idpMetadataRepository.findByRegistrationId(registrationId);
+        if (metadata.isPresent()) {
+            Path path = Paths.get(metadata.get().getMetadataFilePath());
+            Resource resource = new UrlResource(path.toUri());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_XML)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        }
+        throw new FileNotFoundException("Metadata file not found");
+    }
 }
