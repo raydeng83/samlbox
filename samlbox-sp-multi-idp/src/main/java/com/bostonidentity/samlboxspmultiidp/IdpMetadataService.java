@@ -64,7 +64,7 @@ public class IdpMetadataService {
 
             dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
 
-            return registrationId;
+            return entityId;
         } catch (Exception e) {
             throw new IOException("Invalid metadata", e);
         }

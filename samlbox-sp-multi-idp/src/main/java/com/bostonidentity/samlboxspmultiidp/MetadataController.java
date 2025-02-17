@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -46,8 +50,8 @@ public class MetadataController {
     @PostMapping("/upload")
     public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
         try {
-            String registrationId = metadataService.saveMetadata(file);
-            return "redirect:/metadata-summary/" + registrationId;
+            String entityId = metadataService.saveMetadata(file);
+            return "redirect:/metadata-summary?entityId=" + entityId;
         } catch (Exception e) {
             return "redirect:/?uploadError=true";
         }
@@ -55,8 +59,8 @@ public class MetadataController {
 
     @GetMapping("/saml/login")
     public String initiateSamlLogin(@RequestParam("idp") String idpId, HttpServletRequest request) {
-        // Redirect to the SAML2 login endpoint for the selected IDP
-        return "redirect:/saml2/authenticate/" + idpId;
+
+        return "redirect:/saml2/authenticate/" + Base64.getUrlEncoder().withoutPadding().encodeToString(idpId.getBytes());
     }
 
     @PostMapping("/delete")
@@ -66,14 +70,15 @@ public class MetadataController {
         return "redirect:/";
     }
 
-    @GetMapping("/metadata-summary/{registrationId}")
-    public String showMetadataSummary(@PathVariable String registrationId, Model model) {
+    @GetMapping("/metadata-summary")
+    public String showMetadataSummary(@RequestParam("entityId") String entityId, Model model) {
         try {
+            String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
             RelyingPartyRegistration registration = repo.findByRegistrationId(registrationId);
-//            IdpMetadataDetails details = metadataService.parseMetadataDetails(registrationId);
             IdpMetadataDetails details = IdpMetadataDetails.fromRelyingPartyRegistration(registration);
             model.addAttribute("metadata", details);
             model.addAttribute("registrationId", registrationId);
+            model.addAttribute("entityId", details.getEntityId());
             return "metadata-summary";
         } catch (Exception e) {
             return "redirect:/?error=Metadata+parse+failed";

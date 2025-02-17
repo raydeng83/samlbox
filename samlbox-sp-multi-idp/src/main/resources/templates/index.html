@@ -8,11 +8,11 @@
 <div th:if="${param.uploadSuccess}">
     <p style="color:green;">IDP metadata uploaded successfully!</p>
 </div>
-
+<p>SP Init SSO Login Endpoint: <strong>/saml/login?idp={your-idp-entity-id}</strong></p>
 <ul>
     <li th:each="idp : ${idps}">
         <span th:text="${idp.entityId}"></span>
-        <a th:href="@{/saml/login(idp=${idp.id})}">Login with this IDP</a>
+        <a th:href="@{/saml/login(idp=${idp.entityId})}">Login with this IDP</a>
         <form th:action="@{/delete(id=${idp.entityId})}" method="post">
             <button type="submit">Delete</button>
         </form>
