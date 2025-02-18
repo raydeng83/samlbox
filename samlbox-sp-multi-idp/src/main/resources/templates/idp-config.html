@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>IDP Configuration</title>
+</head>
+<body>
+<h1>Configure SAML Request for [[${idp.entityId}]]</h1>
+<form th:action="@{/idp/{entityId}/configure(entityId=${idp.entityId})}" method="post">
+  <div>
+    <label>SAML Binding:</label>
+<!--    <select name="samlBinding">-->
+<!--      <option th:each="b : ${T(com.example.IdpConfig.SamlBinding).values()}"-->
+<!--              th:value="${b}"-->
+<!--              th:text="${b.name()}"-->
+<!--              th:selected="${idp.samlBinding == b}"></option>-->
+<!--    </select>-->
+  </div>
+
+  <div>
+    <label>Sign Requests:</label>
+    <input type="checkbox" name="signRequests" th:checked="${idp.signRequests}"/>
+  </div>
+
+  <div>
+    <label>NameID Format:</label>
+    <input type="text" name="nameIdFormat" th:value="${idp.nameIdFormat}"/>
+  </div>
+
+  <button type="submit">Save Configuration</button>
+</form>
+</body>
+</html>

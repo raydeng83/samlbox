@@ -3,6 +3,7 @@ package com.bostonidentity.samlboxspmultiidp;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +37,9 @@ import java.util.stream.Stream;
 public class IdpMetadataService {
 
     private static final Logger logger = LoggerFactory.getLogger(IdpMetadataService.class);
+
+    @Autowired
+    private IdpConfigRepository idpConfigRepository;
 
     private final Path storageDir = Paths.get("./idp-metadata");
     private final IdpMetadataRepository idpMetadataRepository;
@@ -88,6 +92,11 @@ public class IdpMetadataService {
                 metadata.setMetadataFilePath(target.toString());
                 idpMetadataRepository.save(metadata);
 
+                IdpConfig idpConfig = new IdpConfig();
+
+                idpConfig.setEntityId(entityId);
+                idpConfigRepository.save(idpConfig);
+
                 dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
             }
 
@@ -112,7 +121,9 @@ public class IdpMetadataService {
 
             logger.info("Deleted metadata file: {}", metadataFilePath);
 
-            // Delete the metadata entry from the database
+            if (idpConfigRepository.findByEntityId(id).isPresent()) {
+                idpConfigRepository.delete(idpConfigRepository.findByEntityId(id).get());
+            }
             idpMetadataRepository.delete(metadata.get());
         } else {
             logger.warn("No metadata found for registrationId: {}", registrationId);
