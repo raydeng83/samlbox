@@ -15,6 +15,8 @@ public class IdpConfigController {
 
     @Autowired
     private IdpConfigRepository idpRepository;
+    @Autowired
+    private IdpConfigService idpConfigService;
 
     @GetMapping("/idp/configure")
     public String configPage(@RequestParam("entityId") String entityId, Model model) {
@@ -42,16 +44,9 @@ public class IdpConfigController {
     @PostMapping("/idp/configure")
     public String saveConfig(
             @RequestParam("entityId") String entityId,
-            @ModelAttribute IdpConfig updatedConfig
+            @ModelAttribute IdpConfig idpConfig
     ) {
-        IdpConfig existing = idpRepository.findByEntityId(entityId)
-                .orElseThrow(() -> new IllegalArgumentException("IDP not found"));
-
-        existing.setSamlBinding(updatedConfig.getSamlBinding());
-        existing.setSignRequests(updatedConfig.isSignRequests());
-        existing.setNameIdFormat(updatedConfig.getNameIdFormat());
-
-        idpRepository.save(existing);
+        idpConfigService.updateIdpConfig(idpConfig);
         return "redirect:/";
     }
 }

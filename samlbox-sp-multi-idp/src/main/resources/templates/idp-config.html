@@ -8,15 +8,15 @@
 <body>
 <div class="uk-container uk-margin-top">
     <h1 class="uk-heading-primary">Configure SAML Request for [[${idpConfig.entityId}]]</h1>
-    <form th:action="@{/idp/{entityId}/configure(entityId=${idpConfig.entityId})}" method="post"
+    <form th:action="@{/idp/configure(entityId=${idpConfig.entityId})}" method="post"
           class="uk-form-stacked">
 
         <!-- SAML Binding Dropdown -->
         <div class="uk-margin">
             <label class="uk-form-label" for="samlBinding">Single Sign-On Binding:</label>
             <div class="uk-form-controls">
-                <select id="samlBinding" name="samlBinding" class="uk-select">
-                    <option th:each="binding : ${bindingList}" th:value="${binding}" th:text="${binding}"></option>
+                <select id="samlBinding" name="samlBinding" class="uk-select" th:field="${idpConfig.ssoBinding}">
+                    <option th:each="binding : ${bindingList}" th:value="${binding}" th:text="${binding}" th:selected="${idpConfig.ssoBinding==binding}"></option>
                 </select>
             </div>
         </div>

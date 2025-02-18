@@ -76,7 +76,13 @@ public class IdpMetadataService {
                 existingIdp.setMetadataFilePath(target.toString());
                 idpMetadataRepository.save(existingIdp);
 
-                dynamicRelyingPartyRegistrationRepository.updateRegistration(existingIdp);
+                RelyingPartyRegistration registration = dynamicRelyingPartyRegistrationRepository.updateRegistration(existingIdp);
+
+                IdpConfig idpConfig = idpConfigRepository.findByEntityId(entityId).get();
+                idpConfig.setEntityId(entityId);
+                idpConfig.setRegistrationId(registrationId);
+                idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
+                idpConfigRepository.save(idpConfig);
 
             } else {
                 // Generate a unique registrationId
@@ -97,6 +103,7 @@ public class IdpMetadataService {
 
                 IdpConfig idpConfig = new IdpConfig();
                 idpConfig.setEntityId(entityId);
+                idpConfig.setRegistrationId(registrationId);
                 idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
                 idpConfigRepository.save(idpConfig);
             }

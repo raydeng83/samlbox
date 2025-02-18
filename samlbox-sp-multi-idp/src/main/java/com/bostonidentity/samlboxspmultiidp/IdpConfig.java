@@ -13,6 +13,7 @@ public class IdpConfig {
     private Long id;
 
     private String entityId;
+    private String registrationId;
 
     private String ssoBinding;
     private String ssoLocationUrl;
@@ -22,7 +23,6 @@ public class IdpConfig {
 
     private String signingCertificate;
 
-    private String samlBinding = "HTTP_POST";
     private boolean signRequests = false;
     private String nameIdFormat = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
