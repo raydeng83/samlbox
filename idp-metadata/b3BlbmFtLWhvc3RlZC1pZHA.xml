@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <EntityDescriptor entityID="openam-hosted-idp" xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:query="urn:oasis:names:tc:SAML:metadata:ext:query" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:x509qry="urn:oasis:names:tc:SAML:metadata:X509:query" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-    <IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <KeyDescriptor use="signing">
             <ds:KeyInfo>
                 <ds:X509Data>
@@ -55,26 +55,26 @@ q5yziqyU04eP4wLr3cM=
                 <xenc:KeySize>128</xenc:KeySize>
             </EncryptionMethod>
         </KeyDescriptor>
-        <ArtifactResolutionService index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openam.example.com:18080/openam/ArtifactResolver/metaAlias/openam-hosted-idp"/>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://openam.example.com:18080/openam/IDPSloPOST/metaAlias/openam-hosted-idp" ResponseLocation="http://openam.example.com:18080/openam/IDPSloPOST/metaAlias/openam-hosted-idp"/>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://openam.example.com:18080/openam/IDPSloRedirect/metaAlias/openam-hosted-idp" ResponseLocation="http://openam.example.com:18080/openam/IDPSloRedirect/metaAlias/openam-hosted-idp"/>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openam.example.com:18080/openam/IDPSloSoap/metaAlias/openam-hosted-idp"/>
-        <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://openam.example.com:18080/openam/IDPMniPOST/metaAlias/openam-hosted-idp" ResponseLocation="http://openam.example.com:18080/openam/IDPMniPOST/metaAlias/openam-hosted-idp"/>
-        <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://openam.example.com:18080/openam/IDPMniRedirect/metaAlias/openam-hosted-idp" ResponseLocation="http://openam.example.com:18080/openam/IDPMniRedirect/metaAlias/openam-hosted-idp"/>
-        <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openam.example.com:18080/openam/IDPMniSoap/metaAlias/openam-hosted-idp"/>
-        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</NameIDFormat>
-        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
+        <ArtifactResolutionService index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://fedsso.example.com:18080/openam/ArtifactResolver/metaAlias/openam-hosted-idp"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://fedsso.example.com:18080/openam/IDPSloRedirect/metaAlias/openam-hosted-idp" ResponseLocation="http://fedsso.example.com:18080/openam/IDPSloRedirect/metaAlias/openam-hosted-idp"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://fedsso.example.com:18080/openam/IDPSloPOST/metaAlias/openam-hosted-idp" ResponseLocation="http://fedsso.example.com:18080/openam/IDPSloPOST/metaAlias/openam-hosted-idp"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://fedsso.example.com:18080/openam/IDPSloSoap/metaAlias/openam-hosted-idp"/>
+        <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://fedsso.example.com:18080/openam/IDPMniRedirect/metaAlias/openam-hosted-idp" ResponseLocation="http://fedsso.example.com:18080/openam/IDPMniRedirect/metaAlias/openam-hosted-idp"/>
+        <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://fedsso.example.com:18080/openam/IDPMniPOST/metaAlias/openam-hosted-idp" ResponseLocation="http://fedsso.example.com:18080/openam/IDPMniPOST/metaAlias/openam-hosted-idp"/>
+        <ManageNameIDService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://fedsso.example.com:18080/openam/IDPMniSoap/metaAlias/openam-hosted-idp"/>
         <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>
         <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
         <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName</NameIDFormat>
         <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos</NameIDFormat>
         <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</NameIDFormat>
-        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://openam.example.com:18080/openam/SSOPOST/metaAlias/openam-hosted-idp"/>
-        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://openam.example.com:18080/openam/SSORedirect/metaAlias/openam-hosted-idp"/>
-        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openam.example.com:18080/openam/SSOSoap/metaAlias/openam-hosted-idp"/>
-        <NameIDMappingService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openam.example.com:18080/openam/NIMSoap/metaAlias/openam-hosted-idp"/>
-        <AssertionIDRequestService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openam.example.com:18080/openam/AIDReqSoap/IDPRole/metaAlias/openam-hosted-idp"/>
-        <AssertionIDRequestService Binding="urn:oasis:names:tc:SAML:2.0:bindings:URI" Location="http://openam.example.com:18080/openam/AIDReqUri/IDPRole/metaAlias/openam-hosted-idp"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://fedsso.example.com:18080/openam/SSORedirect/metaAlias/openam-hosted-idp"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://fedsso.example.com:18080/openam/SSOPOST/metaAlias/openam-hosted-idp"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://fedsso.example.com:18080/openam/SSOSoap/metaAlias/openam-hosted-idp"/>
+        <NameIDMappingService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://fedsso.example.com:18080/openam/NIMSoap/metaAlias/openam-hosted-idp"/>
+        <AssertionIDRequestService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://fedsso.example.com:18080/openam/AIDReqSoap/IDPRole/metaAlias/openam-hosted-idp"/>
+        <AssertionIDRequestService Binding="urn:oasis:names:tc:SAML:2.0:bindings:URI" Location="http://fedsso.example.com:18080/openam/AIDReqUri/IDPRole/metaAlias/openam-hosted-idp"/>
     </IDPSSODescriptor>
 </EntityDescriptor>
 

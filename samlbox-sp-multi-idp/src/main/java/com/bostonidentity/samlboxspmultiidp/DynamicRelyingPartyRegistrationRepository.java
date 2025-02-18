@@ -81,7 +81,8 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                     .fromMetadata(inputStream)
                     .registrationId(metadata.getRegistrationId())
                     .entityId(spEntityId)
-                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + spEntityId)
+//                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + spEntityId)
+                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + metadata.getRegistrationId())
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .build();
 
