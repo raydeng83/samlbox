@@ -9,6 +9,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
@@ -92,12 +93,12 @@ public class IdpMetadataService {
                 metadata.setMetadataFilePath(target.toString());
                 idpMetadataRepository.save(metadata);
 
+                RelyingPartyRegistration registration = dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
+
                 IdpConfig idpConfig = new IdpConfig();
-
                 idpConfig.setEntityId(entityId);
+                idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
                 idpConfigRepository.save(idpConfig);
-
-                dynamicRelyingPartyRegistrationRepository.addRegistration(metadata);
             }
 
             return entityId;

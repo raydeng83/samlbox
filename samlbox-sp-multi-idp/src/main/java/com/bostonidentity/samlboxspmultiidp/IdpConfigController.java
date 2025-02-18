@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 public class IdpConfigController {
 
@@ -14,9 +18,24 @@ public class IdpConfigController {
 
     @GetMapping("/idp/configure")
     public String configPage(@RequestParam("entityId") String entityId, Model model) {
-        IdpConfig idp = idpRepository.findByEntityId(entityId)
+        IdpConfig idpConfig = idpRepository.findByEntityId(entityId)
                 .orElseThrow(() -> new IllegalArgumentException("IDP not found"));
-        model.addAttribute("idp", idp);
+
+        List<String> bindingList = Arrays.asList("HTTP_POST", "HTTP_REDIRECT");
+        List<String> nameIdFormatList = Arrays.asList(
+                "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+                "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos",
+                "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName"
+        );
+
+        model.addAttribute("entityId", entityId);
+        model.addAttribute("idpConfig", idpConfig);
+        model.addAttribute("bindingList", bindingList);
+        model.addAttribute("nameIdFormatList", nameIdFormatList);
+
         return "idp-config";
     }
 

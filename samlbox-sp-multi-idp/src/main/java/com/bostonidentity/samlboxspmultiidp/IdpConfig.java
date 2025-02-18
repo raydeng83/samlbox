@@ -1,7 +1,6 @@
 package com.bostonidentity.samlboxspmultiidp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,20 +8,23 @@ import lombok.Setter;
 @Getter @Setter
 public class IdpConfig {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(nullable = false)
+    private Long id;
+
     private String entityId;
 
-    // Existing fields
-    private String ssoUrl;
+    private String ssoBinding;
+    private String ssoLocationUrl;
+
+    private String sloBinding;
+    private String sloLocationUrl;
+
     private String signingCertificate;
 
-    // New configuration fields
-    private SamlBinding samlBinding = SamlBinding.HTTP_REDIRECT;
+    private String samlBinding = "HTTP_POST";
     private boolean signRequests = false;
-    private String nameIdFormat = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
-
-    public enum SamlBinding {
-        HTTP_REDIRECT, HTTP_POST
-    }
+    private String nameIdFormat = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
     // Getters and setters
 }

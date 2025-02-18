@@ -32,11 +32,11 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         registrations.add(createDefaultRegistration());
     }
 
-    public List<RelyingPartyRegistration> addRegistration(IdpMetadata metadata) {
+    public RelyingPartyRegistration addRegistration(IdpMetadata metadata) {
         RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential,spEntityId);
         registrations.add(registration);
 
-        return registrations;
+        return registration;
     }
 
     public List<RelyingPartyRegistration> updateRegistration(IdpMetadata metadata) {

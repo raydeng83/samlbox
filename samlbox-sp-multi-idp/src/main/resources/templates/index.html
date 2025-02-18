@@ -60,6 +60,7 @@
 
             <div>
                 <a th:href="@{/saml/login(idp=${idp.entityId})}" class="uk-button uk-button-primary uk-margin-right">Login with this IDP</a>
+                <a th:href="@{/idp/configure(entityId=${idp.entityId})}" class="uk-button uk-button-default uk-margin-right">Configure</a>
                 <form th:action="@{/delete(id=${idp.entityId})}" method="post" style="display: inline;">
                     <button type="submit" class="btn-delete">Delete</button>
                 </form>

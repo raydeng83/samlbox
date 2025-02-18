@@ -1,32 +1,78 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>IDP Configuration</title>
+    <title>IDP Configuration</title>
+    <!-- Include UIKit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css"/>
 </head>
 <body>
-<h1>Configure SAML Request for [[${idp.entityId}]]</h1>
-<form th:action="@{/idp/{entityId}/configure(entityId=${idp.entityId})}" method="post">
-  <div>
-    <label>SAML Binding:</label>
-<!--    <select name="samlBinding">-->
-<!--      <option th:each="b : ${T(com.example.IdpConfig.SamlBinding).values()}"-->
-<!--              th:value="${b}"-->
-<!--              th:text="${b.name()}"-->
-<!--              th:selected="${idp.samlBinding == b}"></option>-->
-<!--    </select>-->
-  </div>
+<div class="uk-container uk-margin-top">
+    <h1 class="uk-heading-primary">Configure SAML Request for [[${idpConfig.entityId}]]</h1>
+    <form th:action="@{/idp/{entityId}/configure(entityId=${idpConfig.entityId})}" method="post"
+          class="uk-form-stacked">
 
-  <div>
-    <label>Sign Requests:</label>
-    <input type="checkbox" name="signRequests" th:checked="${idp.signRequests}"/>
-  </div>
+        <!-- SAML Binding Dropdown -->
+        <div class="uk-margin">
+            <label class="uk-form-label" for="samlBinding">Single Sign-On Binding:</label>
+            <div class="uk-form-controls">
+                <select id="samlBinding" name="samlBinding" class="uk-select">
+                    <option th:each="binding : ${bindingList}" th:value="${binding}" th:text="${binding}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <label class="uk-form-label" for="ssoLocationUrl">SSO Location URL:</label>
+            <input
+                    type="text"
+                    id="ssoLocationUrl"
+                    name="ssoLocationUrl"
+                    class="uk-input"
+                    th:value="${idpConfig.ssoLocationUrl}"
+                    autocomplete="off"
+            />
+        </div>
 
-  <div>
-    <label>NameID Format:</label>
-    <input type="text" name="nameIdFormat" th:value="${idp.nameIdFormat}"/>
-  </div>
+        <!-- Name-ID Format Combo Box (Dropdown + Manual Input) -->
+        <div class="uk-margin">
+            <label class="uk-form-label" for="nameIdFormatInput">Name-ID Format:</label>
+            <div class="uk-form-controls">
+                <!-- Input field with datalist for suggestions -->
+                <input
+                        type="text"
+                        id="nameIdFormatInput"
+                        name="nameIdFormat"
+                        class="uk-input"
+                        list="nameIdFormatList"
+                        th:value="${idpConfig.nameIdFormat}"
+                        autocomplete="off"
+                />
+                <!-- Datalist with predefined options -->
+                <datalist id="nameIdFormatList">
+                    <option th:each="nameIdFormat : ${nameIdFormatList}" th:value="${nameIdFormat}"></option>
+                </datalist>
+            </div>
+        </div>
 
-  <button type="submit">Save Configuration</button>
-</form>
+        <!-- Sign Requests Checkbox -->
+        <div class="uk-margin">
+            <label class="uk-form-label">Sign Requests:</label>
+            <div class="uk-form-controls">
+                <input type="checkbox" name="signRequests" th:checked="${idpConfig.signRequests}" class="uk-checkbox"/>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="uk-margin">
+            <button type="submit" class="uk-button uk-button-primary">Save Configuration</button>
+        </div>
+        <div class="uk-margin">
+            <a href="/" class="uk-button uk-button-danger">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Include UIKit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit-icons.min.js"></script>
 </body>
 </html>
