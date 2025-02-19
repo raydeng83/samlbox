@@ -1,5 +1,6 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.service;
 
+import com.bostonidentity.samlboxspmultiidp.model.SamlResponseDetails;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.saml.saml2.core.*;
 import org.opensaml.core.xml.XMLObject;

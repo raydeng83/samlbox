@@ -1,11 +1,10 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.service;
 
+import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
+import com.bostonidentity.samlboxspmultiidp.repository.DynamicRelyingPartyRegistrationRepository;
+import com.bostonidentity.samlboxspmultiidp.repository.IdpConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
-import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class IdpConfigService {

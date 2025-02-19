@@ -1,5 +1,6 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.config;
 
+import com.bostonidentity.samlboxspmultiidp.repository.IdpMetadataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

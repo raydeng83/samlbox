@@ -1,4 +1,4 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

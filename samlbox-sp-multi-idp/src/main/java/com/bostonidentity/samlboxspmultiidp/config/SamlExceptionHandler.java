@@ -1,4 +1,4 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.config;
 
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationException;

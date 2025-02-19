@@ -1,5 +1,8 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.controller;
 
+import com.bostonidentity.samlboxspmultiidp.model.IdpMetadataDetails;
+import com.bostonidentity.samlboxspmultiidp.repository.DynamicRelyingPartyRegistrationRepository;
+import com.bostonidentity.samlboxspmultiidp.service.IdpMetadataService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;

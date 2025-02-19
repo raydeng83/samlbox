@@ -1,5 +1,10 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.service;
 
+import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
+import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
+import com.bostonidentity.samlboxspmultiidp.repository.DynamicRelyingPartyRegistrationRepository;
+import com.bostonidentity.samlboxspmultiidp.repository.IdpConfigRepository;
+import com.bostonidentity.samlboxspmultiidp.repository.IdpMetadataRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +34,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Base64;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class IdpMetadataService {

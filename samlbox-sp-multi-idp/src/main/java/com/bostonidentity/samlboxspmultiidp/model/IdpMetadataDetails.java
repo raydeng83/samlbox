@@ -1,12 +1,10 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.model;
 
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

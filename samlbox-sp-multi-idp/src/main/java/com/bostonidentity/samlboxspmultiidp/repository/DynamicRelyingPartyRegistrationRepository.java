@@ -1,6 +1,7 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
+import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
@@ -9,7 +10,6 @@ import org.springframework.security.saml2.provider.service.registration.Saml2Mes
 
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;

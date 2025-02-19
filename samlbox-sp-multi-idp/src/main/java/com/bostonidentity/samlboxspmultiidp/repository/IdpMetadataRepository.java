@@ -1,5 +1,6 @@
-package com.bostonidentity.samlboxspmultiidp;
+package com.bostonidentity.samlboxspmultiidp.repository;
 
+import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
