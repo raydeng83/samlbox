@@ -23,7 +23,7 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
     private List<RelyingPartyRegistration> registrations = new ArrayList<>();
 
     public DynamicRelyingPartyRegistrationRepository(
-                                                     Saml2X509Credential signingCredential, String spEntityId, IdpMetadataRepository idpMetadataRepository) {
+            Saml2X509Credential signingCredential, String spEntityId, IdpMetadataRepository idpMetadataRepository) {
         this.signingCredential = signingCredential;
         this.spEntityId = spEntityId;
         this.idpMetadataRepository = idpMetadataRepository;
@@ -34,14 +34,14 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
     }
 
     public RelyingPartyRegistration addRegistration(IdpMetadata metadata) {
-        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential,spEntityId);
+        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential, spEntityId);
         registrations.add(registration);
 
         return registration;
     }
 
     public RelyingPartyRegistration updateRegistration(IdpMetadata metadata) {
-        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential,spEntityId);
+        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential, spEntityId);
 
         for (int i = 0; i < registrations.size(); i++) {
             if (registration != null && registrations.get(i).getRegistrationId().equals(registration.getRegistrationId())) {

@@ -56,6 +56,7 @@ public class IdpMetadataService {
         this.dynamicRelyingPartyRegistrationRepository = dynamicRelyingPartyRegistrationRepository;
     }
 
+    @Transactional
     public String saveMetadata(MultipartFile file) throws IOException {
         try {
             // Parse the entity ID from the metadata
@@ -66,27 +67,28 @@ public class IdpMetadataService {
             IdpMetadata existingIdp = idpMetadataRepository.findByEntityId(entityId).orElse(null);
 
             if (existingIdp != null) {
-                 registrationId = existingIdp.getRegistrationId();
+                deleteMetadata(entityId); // removing existing one before creating a new one
 
                 // Save the metadata file
-                String filename = registrationId + ".xml";
-                Path target = storageDir.resolve(filename);
-                Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+//                String filename = registrationId + ".xml";
+//                Path target = storageDir.resolve(filename);
+//                Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+//
+//                existingIdp.setEntityId(entityId);
+//                existingIdp.setRegistrationId(registrationId);
+//                existingIdp.setMetadataFilePath(target.toString());
+//                idpMetadataRepository.save(existingIdp);
+//
+//                RelyingPartyRegistration registration = dynamicRelyingPartyRegistrationRepository.updateRegistration(existingIdp);
+//
+//                IdpConfig idpConfig = idpConfigRepository.findByEntityId(entityId).get();
+//                idpConfig.setEntityId(entityId);
+//                idpConfig.setRegistrationId(registrationId);
+//                idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
+//                idpConfigRepository.save(idpConfig);
 
-                existingIdp.setEntityId(entityId);
-                existingIdp.setRegistrationId(registrationId);
-                existingIdp.setMetadataFilePath(target.toString());
-                idpMetadataRepository.save(existingIdp);
-
-                RelyingPartyRegistration registration = dynamicRelyingPartyRegistrationRepository.updateRegistration(existingIdp);
-
-                IdpConfig idpConfig = idpConfigRepository.findByEntityId(entityId).get();
-                idpConfig.setEntityId(entityId);
-                idpConfig.setRegistrationId(registrationId);
-                idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
-                idpConfigRepository.save(idpConfig);
-
-            } else {
+            }
+//            else {
                 // Generate a unique registrationId
                  registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
 
@@ -108,7 +110,9 @@ public class IdpMetadataService {
                 idpConfig.setRegistrationId(registrationId);
                 idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
                 idpConfigRepository.save(idpConfig);
-            }
+//            }
+
+            dynamicRelyingPartyRegistrationRepository.reloadRegistrations();
 
             return entityId;
         } catch (Exception e) {

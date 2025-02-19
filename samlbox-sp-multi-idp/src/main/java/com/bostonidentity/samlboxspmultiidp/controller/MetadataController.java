@@ -63,8 +63,8 @@ public class MetadataController {
     }
 
     @PostMapping("/delete")
-    public String deleteIdp(@RequestParam("id") String id) throws IOException {
-        metadataService.deleteMetadata(id);
+    public String deleteIdp(@RequestParam("id") String entityId) throws IOException {
+        metadataService.deleteMetadata(entityId);
         repo.reloadRegistrations();
         return "redirect:/";
     }
