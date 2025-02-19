@@ -22,6 +22,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 
+import static com.bostonidentity.samlboxspmultiidp.service.SamlUtils.sanitize;
+
 public class SamlResponseProcessor {
 
     static {
@@ -115,14 +117,6 @@ public class SamlResponseProcessor {
         return null;
     }
 
-    public static String sanitize(String input) {
-        StringBuilder sb = new StringBuilder();
-        for (char ch : input.toCharArray()) {
-            if (!Character.isISOControl(ch)) { // Removes all control characters
-                sb.append(ch);
-            }
-        }
-        return sb.toString();
-    }
+
 }
 

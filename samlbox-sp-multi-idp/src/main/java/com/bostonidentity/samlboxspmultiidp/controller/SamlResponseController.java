@@ -15,11 +15,9 @@ public class SamlResponseController {
 
     private static final Logger logger = LoggerFactory.getLogger(SamlResponseController.class);
 
-    private final Saml2AuthenticationTokenConverter tokenConverter;
 
     public SamlResponseController(
-            Saml2AuthenticationTokenConverter tokenConverter) {
-        this.tokenConverter = tokenConverter;
+             ) {
     }
 
     @GetMapping("/saml-response")

@@ -106,7 +106,8 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                     .fromMetadata(inputStream)
                     .registrationId(metadata.getRegistrationId())
                     .entityId(spEntityId)
-                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + metadata.getRegistrationId())
+//                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + metadata.getRegistrationId())
+                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso" )
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .build();
 
@@ -119,10 +120,22 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 
     @Override
     public RelyingPartyRegistration findByRegistrationId(String id) {
-        return registrations.stream()
-                .filter(r -> r.getRegistrationId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid registration ID"));
+//        return registrations.stream()
+//                .filter(r -> r.getRegistrationId().equals(id))
+//                .findFirst()
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid registration ID"));
+
+        // Step 1: Iterate through the list of registrations
+        for (RelyingPartyRegistration r : registrations) {
+            // Step 2: Check if the registration ID matches the given ID
+            if (r.getRegistrationId().equals(id)) {
+                // Step 3: Return the first matching registration
+                return r;
+            }
+        }
+
+// Step 4: Throw an exception if no matching registration is found
+        throw new IllegalArgumentException("Invalid registration ID");
     }
 
     public List<RelyingPartyRegistration> getAllRegistrations() {

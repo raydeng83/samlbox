@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.saml2.core.Saml2X509Credential;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -72,4 +74,13 @@ public class SamlConfig {
 
         return new JcaX509CertificateConverter().getCertificate(builder.build(signer));
     }
+
+//    @Bean
+//    public Saml2AuthenticationTokenConverter saml2AuthenticationTokenConverter(
+//            DynamicRelyingPartyRegistrationRepository repo
+//    ) {
+//        return new Saml2AuthenticationTokenConverter(
+//                new EntityIdRelyingPartyRegistrationResolver()
+//        );
+//    }
 }
