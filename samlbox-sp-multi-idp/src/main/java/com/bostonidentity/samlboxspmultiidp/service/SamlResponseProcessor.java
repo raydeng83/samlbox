@@ -42,8 +42,6 @@ import static com.bostonidentity.samlboxspmultiidp.service.SamlUtils.sanitize;
 public class SamlResponseProcessor {
     private static final Logger logger = LoggerFactory.getLogger(SamlResponseProcessor.class);
 
-    @Autowired
-    @Qualifier("decryptingCredential")
     private static Saml2X509Credential decryptingCredential;
 
     static {
@@ -52,6 +50,10 @@ public class SamlResponseProcessor {
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize OpenSAML", e);
         }
+    }
+
+    public SamlResponseProcessor(@Qualifier("decryptingCredential") Saml2X509Credential decryptingCredential) {
+        this.decryptingCredential = decryptingCredential;
     }
 
     public static SamlResponseDetails processSamlResponse(String base64SamlResponse) throws Exception {
