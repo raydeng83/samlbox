@@ -2,11 +2,15 @@ package com.bostonidentity.samlboxspmultiidp.repository;
 
 import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
 import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrations;
 import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,14 +23,16 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 
     private final Saml2X509Credential signingCredential;
     private final String spEntityId;
+    private final String baseUrl;
     private final IdpMetadataRepository idpMetadataRepository;
     private List<RelyingPartyRegistration> registrations = new ArrayList<>();
 
     public DynamicRelyingPartyRegistrationRepository(
-            Saml2X509Credential signingCredential, String spEntityId, IdpMetadataRepository idpMetadataRepository) {
+            Saml2X509Credential signingCredential, String spEntityId, IdpMetadataRepository idpMetadataRepository, String baseUrl) {
         this.signingCredential = signingCredential;
         this.spEntityId = spEntityId;
         this.idpMetadataRepository = idpMetadataRepository;
+        this.baseUrl = baseUrl;
 
         reloadRegistrations();
 
@@ -106,8 +112,9 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                     .fromMetadata(inputStream)
                     .registrationId(metadata.getRegistrationId())
                     .entityId(spEntityId)
+//                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + spEntityId)
 //                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + metadata.getRegistrationId())
-                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso" )
+                    .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso" )
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .build();
 
@@ -125,16 +132,12 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 //                .findFirst()
 //                .orElseThrow(() -> new IllegalArgumentException("Invalid registration ID"));
 
-        // Step 1: Iterate through the list of registrations
         for (RelyingPartyRegistration r : registrations) {
-            // Step 2: Check if the registration ID matches the given ID
             if (r.getRegistrationId().equals(id)) {
-                // Step 3: Return the first matching registration
                 return r;
             }
         }
 
-// Step 4: Throw an exception if no matching registration is found
         throw new IllegalArgumentException("Invalid registration ID");
     }
 

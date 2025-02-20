@@ -2,6 +2,7 @@ package com.bostonidentity.samlboxspmultiidp.config;
 
 import com.bostonidentity.samlboxspmultiidp.repository.DynamicRelyingPartyRegistrationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,7 +54,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .saml2Login(saml2 -> saml2
                         .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository(repo))
-                        .loginProcessingUrl("/login/saml2/sso")
+//                        .loginProcessingUrl("/login/saml2/sso/" + spEntityId)
+                        .loginProcessingUrl("/login/saml2/sso" )
                         .authenticationConverter(authenticationConverter)
                         .successHandler(samlAuthenticationSuccessHandler())
                 )
@@ -61,9 +63,10 @@ public class SecurityConfig {
 //                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/saml2/authenticate"))
 //                )
                 .saml2Metadata(withDefaults())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+        ;
         return http.build();
     }
 

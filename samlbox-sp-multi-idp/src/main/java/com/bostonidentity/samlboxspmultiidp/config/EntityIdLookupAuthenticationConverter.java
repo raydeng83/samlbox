@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.saml2.core.Saml2Error;
 import org.springframework.security.saml2.core.Saml2ErrorCodes;
+import org.springframework.security.saml2.provider.service.authentication.AbstractSaml2AuthenticationRequest;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationException;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationToken;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
+import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationRequestRepository;
 import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.stereotype.Component;
@@ -35,6 +37,10 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
     @Autowired
     private EntityIdRelyingPartyRegistrationResolver relyingPartyRegistrationResolver;
 
+    @Autowired
+    private Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> authnRequestRepository;
+
+
 //    @Autowired
 //    private Saml2AuthenticationTokenConverter saml2AuthenticationTokenConverter;
 
@@ -53,6 +59,10 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
         if (token == null) {
             return null; // Not a SAML response
         }
+
+        // Retrieve the original AuthnRequest from the repository
+        AbstractSaml2AuthenticationRequest authnRequest =
+                authnRequestRepository.loadAuthenticationRequest(request);
 
         // Extract the IdP's entity ID (issuer) from the SAML response
         String samlXml = token.getSaml2Response();
@@ -106,7 +116,8 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
         // Create a new authentication token with the resolved registration
         return new Saml2AuthenticationToken(
                 registration,
-                token.getSaml2Response()
+                token.getSaml2Response(),
+                authnRequest
         );
     }
 }

@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.saml2.core.Saml2X509Credential;
+import org.springframework.security.saml2.provider.service.authentication.AbstractSaml2AuthenticationRequest;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.provider.service.web.HttpSessionSaml2AuthenticationRequestRepository;
+import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationRequestRepository;
 import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
 
 import java.math.BigInteger;
@@ -31,6 +34,9 @@ public class SamlConfig {
     @Value("${sp.entity-id}")
     private String spEntityId;
 
+    @Value("${app.baseUrl}")
+    private String baseUrl;
+
     @Autowired
     private IdpMetadataRepository idpMetadataRepository;
 
@@ -38,7 +44,7 @@ public class SamlConfig {
     public DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository(
             Saml2X509Credential credential) {
         return new DynamicRelyingPartyRegistrationRepository(
-                credential, spEntityId, idpMetadataRepository
+                credential, spEntityId, idpMetadataRepository, baseUrl
         );
     }
 
@@ -73,6 +79,11 @@ public class SamlConfig {
                 .build(keyPair.getPrivate());
 
         return new JcaX509CertificateConverter().getCertificate(builder.build(signer));
+    }
+
+    @Bean
+    public Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> saml2AuthenticationRequestRepository() {
+        return new HttpSessionSaml2AuthenticationRequestRepository();
     }
 
 //    @Bean
