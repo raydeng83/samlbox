@@ -93,13 +93,13 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
             throw new RuntimeException(e);
         }
 
-        if (samlResponse.getAssertions().isEmpty()) {
-            try {
-                throw new Exception("SAML Response does not contain any assertions");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if (samlResponse.getAssertions().isEmpty()) {
+//            try {
+//                throw new Exception("SAML Response does not contain any assertions");
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         String issuerId = samlResponse.getIssuer().getValue();
         String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(issuerId.getBytes());
 

@@ -2,7 +2,7 @@ package com.bostonidentity.samlboxspmultiidp.controller;
 
 import com.bostonidentity.samlboxspmultiidp.repository.IdpConfigRepository;
 import com.bostonidentity.samlboxspmultiidp.service.IdpConfigService;
-import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
+import com.bostonidentity.samlboxspmultiidp.model.IdpConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

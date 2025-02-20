@@ -1,4 +1,4 @@
-package com.bostonidentity.samlboxspmultiidp.config;
+package com.bostonidentity.samlboxspmultiidp.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

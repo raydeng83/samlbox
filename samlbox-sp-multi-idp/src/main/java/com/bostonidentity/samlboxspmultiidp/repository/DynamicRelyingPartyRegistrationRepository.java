@@ -1,16 +1,12 @@
 package com.bostonidentity.samlboxspmultiidp.repository;
 
-import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
+import com.bostonidentity.samlboxspmultiidp.model.IdpConfig;
 import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrations;
 import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -22,14 +18,20 @@ import java.util.stream.Collectors;
 public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRegistrationRepository {
 
     private final Saml2X509Credential signingCredential;
+    private final Saml2X509Credential encryptingCredential;
     private final String spEntityId;
     private final String baseUrl;
     private final IdpMetadataRepository idpMetadataRepository;
     private List<RelyingPartyRegistration> registrations = new ArrayList<>();
 
     public DynamicRelyingPartyRegistrationRepository(
-            Saml2X509Credential signingCredential, String spEntityId, IdpMetadataRepository idpMetadataRepository, String baseUrl) {
+            Saml2X509Credential signingCredential,
+            Saml2X509Credential encryptingCredential,
+            String spEntityId,
+            IdpMetadataRepository idpMetadataRepository,
+            String baseUrl) {
         this.signingCredential = signingCredential;
+        this.encryptingCredential = encryptingCredential;
         this.spEntityId = spEntityId;
         this.idpMetadataRepository = idpMetadataRepository;
         this.baseUrl = baseUrl;
@@ -46,18 +48,18 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         return registration;
     }
 
-    public RelyingPartyRegistration updateRegistration(IdpMetadata metadata) {
-        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential, spEntityId);
-
-        for (int i = 0; i < registrations.size(); i++) {
-            if (registration != null && registrations.get(i).getRegistrationId().equals(registration.getRegistrationId())) {
-                registrations.set(i, registration);
-                break; // Stop after the first replacement
-            }
-        }
-
-        return registration;
-    }
+//    public RelyingPartyRegistration updateRegistration(IdpMetadata metadata) {
+//        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential, spEntityId);
+//
+//        for (int i = 0; i < registrations.size(); i++) {
+//            if (registration != null && registrations.get(i).getRegistrationId().equals(registration.getRegistrationId())) {
+//                registrations.set(i, registration);
+//                break; // Stop after the first replacement
+//            }
+//        }
+//
+//        return registration;
+//    }
 
     public List<RelyingPartyRegistration> updateRegistration(IdpConfig idpConfig) {
         Saml2MessageBinding binding = switch (idpConfig.getSsoBinding()) {
@@ -70,7 +72,10 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .mutate().nameIdFormat(idpConfig.getNameIdFormat())
                 .authnRequestsSigned(idpConfig.isSignRequests())
                 .assertingPartyMetadata(apd ->
-                        apd.singleSignOnServiceBinding(binding).singleSignOnServiceLocation(idpConfig.getSsoLocationUrl()))
+                        apd
+                                .singleSignOnServiceBinding(binding)
+                                .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
+                )
                 .build();
 
         for (int i = 0; i < registrations.size(); i++) {
@@ -116,6 +121,7 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 //                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + metadata.getRegistrationId())
                     .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso" )
                     .signingX509Credentials(c -> c.add(signingCredential))
+                    .decryptionX509Credentials(c -> c.add(encryptingCredential))
                     .build();
 
             return relyingPartyRegistration;

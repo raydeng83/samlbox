@@ -40,14 +40,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/**",
-                                "/upload",
-                                "/delete/**",
-                                "/saml/login",
-                                "saml2/metadata/**",
-                                "/saml-response/**",
-                                "/login/**",
-                                "/css/**").permitAll()
+                                "/**"
+                        )
+                        .permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))

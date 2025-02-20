@@ -1,6 +1,6 @@
 package com.bostonidentity.samlboxspmultiidp.service;
 
-import com.bostonidentity.samlboxspmultiidp.config.IdpConfig;
+import com.bostonidentity.samlboxspmultiidp.model.IdpConfig;
 import com.bostonidentity.samlboxspmultiidp.repository.DynamicRelyingPartyRegistrationRepository;
 import com.bostonidentity.samlboxspmultiidp.repository.IdpConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;

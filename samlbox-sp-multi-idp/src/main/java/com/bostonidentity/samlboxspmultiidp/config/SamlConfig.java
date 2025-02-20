@@ -10,6 +10,7 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,13 +43,15 @@ public class SamlConfig {
 
     @Bean
     public DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository(
-            Saml2X509Credential credential) {
+            @Qualifier("signingCredential")  Saml2X509Credential signingCredential,
+            @Qualifier("decryptingCredential") Saml2X509Credential encryptingCredential) {
         return new DynamicRelyingPartyRegistrationRepository(
-                credential, spEntityId, idpMetadataRepository, baseUrl
+                signingCredential, encryptingCredential, spEntityId, idpMetadataRepository, baseUrl
         );
     }
 
     @Bean
+    @Qualifier("signingCredential")
     public Saml2X509Credential signingCredential() throws Exception {
         KeyPair keyPair = generateKeyPair();
         X509Certificate certificate = generateCertificate(keyPair);
@@ -56,6 +59,19 @@ public class SamlConfig {
                 keyPair.getPrivate(),
                 certificate,
                 Saml2X509Credential.Saml2X509CredentialType.SIGNING
+        );
+    }
+
+    @Bean
+    @Qualifier("decryptingCredential")
+    public Saml2X509Credential decryptingCredential() throws Exception {
+        KeyPair keyPair = generateKeyPair(); // Ensure this generates an RSA key pair
+        X509Certificate certificate = generateCertificate(keyPair);
+
+        return new Saml2X509Credential(
+                keyPair.getPrivate(), // SP's private key for decryption
+                certificate,
+                Saml2X509Credential.Saml2X509CredentialType.DECRYPTION // Correct type
         );
     }
 
@@ -86,12 +102,4 @@ public class SamlConfig {
         return new HttpSessionSaml2AuthenticationRequestRepository();
     }
 
-//    @Bean
-//    public Saml2AuthenticationTokenConverter saml2AuthenticationTokenConverter(
-//            DynamicRelyingPartyRegistrationRepository repo
-//    ) {
-//        return new Saml2AuthenticationTokenConverter(
-//                new EntityIdRelyingPartyRegistrationResolver()
-//        );
-//    }
 }
