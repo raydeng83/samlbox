@@ -2,11 +2,13 @@ package com.bostonidentity.samlboxspmultiidp.repository;
 
 import com.bostonidentity.samlboxspmultiidp.model.IdpConfig;
 import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrations;
 import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
+import org.springframework.stereotype.Repository;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -22,6 +24,7 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
     private final String spEntityId;
     private final String baseUrl;
     private final IdpMetadataRepository idpMetadataRepository;
+    private final IdpConfigRepository idpConfigRepository;
     private List<RelyingPartyRegistration> registrations = new ArrayList<>();
 
     public DynamicRelyingPartyRegistrationRepository(
@@ -29,12 +32,13 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
             Saml2X509Credential encryptingCredential,
             String spEntityId,
             IdpMetadataRepository idpMetadataRepository,
-            String baseUrl) {
+            String baseUrl, IdpConfigRepository idpConfigRepository) {
         this.signingCredential = signingCredential;
         this.encryptingCredential = encryptingCredential;
         this.spEntityId = spEntityId;
         this.idpMetadataRepository = idpMetadataRepository;
         this.baseUrl = baseUrl;
+        this.idpConfigRepository = idpConfigRepository;
 
         reloadRegistrations();
 
@@ -112,14 +116,32 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                                                    Saml2X509Credential credential,
                                                    String spEntityId) {
         try (InputStream inputStream = Files.newInputStream(Paths.get(metadata.getMetadataFilePath()))) {
+            IdpConfig idpConfig = idpConfigRepository.findByRegistrationId(metadata.getRegistrationId())
+                    .orElseThrow(() -> new IllegalArgumentException("IDP not found"));
+
+            Saml2MessageBinding binding;
+            if (idpConfig.getSsoBinding() != null) {
+                 binding = switch (idpConfig.getSsoBinding()) {
+                    case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
+                    case "HTTP_POST" -> Saml2MessageBinding.POST;
+                    default -> Saml2MessageBinding.POST;
+                };
+            } else {
+                binding = Saml2MessageBinding.POST;
+            }
 
             RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
                     .fromMetadata(inputStream)
                     .registrationId(metadata.getRegistrationId())
                     .entityId(spEntityId)
-//                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + spEntityId)
-//                    .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/" + metadata.getRegistrationId())
+                    .nameIdFormat(idpConfig.getNameIdFormat())
+                    .authnRequestsSigned(idpConfig.isSignRequests())
                     .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso" )
+                    .assertingPartyMetadata(apd ->
+                            apd
+                                    .singleSignOnServiceBinding(binding)
+                                    .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
+                    )
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .decryptionX509Credentials(c -> c.add(encryptingCredential))
                     .build();

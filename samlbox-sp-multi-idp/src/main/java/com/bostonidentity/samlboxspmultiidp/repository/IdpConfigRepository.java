@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface IdpConfigRepository extends JpaRepository<IdpConfig, Long> {
     Optional<IdpConfig> findByEntityId(String entityId);
-
+    Optional<IdpConfig> findByRegistrationId(String registrationId);
 }

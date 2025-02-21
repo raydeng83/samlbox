@@ -2,6 +2,7 @@ package com.bostonidentity.samlboxspmultiidp.config;
 
 
 import com.bostonidentity.samlboxspmultiidp.repository.DynamicRelyingPartyRegistrationRepository;
+import com.bostonidentity.samlboxspmultiidp.repository.IdpConfigRepository;
 import com.bostonidentity.samlboxspmultiidp.repository.IdpMetadataRepository;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -71,12 +72,15 @@ public class SamlConfig {
     @Autowired
     private IdpMetadataRepository idpMetadataRepository;
 
+    @Autowired
+    private IdpConfigRepository idpConfigRepository;
+
     @Bean
     public DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository(
             @Qualifier("signingCredential")  Saml2X509Credential signingCredential,
             @Qualifier("decryptingCredential") Saml2X509Credential encryptingCredential) {
         return new DynamicRelyingPartyRegistrationRepository(
-                signingCredential, encryptingCredential, spEntityId, idpMetadataRepository, baseUrl
+                signingCredential, encryptingCredential, spEntityId, idpMetadataRepository, baseUrl, idpConfigRepository
         );
     }
 
