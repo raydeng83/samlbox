@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Session Information</title>
+    <!-- UIKit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css">
+    <style>
+        .session-card {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .uk-pre {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="uk-background-muted uk-padding">
+
+<div class="uk-container uk-container-expand uk-margin-medium-top">
+    <div class="uk-card session-card uk-padding">
+        <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+            <h1 class="uk-heading-medium uk-text-bold uk-margin-remove">Session Details</h1>
+            <a th:href="@{/}" class="uk-button uk-button-text uk-text-medium">
+                <span uk-icon="arrow-left"></span> Back to Home
+            </a>
+        </div>
+
+        <!-- Session Information Section -->
+        <div class="uk-margin-medium-bottom">
+            <h2 class="uk-heading-small uk-text-emphasis uk-margin-small-bottom">Session Properties</h2>
+            <div class="uk-overflow-auto">
+                <table class="uk-table uk-table-divider uk-table-responsive">
+                    <tbody>
+                    <tr>
+                        <td class="uk-width-1-4 uk-text-bold">Session ID</td>
+                        <td class="uk-text-emphasis"><code th:text="${sessionId}"></code></td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-bold">Creation Time</td>
+                        <td th:text="${#dates.format(creationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-bold">Last Accessed</td>
+                        <td th:text="${#dates.format(lastAccessedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-bold">Max Inactive Interval</td>
+                        <td><span class="uk-label" th:text="${maxInactiveInterval} + ' seconds'"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="uk-text-bold">New Session?</td>
+                        <td>
+                            <span th:if="${isNew}" class="uk-label uk-label-success">Yes</span>
+                            <span th:unless="${isNew}" class="uk-label uk-label-warning">No</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Session Attributes Section -->
+        <div class="uk-margin-medium-bottom">
+            <h2 class="uk-heading-small uk-text-emphasis uk-margin-small-bottom">Session Attributes</h2>
+            <div th:if="${#lists.isEmpty(sessionAttributes)}" class="uk-alert">
+                No session attributes found
+            </div>
+            <div th:unless="${#lists.isEmpty(sessionAttributes)}" class="uk-grid-small uk-child-width-1-3@m" uk-grid>
+                <div th:each="attrName : ${sessionAttributes}">
+                    <div class="uk-card uk-card-default uk-card-small uk-card-hover">
+                        <div class="uk-card-body">
+                            <h3 class="uk-card-title uk-text-bold" th:text="${attrName}"></h3>
+                            <div class="uk-text-meta" th:text="${session.attrName}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Information Section -->
+        <div class="uk-margin-medium-bottom">
+            <h2 class="uk-heading-small uk-text-emphasis uk-margin-small-bottom">User Information</h2>
+            <div th:if="${isAuthenticated}">
+                <div class="uk-grid-medium" uk-grid>
+                    <div class="uk-width-1-3@m">
+                        <div class="uk-card uk-card-secondary uk-card-body">
+                            <h3 class="uk-card-title">Authentication Status</h3>
+                            <ul class="uk-list uk-list-divider">
+                                <li>
+                                    <span class="uk-text-bold">Username:</span>
+                                    <span th:text="${username}" class="uk-text-emphasis"></span>
+                                </li>
+                                <li th:if="${userEmail != null}">
+                                    <span class="uk-text-bold">Email:</span>
+                                    <span th:text="${userEmail}" class="uk-text-emphasis"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-2-3@m">
+                        <div class="uk-card uk-card-default uk-card-body">
+                            <h3 class="uk-card-title">Security Details</h3>
+                            <dl class="uk-description-list">
+                                <dt>Authorities/Roles</dt>
+                                <dd>
+                                    <div th:each="authority : ${authorities}" class="uk-margin-small-bottom">
+                                        <span class="uk-label uk-label-success"
+                                              th:text="${authority.authority}"></span>
+                                    </div>
+                                </dd>
+
+                                <dt th:if="${accountNonExpired != null}">Account Status</dt>
+                                <dd th:if="${accountNonExpired != null}">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <span class="uk-label"
+                                                  th:classappend="${accountNonExpired} ? 'uk-label-success' : 'uk-label-danger'">
+                                                Account Non-Expired
+                                            </span>
+                                        </div>
+                                        <div class="uk-width-auto">
+                                            <span class="uk-label"
+                                                  th:classappend="${accountNonLocked} ? 'uk-label-success' : 'uk-label-danger'">
+                                                Account Non-Locked
+                                            </span>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${isAuthenticated}" class="uk-alert-warning" uk-alert>
+                <p>No authenticated user associated with this session</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UIKit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
+
+</body>
+</html>

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>SAML SP</title>
     <!-- UIKit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css">
+    <link rel="stylesheet" th:href="@{/uikit/css/uikit.min.css}">
     <!-- Custom CSS for additional styling -->
     <style>
         body {
             padding: 20px;
             background-color: #f8f8f8;
         }
+
         .idp-list {
             margin-top: 20px;
         }
+
         .idp-item {
             background-color: #fff;
             border: 1px solid #e5e5e5;
@@ -24,9 +26,11 @@
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .idp-item:hover {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .btn-delete {
             background-color: #ff4d4d;
             color: white;
@@ -35,9 +39,11 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         .btn-delete:hover {
             background-color: #e60000;
         }
+
         .btn-upload {
             margin-top: 20px;
         }
@@ -46,6 +52,14 @@
 <body>
 <div class="uk-container">
     <h1 class="uk-text-center">Configured Identity Providers</h1>
+    <div class="mt-3">
+        <a th:href="@{/session-info}" class="btn btn-info">
+            View Session Information
+            <span sec:authorize="isAuthenticated()" class="badge bg-light text-dark">
+            Logged in as: <span sec:authentication="name"></span>
+        </span>
+        </a>
+    </div>
     <div class="uk-alert uk-alert-info">
         <strong>SP Init SSO Login Endpoint:</strong> <code>/saml/login?idp={your-idp-entity-id}</code>
     </div>
@@ -55,12 +69,15 @@
 
     <div class="idp-list">
         <div th:each="idp : ${idps}" class="idp-item">
-<!--            <span th:text="${idp.entityId}" class="uk-text-bold"></span>-->
-            <a th:href="@{/metadata-summary(entityId=${idp.entityId})}" th:text="${idp.entityId}" class="uk-text-bold">Initiate SAML Flow</a>
+            <!--            <span th:text="${idp.entityId}" class="uk-text-bold"></span>-->
+            <a th:href="@{/metadata-summary(entityId=${idp.entityId})}" th:text="${idp.entityId}" class="uk-text-bold">Initiate
+                SAML Flow</a>
 
             <div>
-                <a th:href="@{/saml/login(idp=${idp.entityId})}" class="uk-button uk-button-primary uk-margin-right">Login with this IDP</a>
-                <a th:href="@{/idp/configure(entityId=${idp.entityId})}" class="uk-button uk-button-default uk-margin-right">Configure</a>
+                <a th:href="@{/saml/login(idp=${idp.entityId})}" class="uk-button uk-button-primary uk-margin-right">Login
+                    with this IDP</a>
+                <a th:href="@{/idp/configure(entityId=${idp.entityId})}"
+                   class="uk-button uk-button-default uk-margin-right">Configure</a>
                 <form th:action="@{/delete(id=${idp.entityId})}" method="post" style="display: inline;">
                     <button type="submit" class="btn-delete">Delete</button>
                 </form>
@@ -71,10 +88,16 @@
     <div class="uk-text-center uk-margin-top">
         <a href="/upload" class="uk-button uk-button-success btn-upload">Upload New IDP Metadata</a>
     </div>
+
+    <div class="uk-text-center uk-margin-top">
+
+        <div class="mt-3">
+            <a th:href="@{/session-info}" class="btn btn-info">View Session Information</a>
+        </div>
+    </div>
 </div>
 
-<!-- UIKit JS (optional, for interactive components) -->
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit-icons.min.js"></script>
+<script th:src="@{/uikit/js/uikit.min.js}"></script>
+<script th:src="@{/uikit/js/uikit-icons.min.js}"></script>
 </body>
 </html>

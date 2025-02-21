@@ -141,6 +141,7 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                             apd
                                     .singleSignOnServiceBinding(binding)
                                     .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
+                                    .singleLogoutServiceLocation("https://idp/logout")
                     )
                     .signingX509Credentials(c -> c.add(signingCredential))
                     .decryptionX509Credentials(c -> c.add(encryptingCredential))
