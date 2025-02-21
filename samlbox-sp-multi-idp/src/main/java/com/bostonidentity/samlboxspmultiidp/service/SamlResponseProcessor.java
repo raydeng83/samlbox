@@ -1,6 +1,9 @@
 package com.bostonidentity.samlboxspmultiidp.service;
 
 import com.bostonidentity.samlboxspmultiidp.model.SamlResponseDetails;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -11,10 +14,15 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.saml2.encryption.Decrypter;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.security.x509.BasicX509Credential;
@@ -29,7 +37,9 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.Security;
 import java.util.*;
 
 import java.security.cert.CertificateFactory;
@@ -47,9 +57,20 @@ public class SamlResponseProcessor {
     static {
         try {
             InitializationService.initialize();
+
+            // Then add BouncyCastle provider
+            if (Security.getProvider("BC") == null) {
+                Security.addProvider(new BouncyCastleProvider());
+            }
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize OpenSAML", e);
         }
+    }
+
+    public static ParserPool getParserPool() {
+        BasicParserPool pool = new BasicParserPool();
+        pool.setMaxPoolSize(50);
+        return pool;
     }
 
     public SamlResponseProcessor(@Qualifier("decryptingCredential") Saml2X509Credential decryptingCredential) {
@@ -145,32 +166,61 @@ public class SamlResponseProcessor {
         return null;
     }
 
-    private static Response decryptAssertions(Response encryptedResponse) throws Exception {
-        // Load decryption credentials
-        BasicX509Credential decryptionCredential = getDecryptionCredential();
+    private static Element extractEncryptedAssertionElement(String xml) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        return builder.parse(new ByteArrayInputStream(xml.getBytes())).getDocumentElement();
+    }
 
-        // Configure decrypter
-        Decrypter decrypter = new Decrypter(
-                new StaticKeyInfoCredentialResolver(decryptionCredential),
-                null,
-                new SimpleRetrievalMethodEncryptedKeyResolver()
+    private static Response decryptAssertions(Response encryptedResponse) throws Exception {
+        BasicX509Credential credential = new BasicX509Credential(
+                decryptingCredential.getCertificate(),
+                decryptingCredential.getPrivateKey()
         );
 
+        Decrypter decrypter = createDecrypter(credential);
+        decrypter.setJCAProviderName("BC");
         decrypter.setRootInNewDocument(true);
-
-        // Decrypt each encrypted assertion
         List<Assertion> decryptedAssertions = new ArrayList<>();
+
         for (EncryptedAssertion encryptedAssertion : encryptedResponse.getEncryptedAssertions()) {
             try {
-                decryptedAssertions.add(decrypter.decrypt(encryptedAssertion));
+                Assertion assertion = decrypter.decrypt(encryptedAssertion);
+                decryptedAssertions.add(assertion);
+                logger.info("Successfully decrypted assertion");
             } catch (DecryptionException e) {
-                logger.error("Decryption failed for assertion: {}", encryptedAssertion.getElementQName(), e);
-                throw new Exception("Failed to decrypt assertion", e);
+                handleDecryptionError(encryptedAssertion, e);
             }
         }
 
-        // Create new response with decrypted assertions
-        Response decryptedResponse = cloneResponse(encryptedResponse);
+        return buildDecryptedResponse(encryptedResponse, decryptedAssertions);
+    }
+
+    private static Decrypter createDecrypter(BasicX509Credential credential) {
+        KeyInfoCredentialResolver keyInfoResolver = new StaticKeyInfoCredentialResolver(credential);
+
+        return new Decrypter(
+                new StaticKeyInfoCredentialResolver(credential),
+                keyInfoResolver,
+                new ChainingEncryptedKeyResolver(Arrays.asList(
+                        new InlineEncryptedKeyResolver(),
+                        new SimpleRetrievalMethodEncryptedKeyResolver()
+                )),
+                null,
+                null
+        );
+    }
+
+    private static void handleDecryptionError(EncryptedAssertion encryptedAssertion, DecryptionException e) throws Exception {
+        logger.error("Decryption error details:", e);
+        throw new Exception("Failed to decrypt assertion", e);
+    }
+
+    private static Response buildDecryptedResponse(Response original, List<Assertion> decryptedAssertions)
+            throws MarshallingException, UnmarshallingException {
+        Response decryptedResponse = (Response) XMLObjectSupport.cloneXMLObject(original);
+        decryptedResponse.getEncryptedAssertions().clear();
         decryptedResponse.getAssertions().addAll(decryptedAssertions);
         return decryptedResponse;
     }
@@ -192,5 +242,7 @@ public class SamlResponseProcessor {
         newResponse.getEncryptedAssertions().clear();
         return newResponse;
     }
+
+
 }
 
