@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.saml2.core.Saml2X509Credential;
+import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationException;
 import org.springframework.security.saml2.provider.service.metadata.Saml2MetadataResolver;
 import org.springframework.security.saml2.provider.service.metadata.Saml2MetadataResponseResolver;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
@@ -18,7 +20,9 @@ import org.springframework.security.saml2.provider.service.web.DefaultRelyingPar
 import org.springframework.security.saml2.provider.service.web.RelyingPartyRegistrationResolver;
 import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
 import org.springframework.security.saml2.provider.service.web.metadata.RequestMatcherMetadataResponseResolver;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -59,10 +63,12 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login/saml2/sso" )
                         .authenticationConverter(authenticationConverter)
                         .successHandler(samlAuthenticationSuccessHandler())
+                                .failureHandler(new Saml2AuthenticationFailureHandler())
                 )
-//                .exceptionHandling(exceptions -> exceptions
-//                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/saml2/authenticate"))
-//                )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(samlAuthenticationEntryPoint())
+                        .accessDeniedHandler(accessDeniedHandler())
+                )
                 .saml2Metadata(withDefaults())
 //                .saml2Logout(withDefaults());
                 .saml2Logout(logout -> logout
@@ -96,5 +102,26 @@ public class SecurityConfig {
         RelyingPartyRegistrationResolver resolver =
                 new DefaultRelyingPartyRegistrationResolver(repo);
         return new Saml2AuthenticationTokenConverter(resolver);
+    }
+
+    // SAML-specific authentication exception handler
+    private AuthenticationEntryPoint samlAuthenticationEntryPoint() {
+        return (request, response, authException) -> {
+            if (authException instanceof Saml2AuthenticationException) {
+                // Forward SAML errors to the error page
+                request.setAttribute("errorMessage", authException.getMessage());
+                request.setAttribute("errorDetails", authException);
+                request.getRequestDispatcher("/saml-error").forward(request, response);
+            } else {
+                // Default behavior for other auth errors
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+            }
+        };
+    }
+
+    private AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.sendError(HttpStatus.FORBIDDEN.value(), "Access Denied");
+        };
     }
 }
