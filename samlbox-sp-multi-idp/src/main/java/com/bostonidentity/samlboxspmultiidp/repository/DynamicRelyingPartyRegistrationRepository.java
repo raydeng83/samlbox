@@ -3,11 +3,9 @@ package com.bostonidentity.samlboxspmultiidp.repository;
 import com.bostonidentity.samlboxspmultiidp.model.IdpConfig;
 import com.bostonidentity.samlboxspmultiidp.model.IdpMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.saml2.core.Saml2X509Credential;
-import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
-import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
-import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrations;
-import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
+import org.springframework.security.saml2.provider.service.registration.*;
 import org.springframework.stereotype.Repository;
 
 import java.io.InputStream;
@@ -112,42 +110,89 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .build();
     }
 
+//    @Bean
+//    RelyingPartyRegistrationRepository registrations() {
+//        try (InputStream inputStream = Files.newInputStream(Paths.get(metadata.getMetadataFilePath()))) {
+//            RelyingPartyRegistration registration = RelyingPartyRegistrations
+//                    .fromMetadata()
+//                    .registrationId("b3BlbmFtLWhvc3RlZC1pZHA")
+//                    .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
+//                    .signingX509Credentials((signing) -> signing.add(signingCredential))
+//                    .build();
+//            return new InMemoryRelyingPartyRegistrationRepository(registration);
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
     private RelyingPartyRegistration parseMetadata(IdpMetadata metadata,
                                                    Saml2X509Credential credential,
                                                    String spEntityId) {
         try (InputStream inputStream = Files.newInputStream(Paths.get(metadata.getMetadataFilePath()))) {
-            IdpConfig idpConfig = idpConfigRepository.findByRegistrationId(metadata.getRegistrationId())
-                    .orElseThrow(() -> new IllegalArgumentException("IDP not found"));
 
-            Saml2MessageBinding binding;
-            if (idpConfig.getSsoBinding() != null) {
-                 binding = switch (idpConfig.getSsoBinding()) {
-                    case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
-                    case "HTTP_POST" -> Saml2MessageBinding.POST;
-                    default -> Saml2MessageBinding.POST;
-                };
+            Optional<IdpConfig> idpConfigOptional = idpConfigRepository.findByRegistrationId(metadata.getRegistrationId());
+
+            if (idpConfigOptional.isPresent()) {
+                IdpConfig idpConfig = idpConfigOptional.get();
+                Saml2MessageBinding ssoBinding;
+                Saml2MessageBinding sloBinding;
+
+                if (idpConfig.getSsoBinding() != null) {
+                    ssoBinding = switch (idpConfig.getSsoBinding()) {
+                        case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
+                        case "HTTP_POST" -> Saml2MessageBinding.POST;
+                        default -> Saml2MessageBinding.POST;
+                    };
+                } else {
+                    ssoBinding = Saml2MessageBinding.POST;
+                }
+
+                if (idpConfig.getSloBinding() != null) {
+                    sloBinding = switch (idpConfig.getSloBinding()) {
+                        case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
+                        case "HTTP_POST" -> Saml2MessageBinding.POST;
+                        default -> Saml2MessageBinding.POST;
+                    };
+                } else {
+                    sloBinding = Saml2MessageBinding.POST;
+                }
+
+                RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
+                        .fromMetadata(inputStream)
+                        .registrationId(metadata.getRegistrationId())
+                        .entityId(spEntityId)
+                        .nameIdFormat(idpConfig.getNameIdFormat())
+                        .authnRequestsSigned(idpConfig.isSignRequests())
+                        .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso")
+                        .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
+//                        .singleLogoutServiceBinding(Saml2MessageBinding.REDIRECT)
+                        .assertingPartyMetadata(apd ->
+                                apd
+                                        .singleSignOnServiceBinding(ssoBinding)
+                                        .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
+                                        .singleLogoutServiceBinding(sloBinding)
+                                        .singleLogoutServiceLocation(idpConfig.getSloLocationUrl())
+                        )
+                        .signingX509Credentials(c -> c.add(signingCredential))
+                        .decryptionX509Credentials(c -> c.add(encryptingCredential))
+                        .build();
+
+                return relyingPartyRegistration;
             } else {
-                binding = Saml2MessageBinding.POST;
+                RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
+                        .fromMetadata(inputStream)
+                        .registrationId(metadata.getRegistrationId())
+                        .entityId(spEntityId)
+                        .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso")
+                        .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
+//                        .singleLogoutServiceBinding(Saml2MessageBinding.REDIRECT)
+                        .signingX509Credentials(c -> c.add(signingCredential))
+                        .decryptionX509Credentials(c -> c.add(encryptingCredential))
+                        .build();
+
+                return relyingPartyRegistration;
             }
-
-            RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
-                    .fromMetadata(inputStream)
-                    .registrationId(metadata.getRegistrationId())
-                    .entityId(spEntityId)
-                    .nameIdFormat(idpConfig.getNameIdFormat())
-                    .authnRequestsSigned(idpConfig.isSignRequests())
-                    .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso" )
-                    .assertingPartyMetadata(apd ->
-                            apd
-                                    .singleSignOnServiceBinding(binding)
-                                    .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
-                                    .singleLogoutServiceLocation("https://idp/logout")
-                    )
-                    .signingX509Credentials(c -> c.add(signingCredential))
-                    .decryptionX509Credentials(c -> c.add(encryptingCredential))
-                    .build();
-
-            return relyingPartyRegistration;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

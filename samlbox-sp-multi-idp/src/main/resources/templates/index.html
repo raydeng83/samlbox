@@ -60,6 +60,11 @@
         </span>
         </a>
     </div>
+
+    <form method="post" action="/logout" >
+        <button type="submit" class="uk-button uk-button-default">Logout</button>
+    </form>
+
     <div class="uk-alert uk-alert-info">
         <strong>SP Init SSO Login Endpoint:</strong> <code>/saml/login?idp={your-idp-entity-id}</code>
     </div>
@@ -69,7 +74,6 @@
 
     <div class="idp-list">
         <div th:each="idp : ${idps}" class="idp-item">
-            <!--            <span th:text="${idp.entityId}" class="uk-text-bold"></span>-->
             <a th:href="@{/metadata-summary(entityId=${idp.entityId})}" th:text="${idp.entityId}" class="uk-text-bold">Initiate
                 SAML Flow</a>
 

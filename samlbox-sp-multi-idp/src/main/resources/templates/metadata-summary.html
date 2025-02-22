@@ -3,7 +3,8 @@
 <head>
     <title>Metadata Summary</title>
     <!-- UIKit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css">
+    <link rel="stylesheet" th:href="@{/uikit/css/uikit.min.css}">
+
     <!-- Custom CSS for additional styling -->
     <style>
         body {
@@ -162,6 +163,7 @@
 </div>
 
 <!-- UIKit JS -->
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
+<script th:src="@{/uikit/js/uikit.min.js}"></script>
+<script th:src="@{/uikit/js/uikit-icons.min.js}"></script>
 </body>
 </html>

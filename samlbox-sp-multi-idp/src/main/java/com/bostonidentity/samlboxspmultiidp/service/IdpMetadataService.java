@@ -87,7 +87,10 @@ public class IdpMetadataService {
             IdpConfig idpConfig = new IdpConfig();
             idpConfig.setEntityId(entityId);
             idpConfig.setRegistrationId(registrationId);
-            idpConfig.setSsoLocationUrl(registration.getAssertingPartyDetails().getSingleSignOnServiceLocation());
+            idpConfig.setSsoLocationUrl(registration.getAssertingPartyMetadata().getSingleSignOnServiceLocation());
+            idpConfig.setSsoBinding(registration.getAssertingPartyMetadata().getSingleSignOnServiceBinding().toString());
+            idpConfig.setSloLocationUrl(registration.getAssertingPartyMetadata().getSingleLogoutServiceLocation());
+            idpConfig.setSsoBinding(registration.getAssertingPartyMetadata().getSingleLogoutServiceBinding().toString());
             idpConfigRepository.save(idpConfig);
 
             dynamicRelyingPartyRegistrationRepository.reloadRegistrations();

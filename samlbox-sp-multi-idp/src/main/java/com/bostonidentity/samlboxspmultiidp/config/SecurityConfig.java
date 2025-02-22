@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.metadata.Saml2MetadataResolver;
 import org.springframework.security.saml2.provider.service.metadata.Saml2MetadataResponseResolver;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
@@ -29,6 +30,9 @@ public class SecurityConfig {
     @Autowired
     private EntityIdLookupAuthenticationConverter authenticationConverter;
 
+    @Autowired
+    private Saml2X509Credential signingCredential;
+
     private final DynamicRelyingPartyRegistrationRepository repo;
 
     public SecurityConfig(DynamicRelyingPartyRegistrationRepository repo) {
@@ -40,13 +44,15 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/**"
+                                "/**",
+                                "/logout/**"
                         )
                         .permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .csrf(AbstractHttpConfigurer::disable)
+//                .saml2Login(saml2 -> saml2.relyingPartyRegistrationRepository(relyingPartyRegistrationRepository(repo)))
                 .saml2Login(saml2 -> saml2
                         .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository(repo))
 //                        .loginProcessingUrl("/login/saml2/sso/" + spEntityId)
@@ -58,6 +64,16 @@ public class SecurityConfig {
 //                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/saml2/authenticate"))
 //                )
                 .saml2Metadata(withDefaults())
+//                .saml2Logout(withDefaults());
+                .saml2Logout(logout -> logout
+//                        .logoutUrl("/saml/slo")
+                        .logoutRequest((request) -> request.logoutUrl("/logout/saml2/slo"))
+                        .logoutResponse((response) -> response.logoutUrl("/logout/saml2/slo"))
+                )
+//                .logout(logout -> logout
+//                        .addLogoutHandler(new Saml2LogoutHandler(repo, signingCredential))
+//                        .logoutSuccessUrl("/logged-out"))
+                ;
 //                .sessionManagement(session -> session
 //                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                )
