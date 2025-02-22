@@ -2,12 +2,101 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Client Settings</title>
+    <title>SAML Client Settings</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px 8px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .alert {
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .tooltip-inner {
+            background-color: #333;
+            color: #fff;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-4">
-    <h2>SAML Settings for <span th:text="${clientId}"></span></h2>
+<div class="container">
+    <h2 class="text-center mb-4">SAML Client Settings</h2>
 
     <!-- Success/Error Messages -->
     <div th:if="${message}" class="alert" th:classappend="'alert-' + ${messageType}">
@@ -15,62 +104,100 @@
     </div>
 
     <form th:action="@{/clients/update(clientId=${clientId})}" method="post">
-        <!-- IDP-Initiated SSO -->
-        <div class="mb-3">
-            <label class="form-label">IDP-Initiated SSO URL</label>
-            <input type="text" class="form-control"
-                   name="idpInitiatedSsoUrl"
-                   th:value="${settings.idpInitiatedSsoUrl}">
+
+        <!-- SAML Settings Card -->
+        <div class="card">
+            <div class="card-header">SAML Configuration</div>
+            <div class="card-body">
+                <!-- IDP-Initiated SSO URL -->
+                <div class="mb-3">
+                    <label class="form-label">IDP-Initiated SSO URL</label>
+                    <input type="text" class="form-control" name="idpInitiatedSsoUrl"
+                           th:value="${settings.idpInitiatedSsoUrl}">
+                </div>
+
+                <!-- ACS URLs -->
+                <div class="mb-3">
+                    <label class="form-label">ACS URL (POST)</label>
+                    <input type="text" class="form-control" name="acsUrlPost" th:value="${settings.acsUrlPost}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">ACS URL (Redirect)</label>
+                    <input type="text" class="form-control" name="acsUrlRedirect" th:value="${settings.acsUrlRedirect}">
+                </div>
+
+                <!-- NameID Format -->
+                <div class="mb-3">
+                    <label class="form-label">NameID Format</label>
+                    <select class="form-select" name="nameIdFormat">
+                        <option value="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+                                th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'">
+                            Email Address
+                        </option>
+                        <option value="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
+                                th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'">
+                            Persistent
+                        </option>
+                        <option value="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                                th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'">
+                            Transient
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Logout URLs -->
+                <div class="mb-3">
+                    <label class="form-label">Logout URL (POST)</label>
+                    <input type="text" class="form-control" name="logoutUrlPost" th:value="${settings.logoutUrlPost}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Logout URL (Redirect)</label>
+                    <input type="text" class="form-control" name="logoutUrlRedirect"
+                           th:value="${settings.logoutUrlRedirect}">
+                </div>
+            </div>
         </div>
 
-        <!-- ACS URLs -->
-        <div class="mb-3">
-            <label class="form-label">ACS URL (POST)</label>
-            <input type="text" class="form-control"
-                   name="acsUrlPost"
-                   th:value="${settings.acsUrlPost}">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">ACS URL (Redirect)</label>
-            <input type="text" class="form-control"
-                   name="acsUrlRedirect"
-                   th:value="${settings.acsUrlRedirect}">
+        <!-- Signing Configuration Card -->
+        <div class="card">
+            <div class="card-header">Signing Configuration</div>
+            <div class="card-body">
+                <!-- Sign SAML Response -->
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="signResponse" name="signResponse"
+                           th:checked="${settings.signResponse}">
+                    <label class="form-check-label" for="signResponse">Sign SAML Response</label>
+                </div>
+
+                <!-- Sign SAML Assertions -->
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="signAssertions"
+                           name="signAssertions"
+                           th:checked="${settings.signAssertions}">
+                    <label class="form-check-label" for="signAssertions">Sign SAML Assertions</label>
+                </div>
+
+                <!-- Signature Algorithm -->
+                <div class="mb-3">
+                    <label class="form-label">Signature Algorithm</label>
+                    <select class="form-select" name="signatureAlgorithm">
+                        <option value="RSA_SHA1" th:selected="${settings.signatureAlgorithm} == 'RSA_SHA1'">RSA-SHA1
+                        </option>
+                        <option value="RSA_SHA256" th:selected="${settings.signatureAlgorithm} == 'RSA_SHA256'">
+                            RSA-SHA256
+                        </option>
+                        <option value="RSA_SHA512" th:selected="${settings.signatureAlgorithm} == 'RSA_SHA512'">
+                            RSA-SHA512
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <!-- NameID Format -->
-        <div class="mb-3">
-            <label class="form-label">NameID Format</label>
-            <select class="form-select" name="nameIdFormat">
-                <option value="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
-                        th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'">
-                    Email Address
-                </option>
-                <option value="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
-                        th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'">
-                    Persistent
-                </option>
-                <option value="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                        th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'">
-                    Transient
-                </option>
-            </select>
+        <!-- Save Button -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
-
-        <!-- Logout URLs -->
-        <div class="mb-3">
-            <label class="form-label">Logout URL (POST)</label>
-            <input type="text" class="form-control"
-                   name="logoutUrlPost"
-                   th:value="${settings.logoutUrlPost}">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Logout URL (Redirect)</label>
-            <input type="text" class="form-control"
-                   name="logoutUrlRedirect"
-                   th:value="${settings.logoutUrlRedirect}">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
 </div>
 </body>

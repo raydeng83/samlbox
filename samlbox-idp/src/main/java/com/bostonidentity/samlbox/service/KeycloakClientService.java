@@ -70,6 +70,25 @@ public class KeycloakClientService {
         settings.setNameIdFormat(attrs.get("saml_name_id_format"));
         settings.setLogoutUrlPost(attrs.get("saml_single_logout_service_url_post"));
         settings.setLogoutUrlRedirect(attrs.get("saml_single_logout_service_url_redirect"));
+        settings.setSignatureCert(attrs.get("saml.signing.certificate"));
+        settings.setEncryptionCert(attrs.get("saml.encryption.certificate"));
+
+        settings.setClientSignatureRequired(
+                Boolean.parseBoolean(attrs.getOrDefault("saml.client.signature", "false"))
+        );
+        settings.setEncryptAssertions(
+                Boolean.parseBoolean(attrs.getOrDefault("saml.encrypt", "false"))
+        );
+
+        settings.setSignResponse(
+                Boolean.parseBoolean(attrs.getOrDefault("saml.server.signature", "false"))
+        );
+        settings.setSignAssertions(
+                Boolean.parseBoolean(attrs.getOrDefault("saml.assertion.signature", "false"))
+        );
+        settings.setSignatureAlgorithm(
+                attrs.getOrDefault("saml.signature.algorithm", "RSA_SHA256")
+        );
 
         return settings;
     }
@@ -103,11 +122,41 @@ public class KeycloakClientService {
             }
             client.setRedirectUris(validRedirectUris); // Set only ACS URLs as valid redirect URIs
 
+            // Add certificate attributes
+            if (settings.getSignatureCert() != null && !settings.getSignatureCert().isEmpty()) {
+                attrs.put("saml.signing.certificate",
+                        cleanCertificate(settings.getSignatureCert()));
+            }
+
+            if (settings.getEncryptionCert() != null && !settings.getEncryptionCert().isEmpty()) {
+                attrs.put("saml.encryption.certificate",
+                        cleanCertificate(settings.getEncryptionCert()));
+            }
+
+            attrs.put("saml.client.signature",
+                    String.valueOf(settings.isClientSignatureRequired()));
+            attrs.put("saml.encrypt",
+                    String.valueOf(settings.isEncryptAssertions()));
+
+            attrs.put("saml.server.signature",
+                    String.valueOf(settings.isSignResponse()));
+            attrs.put("saml.assertion.signature",
+                    String.valueOf(settings.isSignAssertions()));
+            attrs.put("saml.signature.algorithm",
+                    settings.getSignatureAlgorithm());
+
             client.setAttributes(attrs);
             clientRes.update(client);
             return true; // Success
         } catch (Exception e) {
             return false; // Failure
         }
+    }
+
+    private String cleanCertificate(String cert) {
+        // Remove BEGIN/END CERTIFICATE lines and whitespace
+        return cert.replaceAll("-----BEGIN CERTIFICATE-----", "")
+                .replaceAll("-----END CERTIFICATE-----", "")
+                .replaceAll("\\s+", "");
     }
 }
