@@ -67,14 +67,20 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(samlAuthenticationEntryPoint())
-                        .accessDeniedHandler(accessDeniedHandler())
+//                        .accessDeniedHandler(accessDeniedHandler())
                 )
                 .saml2Metadata(withDefaults())
 //                .saml2Logout(withDefaults());
                 .saml2Logout(logout -> logout
-//                        .logoutUrl("/saml/slo")
                         .logoutRequest((request) -> request.logoutUrl("/logout/saml2/slo"))
                         .logoutResponse((response) -> response.logoutUrl("/logout/saml2/slo"))
+
+
+                )
+                .logout(logout -> logout
+                        .logoutSuccessHandler(saml2LogoutSuccessHandler())
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
                 )
 //                .logout(logout -> logout
 //                        .addLogoutHandler(new Saml2LogoutHandler(repo, signingCredential))
@@ -117,6 +123,11 @@ public class SecurityConfig {
                 response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
             }
         };
+    }
+
+    @Bean
+    public Saml2LogoutSuccessHandler saml2LogoutSuccessHandler() {
+        return new Saml2LogoutSuccessHandler();
     }
 
     private AccessDeniedHandler accessDeniedHandler() {

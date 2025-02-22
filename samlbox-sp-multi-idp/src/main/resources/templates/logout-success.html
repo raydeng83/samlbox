@@ -1,0 +1,72 @@
+<!-- 4. logout-success.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Logout Successful</title>
+    <link rel="stylesheet" th:href="@{/uikit/css/uikit.min.css}">
+
+    <style>
+        .login-link {
+            background: #3498db;
+            color: white!important;
+            border-radius: 25px;
+            padding: 12px 25px;
+            transition: all 0.3s;
+        }
+        .login-link:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+<div class="uk-container uk-margin-top">
+    <div class="uk-card success-header uk-card-body uk-box-shadow-large">
+        <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-column">
+            <div class="uk-margin-medium">
+                <span uk-icon="icon: check; ratio: 3"></span>
+            </div>
+            <h1 class="uk-card-title uk-text-center">
+                Logout Successful
+            </h1>
+            <p class="uk-text-lead uk-text-center"
+               th:text="${logoutMessage}">
+                You have been successfully logged out!
+            </p>
+
+            <div class="uk-margin-large-top uk-grid-small uk-child-width-auto"
+                 uk-grid>
+                <div>
+                    <a th:href="@{/}" class="home-link uk-button">
+                        Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional: Security Tips -->
+    <div class="uk-margin-top uk-card uk-card-default uk-card-body">
+        <h3 class="uk-heading-small">Security Checklist</h3>
+        <ul class="uk-list uk-list-divider">
+            <li>
+                <span uk-icon="icon: check"></span>
+                Session terminated successfully
+            </li>
+            <li>
+                <span uk-icon="icon: check"></span>
+                Authentication cookies cleared
+            </li>
+            <li>
+                <span uk-icon="icon: check"></span>
+                Single Logout (SLO) completed
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- UIkit JS -->
+<script th:src="@{/uikit/js/uikit.min.js}"></script>
+<script th:src="@{/uikit/js/uikit-icons.min.js}"></script>
+</body>
+</html>

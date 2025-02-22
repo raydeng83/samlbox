@@ -22,4 +22,18 @@ public class ErrorController {
         model.addAttribute("errorDetails", request.getAttribute("errorDetails"));
         return "saml-error"; // Thymeleaf template name
     }
+
+    @GetMapping("/error")
+    public String handleError(HttpServletRequest request, Model model) {
+        model.addAttribute("errorMessage", request.getAttribute("errorMessage"));
+        model.addAttribute("errorDetails", request.getAttribute("errorDetails"));
+        return "saml-error"; // Thymeleaf template name
+    }
+
+    @PostMapping("/error")
+    public String handlerrorPost(HttpServletRequest request, Model model) {
+        model.addAttribute("errorMessage", request.getAttribute("errorMessage"));
+        model.addAttribute("errorDetails", request.getAttribute("errorDetails"));
+        return "saml-error"; // Thymeleaf template name
+    }
 }
