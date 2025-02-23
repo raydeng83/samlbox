@@ -3,7 +3,9 @@ package com.bostonidentity.samlbox.service;
 import com.bostonidentity.samlbox.config.AuthClient;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.ClientResource;
 import org.keycloak.admin.client.resource.ClientsResource;
+import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -67,7 +70,7 @@ public class MetadataConverterService {
             ClientRepresentation clientRep = convertMetadata(file);
 
             // 2. Create client using Admin Client
-            String createdClientId = createKeycloakClient(clientRep);
+            String createdClientId = createOrUpdateKeycloakClient(clientRep);
 
             return ResponseEntity.ok(Map.of(
                     "status", "created",
@@ -84,17 +87,31 @@ public class MetadataConverterService {
         }
     }
 
-    private String createKeycloakClient(ClientRepresentation clientRep) {
-        ClientsResource clientsResource = keycloak
-                .realm("master")
-                .clients();
+    private String createOrUpdateKeycloakClient(ClientRepresentation clientRep) {
+        RealmResource realmResource = keycloak.realm("master");
+        ClientsResource clientsResource = realmResource.clients();
 
-        try (Response response = clientsResource.create(clientRep)) {
-            if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
-                String location = response.getLocation().toString();
-                return location.substring(location.lastIndexOf('/') + 1);
+        // Check if client already exists
+        List<ClientRepresentation> existingClients = clientsResource.findByClientId(clientRep.getClientId());
+
+        if (!existingClients.isEmpty()) {
+            // Client exists - update it
+            String existingClientId = existingClients.get(0).getId();
+            ClientResource clientResource = clientsResource.get(existingClientId);
+
+            // Preserve client ID for update
+            clientRep.setId(existingClientId);
+            clientResource.update(clientRep);
+            return existingClientId;
+        } else {
+            // Create new client
+            try (Response response = clientsResource.create(clientRep)) {
+                if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
+                    String location = response.getLocation().toString();
+                    return location.substring(location.lastIndexOf('/') + 1);
+                }
+                throw new RuntimeException("Failed to create client: " + response.readEntity(String.class));
             }
-            throw new RuntimeException("Failed to create client: " + response.readEntity(String.class));
         }
     }
 }

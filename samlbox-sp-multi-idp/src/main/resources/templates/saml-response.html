@@ -2,140 +2,160 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>SAML Response Details</title>
-    <!-- UIKit CSS -->
-    <link rel="stylesheet" th:href="@{/uikit/css/uikit.min.css}">
-
-    <!-- Custom CSS for additional styling -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f8f8;
-            font-family: 'Inter', sans-serif;
-            padding: 2rem;
+        :root {
+            --primary-blue: #007bff;
+            --hover-blue: #0056b3;
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --border-color: #dee2e6;
         }
 
-        .details-container {
+        body {
+            background-color: var(--bg-light);
+            font-family: Arial, sans-serif;
+            color: var(--text-dark);
+        }
+
+        .container {
             max-width: 1200px;
-            margin: 0 auto;
-            background: white;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
             font-size: 1.75rem;
             font-weight: 600;
-            color: #1e293b;
             margin-bottom: 1.5rem;
+            color: var(--text-dark);
         }
 
-        h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .uk-table {
+        .table {
             margin-top: 1rem;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
-        .uk-table th {
-            background-color: #f8fafc;
+        .table th {
+            background-color: var(--bg-light);
             font-weight: 600;
-        }
-
-        .uk-table td, .uk-table th {
             padding: 12px;
+            border-bottom: 2px solid var(--border-color);
         }
 
-        .error-message {
-            color: #dc3545;
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .alert-danger {
             background-color: #f8d7da;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1.5rem;
+            border-color: #f5c6cb;
+            color: #721c24;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 500;
+        .btn-primary {
+            background-color: var(--primary-blue);
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .btn-primary:hover {
+            background-color: var(--hover-blue);
         }
     </style>
 </head>
 <body>
-<div class="details-container">
-    <h2>SAML Response Details</h2>
+<div class="container">
+    <div class="card">
+        <h2 class="text-center mb-4">SAML Response Details</h2>
 
-    <!-- Error Message -->
-    <div th:if="${error}" class="error-message">
-        <p th:text="${error}"></p>
-    </div>
-
-    <!-- SAML Details Table -->
-    <table class="uk-table uk-table-striped" th:if="${samlDetails != null}">
-        <tr>
-            <th>Issuer</th>
-            <td th:text="${samlDetails.issuer}"></td>
-        </tr>
-        <tr>
-            <th>Subject (NameID)</th>
-            <td th:text="${samlDetails.subject}"></td>
-        </tr>
-        <tr>
-            <th>Response ID</th>
-            <td th:text="${samlDetails.responseId}"></td>
-        </tr>
-        <tr>
-            <th>Assertion ID</th>
-            <td th:text="${samlDetails.assertionId}"></td>
-        </tr>
-        <tr>
-            <th>Valid From</th>
-            <td th:text="${samlDetails.notBefore}"></td>
-        </tr>
-        <tr>
-            <th>Valid Until</th>
-            <td th:text="${samlDetails.notOnOrAfter}"></td>
-        </tr>
-        <tr>
-            <th>Signature Valid</th>
-            <td th:text="${samlDetails.isSignatureValid} ? 'Yes' : 'No'"></td>
-        </tr>
-    </table>
-
-    <!-- Attributes Table -->
-    <h3>Attributes</h3>
-    <table class="uk-table uk-table-striped">
-        <tr>
-            <th>Attribute Name</th>
-            <th>Values</th>
-        </tr>
-        <div th:if="${samlDetails != null && samlDetails.attributes != null}">
-            <tr th:each="entry : ${samlDetails.attributes}">
-                <td th:text="${entry.key}"></td>
-                <td th:text="${entry.value}"></td>
-            </tr>
+        <!-- Error Message -->
+        <div th:if="${error}" class="alert alert-danger mb-4">
+            <p class="mb-0" th:text="${error}"></p>
         </div>
-    </table>
 
-    <!-- Back Link -->
-    <a href="/" class="back-link">
-        <span uk-icon="arrow-left"></span>
-        Return to Home Page
-    </a>
+        <!-- SAML Details Table -->
+        <div class="mb-5" th:if="${samlDetails != null}">
+            <h3 class="mb-3">Basic Information</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th scope="row">Issuer</th>
+                    <td th:text="${samlDetails.issuer}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Subject (NameID)</th>
+                    <td th:text="${samlDetails.subject}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Response ID</th>
+                    <td th:text="${samlDetails.responseId}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Assertion ID</th>
+                    <td th:text="${samlDetails.assertionId}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Valid From</th>
+                    <td th:text="${samlDetails.notBefore}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Valid Until</th>
+                    <td th:text="${samlDetails.notOnOrAfter}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Signature Valid</th>
+                    <td th:text="${samlDetails.isSignatureValid} ? 'Yes' : 'No'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Attributes Table -->
+        <div class="mb-4">
+            <h3 class="mb-3">Attributes</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Attribute Name</th>
+                    <th>Values</th>
+                </tr>
+                </thead>
+                <tbody th:if="${samlDetails != null && samlDetails.attributes != null}">
+                <tr th:each="entry : ${samlDetails.attributes}">
+                    <td th:text="${entry.key}"></td>
+                    <td th:text="${entry.value}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">
+                ← Return to Home Page
+            </a>
+        </div>
+    </div>
 </div>
 
-<!-- UIKit JS -->
-<script th:src="@{/uikit/js/uikit.min.js}"></script>
-<script th:src="@{/uikit/js/uikit-icons.min.js}"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
