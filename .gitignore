@@ -1,13 +1,33 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
 .idea
+*.iws
+*.iml
+*.ipr
 
-samlbox-idp/target
-samlbox-idp/mvw
-samlbox-idp/mvw.cmd
-samlbox-idp/mvnw
-samlbox-idp/mvnw.cmd
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-samlbox-sp/target
-samlbox-idp/mvw
-samlbox-idp/mvw.cmd
-samlbox-idp/mvnw
-samlbox-idp/mvnw.cmd
+### VS Code ###
+.vscode/
