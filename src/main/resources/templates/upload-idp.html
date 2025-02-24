@@ -3,7 +3,8 @@
 <head>
     <title>Upload Metadata</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
     <style>
         :root {
             --primary-blue: #007bff;
@@ -98,7 +99,7 @@
     <h1>Upload IDP Metadata</h1>
 
     <!-- Upload Form -->
-    <form method="post" enctype="multipart/form-data" action="/sp/upload" id="uploadForm">
+    <form method="post" enctype="multipart/form-data" action="/idp/upload" id="uploadForm">
         <!-- Drag & Drop Zone -->
         <div class="drop-zone" id="dropZone">
             <span class="text-muted">Drag and drop files here</span>
@@ -122,13 +123,14 @@
     </form>
 
     <!-- Back Link -->
-    <a href="/" class="back-link">
-        ← Back to list
+    <a href="/home" class="back-link">
+        ← Back
     </a>
 </div>
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 <!-- Drag & Drop Script -->
 <script>
     const dropZone = document.getElementById('dropZone');

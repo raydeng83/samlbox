@@ -11,11 +11,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/clients")
-public class ClientController {
+public class SPController {
 
     private final KeycloakClientService keycloakClientService;
 
-    public ClientController(KeycloakClientService keycloakClientService) {
+    public SPController(KeycloakClientService keycloakClientService) {
         this.keycloakClientService = keycloakClientService;
     }
 

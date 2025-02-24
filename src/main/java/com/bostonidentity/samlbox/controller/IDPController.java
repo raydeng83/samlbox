@@ -12,20 +12,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
 @Controller
-public class MetadataController {
+public class IDPController {
 
     private final IdpMetadataService metadataService;
     private final DynamicRelyingPartyRegistrationRepository repo;
 
-    public MetadataController(IdpMetadataService metadataService,
-                              DynamicRelyingPartyRegistrationRepository repo) {
+    public IDPController(IdpMetadataService metadataService,
+                         DynamicRelyingPartyRegistrationRepository repo) {
         this.metadataService = metadataService;
         this.repo = repo;
     }
@@ -41,20 +40,7 @@ public class MetadataController {
         return "index";
     }
 
-    @GetMapping("/sp/upload")
-    public String uploadForm() {
-        return "upload";
-    }
 
-    @PostMapping("/sp/upload")
-    public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        try {
-            String entityId = metadataService.saveMetadata(file);
-            return "redirect:/metadata-summary?entityId=" + entityId;
-        } catch (Exception e) {
-            return "redirect:/?uploadError=true";
-        }
-    }
 
     @GetMapping("/saml/login")
     public String initiateSamlLogin(@RequestParam("idp") String idpId, HttpServletRequest request) {

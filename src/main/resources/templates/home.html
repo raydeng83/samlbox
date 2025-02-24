@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDP/SP Configuration Portal</title>
+
+    <!-- Common CSS Styles -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <style>
+        /* Common styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #2c3e50;
+            color: white;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Detailed Intro Section */
+        .intro-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .intro-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* Action Cards */
+        .action-cards {
+            display: flex;
+            gap: 2rem;
+            margin: 3rem 0;
+            justify-content: center;
+        }
+
+        .action-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-card h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-secondary {
+            background-color: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2980b9;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 20px;
+        }
+
+        .footer-section h3 {
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ecf0f1;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: #3498db;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #34495e;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav style="background-color: #2c3e50; padding: 1rem;">
+    <div class="container">
+        <a href="#" style="color: white; text-decoration: none; font-weight: bold;">
+            IDP/SP Portal
+        </a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>Identity Provider & Service Provider Configuration Portal</h1>
+        <p>Welcome to our centralized configuration management platform. Simplify your SAML integration by managing your Identity Provider and Service Provider configurations through our secure portal.</p>
+    </div>
+</section>
+
+<main class="container">
+    <!-- Detailed Intro Section -->
+    <section class="intro-section">
+        <h2>About This Platform</h2>
+        <p>
+            This platform is designed to streamline the management of Identity Provider (IDP) and Service Provider (SP) configurations for SAML-based authentication systems. Whether you're integrating with enterprise systems or third-party applications, our portal provides a secure and user-friendly interface to handle metadata uploads, configuration updates, and integration testing.
+        </p>
+        <p>
+            With this platform, you can:
+        </p>
+        <ul>
+            <li>Securely upload and manage IDP and SP metadata files</li>
+            <li>Validate configurations for compliance with SAML standards</li>
+            <li>Generate configuration reports for auditing purposes</li>
+            <li>Test integrations in a sandbox environment</li>
+        </ul>
+        <p>
+            Our goal is to make SAML integration as seamless as possible, reducing the complexity and time required for configuration management.
+        </p>
+    </section>
+
+    <!-- Action Cards -->
+    <div class="action-cards">
+        <!-- IDP Card -->
+        <div class="action-card">
+            <h2>Upload <span style="color: red">IDP</span> Metadata</h2>
+            <p>Your app is acting as an IDP and SAMLBox (this website) is acting as SP</p>
+            <a href="/idp/upload" class="btn-secondary">Upload IDP Metadata</a>
+        </div>
+
+        <!-- SP Card -->
+        <div class="action-card">
+            <h2>Upload <span style="color: red">SP</span> metadata</h2>
+            <p>Your app is acting as an SP and SAMLBox (this website) is acting as IDP</p>
+            <a href="/sp/upload" class="btn-secondary">Upload SP Metadata</a>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>About Us</h3>
+            <p>Simplifying identity management solutions since 2023. Providing secure and reliable integration platforms.</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contact</h3>
+            <ul>
+                <li>Email: support@idp-portal.com</li>
+                <li>Phone: (555) 123-4567</li>
+                <li>Address: 123 Tech Street, Silicon Valley</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2023 IDP/SP Configuration Portal. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>
