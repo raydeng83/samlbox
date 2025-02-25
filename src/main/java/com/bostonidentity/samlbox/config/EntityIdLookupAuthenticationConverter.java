@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.saml2.core.Saml2Error;
 import org.springframework.security.saml2.core.Saml2ErrorCodes;
+import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.authentication.AbstractSaml2AuthenticationRequest;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationException;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationToken;
@@ -39,9 +40,8 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
     @Autowired
     private Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> authnRequestRepository;
 
-
-//    @Autowired
-//    private Saml2AuthenticationTokenConverter saml2AuthenticationTokenConverter;
+    @Autowired
+    private Saml2X509Credential signingCredential;
 
     private final DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository;
 
@@ -92,13 +92,6 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
             throw new RuntimeException(e);
         }
 
-//        if (samlResponse.getAssertions().isEmpty()) {
-//            try {
-//                throw new Exception("SAML Response does not contain any assertions");
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
         String issuerId = samlResponse.getIssuer().getValue();
         String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(issuerId.getBytes());
 
@@ -112,11 +105,20 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
             throw new Saml2AuthenticationException(error);
         }
 
+        String samlResponsString = token.getSaml2Response();
+
+        if ("GET".equalsIgnoreCase(request.getMethod())) {
+            throw new Saml2AuthenticationException(new Saml2Error("Saml Authentication Error", "Http-Redirect is not support for SAML Response when SAML Box is acting as SP"));
+        }
+
         // Create a new authentication token with the resolved registration
-        return new Saml2AuthenticationToken(
+        Authentication authentication = new Saml2AuthenticationToken(
                 registration,
-                token.getSaml2Response(),
+                samlResponsString,
                 authnRequest
         );
+        return authentication;
     }
+
+
 }

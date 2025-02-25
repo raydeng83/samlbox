@@ -50,19 +50,6 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
         return registration;
     }
 
-//    public RelyingPartyRegistration updateRegistration(IdpMetadata metadata) {
-//        RelyingPartyRegistration registration = parseMetadata(metadata, signingCredential, spEntityId);
-//
-//        for (int i = 0; i < registrations.size(); i++) {
-//            if (registration != null && registrations.get(i).getRegistrationId().equals(registration.getRegistrationId())) {
-//                registrations.set(i, registration);
-//                break; // Stop after the first replacement
-//            }
-//        }
-//
-//        return registration;
-//    }
-
     public List<RelyingPartyRegistration> updateRegistration(IdpConfig idpConfig) {
         Saml2MessageBinding binding = switch (idpConfig.getSsoBinding()) {
             case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
@@ -99,32 +86,24 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
     }
 
     private RelyingPartyRegistration createDefaultRegistration() {
-        return RelyingPartyRegistration.withRegistrationId("default-idp")
+        return RelyingPartyRegistration
+                .withRegistrationId(spEntityId)
                 .entityId(spEntityId)
-                .assertingPartyMetadata(party -> party
-                        .entityId("https://default-idp.example.com")
-                        .singleSignOnServiceLocation("https://default-idp.example.com/sso")
-                        .wantAuthnRequestsSigned(true)
+                .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified")
+                .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso")
+                .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
+                .assertingPartyMetadata(apd ->
+                        apd
+                                .entityId("dummy")
+                                .singleSignOnServiceBinding(Saml2MessageBinding.POST)
+                                .singleSignOnServiceLocation("dummy")
+                                .singleLogoutServiceBinding(Saml2MessageBinding.POST)
+                                .singleLogoutServiceLocation("dummy")
                 )
                 .signingX509Credentials(c -> c.add(signingCredential))
+                .decryptionX509Credentials(c -> c.add(encryptingCredential))
                 .build();
     }
-
-//    @Bean
-//    RelyingPartyRegistrationRepository registrations() {
-//        try (InputStream inputStream = Files.newInputStream(Paths.get(metadata.getMetadataFilePath()))) {
-//            RelyingPartyRegistration registration = RelyingPartyRegistrations
-//                    .fromMetadata()
-//                    .registrationId("b3BlbmFtLWhvc3RlZC1pZHA")
-//                    .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
-//                    .signingX509Credentials((signing) -> signing.add(signingCredential))
-//                    .build();
-//            return new InMemoryRelyingPartyRegistrationRepository(registration);
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     private RelyingPartyRegistration parseMetadata(IdpMetadata metadata,
                                                    Saml2X509Credential credential,
@@ -186,7 +165,6 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                         .entityId(spEntityId)
                         .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso")
                         .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
-//                        .singleLogoutServiceBinding(Saml2MessageBinding.REDIRECT)
                         .signingX509Credentials(c -> c.add(signingCredential))
                         .decryptionX509Credentials(c -> c.add(encryptingCredential))
                         .build();

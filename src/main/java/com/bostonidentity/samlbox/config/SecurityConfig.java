@@ -1,6 +1,8 @@
 package com.bostonidentity.samlbox.config;
 
 import com.bostonidentity.samlbox.repository.DynamicRelyingPartyRegistrationRepository;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.impl.NameIDPolicyBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,8 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import org.springframework.security.saml2.provider.service.web.DefaultRelyingPartyRegistrationResolver;
 import org.springframework.security.saml2.provider.service.web.RelyingPartyRegistrationResolver;
 import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationTokenConverter;
+import org.springframework.security.saml2.provider.service.web.authentication.OpenSaml4AuthenticationRequestResolver;
+import org.springframework.security.saml2.provider.service.web.authentication.Saml2AuthenticationRequestResolver;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -51,40 +55,28 @@ public class SecurityConfig {
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .csrf(AbstractHttpConfigurer::disable)
-//                .saml2Login(saml2 -> saml2.relyingPartyRegistrationRepository(relyingPartyRegistrationRepository(repo)))
                 .saml2Login(saml2 -> saml2
-                                .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository(repo))
-//                        .loginProcessingUrl("/login/saml2/sso/" + spEntityId)
-                                .loginProcessingUrl("/login/saml2/sso")
-                                .authenticationConverter(authenticationConverter)
-                                .successHandler(samlAuthenticationSuccessHandler())
-                                .failureHandler(new Saml2AuthenticationFailureHandler())
+                        .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository(repo))
+                        .loginProcessingUrl("/login/saml2/sso")
+                        .authenticationConverter(authenticationConverter)
+                        .successHandler(samlAuthenticationSuccessHandler())
+                        .failureHandler(new Saml2AuthenticationFailureHandler())
                 )
                 .exceptionHandling(exceptions -> exceptions
-                                .authenticationEntryPoint(samlAuthenticationEntryPoint())
-//                        .accessDeniedHandler(accessDeniedHandler())
+                        .authenticationEntryPoint(samlAuthenticationEntryPoint())
                 )
                 .saml2Metadata(withDefaults())
-//                .saml2Logout(withDefaults());
                 .saml2Logout(logout -> logout
                         .logoutRequest((request) -> request.logoutUrl("/logout/saml2/slo"))
                         .logoutResponse((response) -> response.logoutUrl("/logout/saml2/slo"))
-
-
                 )
                 .logout(logout -> logout
                         .logoutSuccessHandler(saml2LogoutSuccessHandler())
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                 )
-//                .logout(logout -> logout
-//                        .addLogoutHandler(new Saml2LogoutHandler(repo, signingCredential))
-//                        .logoutSuccessUrl("/logged-out"))
         ;
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                )
-        ;
+
         return http.build();
     }
 
@@ -130,4 +122,20 @@ public class SecurityConfig {
             response.sendError(HttpStatus.FORBIDDEN.value(), "Access Denied");
         };
     }
+
+//    @Bean
+//    Saml2AuthenticationRequestResolver authenticationRequestResolver(DynamicRelyingPartyRegistrationRepository registrations) {
+//        RelyingPartyRegistrationResolver registrationResolver =
+//                new DefaultRelyingPartyRegistrationResolver(registrations);
+//        OpenSaml4AuthenticationRequestResolver authenticationRequestResolver =
+//                new OpenSaml4AuthenticationRequestResolver(registrationResolver);
+//        authenticationRequestResolver.setAuthnRequestCustomizer((context) -> {
+//            NameIDPolicy nameIDPolicy = new NameIDPolicyBuilder().buildObject();
+//            nameIDPolicy.setAllowCreate(true);  // Set AllowCreate="true"
+//            nameIDPolicy.setFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified");
+//            context.getAuthnRequest().setNameIDPolicy(nameIDPolicy);
+//            context.getAuthnRequest().setProtocolBinding("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect");
+//        });
+//        return authenticationRequestResolver;
+//    }
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAML Decoder Tool</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        .monospace { font-family: 'Courier New', monospace; }
+        .xml-block { white-space: pre-wrap; padding: 15px; background: #f8f9fa; border-radius: 4px; }
+        .highlight { color: #d73a49; } /* XML tag color */
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">SAML Decoder</h1>
+
+    <form th:action="@{/decode}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Paste SAML Request/Response:</label>
+            <textarea class="form-control monospace" name="samlInput" rows="8"
+                      placeholder="Paste Base64-encoded SAML here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Decode</button>
+    </form>
+
+    <div th:if="${result}" class="mt-5">
+        <h4>Decoded Result:</h4>
+        <div class="xml-block">
+            <code th:utext="${#strings.escapeXml(result)}"></code>
+        </div>
+
+        <div class="mt-4">
+            <h5>Parsed Information:</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Issuer</dt>
+                <dd class="col-sm-9" th:text="${parsedData?.issuer}">-</dd>
+
+                <dt class="col-sm-3">NameID</dt>
+                <dd class="col-sm-9" th:text="${parsedData?.nameId}">-</dd>
+
+                <dt class="col-sm-3">Audience</dt>
+                <dd class="col-sm-9" th:text="${parsedData?.audience}">-</dd>
+
+                <dt class="col-sm-3">Valid Until</dt>
+                <dd class="col-sm-9" th:text="${parsedData?.validUntil}">-</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

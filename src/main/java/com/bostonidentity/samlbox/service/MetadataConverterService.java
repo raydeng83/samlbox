@@ -91,6 +91,9 @@ public class MetadataConverterService {
         RealmResource realmResource = keycloak.realm("master");
         ClientsResource clientsResource = realmResource.clients();
 
+        Map<String, String> attributes = clientRep.getAttributes();
+        attributes.put("saml.force.post.binding", "false");
+
         // Check if client already exists
         List<ClientRepresentation> existingClients = clientsResource.findByClientId(clientRep.getClientId());
 
