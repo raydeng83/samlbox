@@ -1,8 +1,8 @@
 // Upload SP
-document.getElementById('fileInputSp').addEventListener('change', function (e) {
-    const fileName = e.target.files[0]?.name || 'No file selected';
-    document.getElementById('fileNameSp').textContent = fileName;
-});
+// document.getElementById('fileInputSp').addEventListener('change', function (e) {
+//     const fileName = e.target.files[0]?.name || 'No file selected';
+//     document.getElementById('fileNameSp').textContent = fileName;
+// });
 
 document.getElementById('uploadFormSp').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -49,19 +49,9 @@ function showError(message) {
     document.getElementById('resultSection').classList.add('hidden');
 }
 
-
-
-
-
-
-
-
-
-
-// Upload IDP
-const dropZone = document.getElementById('dropZoneIdp');
-const fileInput = document.getElementById('fileInputIdp');
-const fileName = document.getElementById('file-nameIdp');
+let dropZone = document.getElementById('dropZoneSp');
+let fileInput = document.getElementById('fileInputSp');
+let fileName = document.getElementById('file-nameSp');
 
 // Handle file selection
 fileInput.addEventListener('change', function (e) {
@@ -91,6 +81,48 @@ dropZone.addEventListener('drop', (e) => {
 function handleFiles(files) {
     if (files.length > 0) {
         fileName.textContent = `Selected file: ${files[0].name}`;
+    }
+}
+
+
+
+
+
+
+
+// Upload IDP
+const dropZoneIdp = document.getElementById('dropZoneIdp');
+const fileInputIdp = document.getElementById('fileInputIdp');
+const fileNameIdp = document.getElementById('file-nameIdp');
+
+// Handle file selection
+fileInputIdp.addEventListener('change', function (e) {
+    handleFilesIdp(this.files);
+});
+
+// Drag & Drop handlers
+dropZoneIdp.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZoneIdp.classList.add('dragover');
+});
+
+dropZoneIdp.addEventListener('dragleave', () => {
+    dropZoneIdp.classList.remove('dragover');
+});
+
+dropZoneIdp.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZoneIdp.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length) {
+        fileInput.files = files;
+        handleFiles(files);
+    }
+});
+
+function handleFilesIdp(files) {
+    if (files.length > 0) {
+        fileNameIdp.textContent = `Selected file: ${files[0].name}`;
     }
 }
 

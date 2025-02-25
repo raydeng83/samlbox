@@ -58,8 +58,8 @@
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             margin: 2rem 0;
         }
 
@@ -100,9 +100,9 @@
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.08);
-            flex: 1;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            /* Remove flex: 1 */
         }
 
         .action-card h2 {
@@ -193,8 +193,27 @@
             text-align: center;
             margin-top: 2rem;
             padding-top: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .action-card {
+            width: 100%;
+            min-width: 0; /* Prevent content from expanding beyond grid constraints */
+            overflow: hidden; /* Contain all child elements */
+        }
+
+        /*#resultSection,*/
+        /*#errorAlert {*/
+        /*    width: 100%;*/
+        /*    box-sizing: border-box;*/
+        /*    padding: 5px 5px 5px 5px;*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -206,8 +225,8 @@
             <svg class="saml-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+                        <stop offset="0%" style="stop-color:#3498db;stop-opacity:1"/>
+                        <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1"/>
                     </linearGradient>
                 </defs>
                 <path d="M50 15 L75 30 L65 60 L35 60 L25 30 Z"
@@ -240,7 +259,8 @@
     <!-- Detailed Intro Section -->
     <section class="intro-section">
         <h2>About This Platform</h2>
-        <p>Welcome to SAML Box. This platform can act as both SAML Identity Provider (IDP) and Service Provider (SP). You can upload your own entity metadata and test integration via SAML SSO flow. </p>
+        <p>Welcome to SAML Box. This platform can act as both SAML Identity Provider (IDP) and Service Provider (SP).
+            You can upload your own entity metadata and test integration via SAML SSO flow. </p>
 
         <p>
             With this platform, you can:
@@ -253,7 +273,8 @@
         <p>
             The main goal for this platform is to provide real IDP and SP for development.
         </p>
-        <p><a href="/saml2/metadata/samlbox">SP Metadata</a>  <a href="http://localhost:8080/realms/master/protocol/saml/descriptor">IDP Metadata</a></p>
+        <p><a href="/saml2/metadata/samlbox">SP Metadata</a> <a
+                href="http://localhost:8080/realms/master/protocol/saml/descriptor">IDP Metadata</a></p>
     </section>
 
     <!-- Action Cards -->
@@ -272,7 +293,7 @@
                     <input type="file" name="file" id="fileInputIdp" class="hidden" required>
                     <button type="button" class="btn btn-primary"
                             onclick="document.getElementById('fileInputIdp').click()">
-                        Choose File
+                        Choose IDP File
                     </button>
 
                     <!-- Selected File Name -->
@@ -281,36 +302,45 @@
 
                 <!-- Upload Button -->
                 <button type="submit" class="btn btn-primary mt-3">
-                    Upload
+                    Upload IDP
                 </button>
             </form>
         </div>
 
         <!-- SP Card -->
         <div class="action-card">
-            <h2>Upload <span style="color: red">SP</span> metadata</h2>
+            <h2>Upload <span style="color: red">SP</span> Metadata</h2>
             <p>Your app is acting as an SP and SAML Box (this website) is acting as IDP</p>
-            <form id="uploadFormSp" enctype="multipart/form-data">
-                <div class="upload-box" onclick="document.getElementById('fileInputSp').click()">
-                    <p class="text-muted mb-2">Click to select a SAML metadata file</p>
-                    <small class="text-muted">Supported format: .xml</small>
-                    <input type="file" id="fileInputSp" class="form-control hidden" accept=".xml" required>
-                    <div id="fileNameSp" class="mt-2 fw-bold text-primary"></div>
+            <form enctype="multipart/form-data" id="uploadFormSp">
+                <!-- Drag & Drop Zone -->
+                <div class="drop-zone upload-box" id="dropZoneSp">
+                    <span class="text-muted">Drag and drop files here</span>
+                    <div class="my-2">or</div>
+
+                    <!-- Hidden File Input -->
+                    <input type="file" name="file" id="fileInputSp" class="hidden" required>
+                    <button type="button" class="btn btn-secondary"
+                            onclick="document.getElementById('fileInputSp').click()">
+                        Choose SP File
+                    </button>
+
+                    <!-- Selected File Name -->
+                    <div id="file-nameSp" class="mt-2"></div>
                 </div>
 
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary px-5">
-                        Submit
-                    </button>
-                </div>
+                <!-- Upload Button -->
+                <button type="submit" class="btn btn-secondary mt-3">
+                    Upload SP
+                </button>
             </form>
 
             <div id="resultSection" class="hidden">
                 <div class="card">
-                    <div class="card-body">
-                        <pre id="resultContent" class="mb-0"></pre>
+                    <div style="padding: 5px 5px 5px 5px;">
+                    <p id="resultContent" class="mb-0"></p>
+                    <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong>
+                    </p>
                     </div>
-                    <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong></p>
                 </div>
             </div>
 
@@ -324,7 +354,8 @@
     <div class="footer-content">
         <div class="footer-section">
             <h3>About Us</h3>
-            <p>Simplifying identity management solutions since 2023. Providing secure and reliable integration platforms.</p>
+            <p>Simplifying identity management solutions since 2023. Providing secure and reliable integration
+                platforms.</p>
         </div>
 
         <div class="footer-section">
