@@ -149,8 +149,8 @@
 
         <!-- Back Button -->
         <div class="text-center mt-4">
-            <a href="/" class="btn btn-primary">
-                ← Return to Home Page
+            <a th:href="@{/sso-config(idpEntityId=${samlDetails.issuer})}" class="btn btn-primary">
+                ← Return
             </a>
         </div>
     </div>

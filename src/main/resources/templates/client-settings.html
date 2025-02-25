@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SAML Client Settings</title>
+    <title>Uploaded SAML SP Settings</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
     <style>
@@ -99,12 +99,17 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center mb-4">SAML Client Settings</h2>
+    <h2 class="text-center mb-4">Uploaded SAML SP Settings</h2>
 
     <!-- Success/Error Messages -->
     <div th:if="${message}" class="alert" th:classappend="'alert-' + ${messageType}">
         <span th:text="${message}"></span>
     </div>
+
+    <h4>SP Entity ID: <span th:text="${clientId}"></span></h4>
+    <p>
+        Copy this URL. Alternatively, you can access /clients/edit?clientId={sp-entity-id}
+    </p><br>
 
     <!-- SAML Configuration -->
     <form th:action="@{/clients/update(clientId=${clientId})}" method="post">

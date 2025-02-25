@@ -83,6 +83,8 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .map(metadata -> parseMetadata(metadata, signingCredential, spEntityId))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+
+        registrations.add(createDefaultRegistration());
     }
 
     private RelyingPartyRegistration createDefaultRegistration() {

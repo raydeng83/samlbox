@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SAML SSO Configuration</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h4 {
+            color: #2a4561;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+<h3 class="text-center mb-4">Uploaded IDP Home Page</h3>
+<h5 class="text-center mb-4">IDP Entity ID: <span th:text="${idpEntityId}"></span></h5>
+
+<section class="section">
+    <p>Copy and save this URL. Alternatively, you can access this page with:</p>
+    <h4>/sso-config?idpEntityId={idp-entity-id}</h4>
+    <p>IDP Metadata Link:
+        <span class="mb-4">
+            <a th:href="@{/metadata-summary(entityId=${idpEntityId})}" th:text="${idpEntityId}"></a>
+        </span>
+    </p>
+    <p>SP-Init Login:
+        <span class="mb-4" >
+                <a th:href="@{/saml/login(idp=${idpEntityId})}" target="_blank">SP Login</a>
+        </span>
+    </p>
+    <p>SAML Authn Request Config:
+        <span class="mb-4">
+                <a th:href="@{/idp/configure(entityId=${idpEntityId})}">
+                    Configure Authentication Request
+                </a>
+        </span>
+    </p>
+</section>
+</body>
+</html>
