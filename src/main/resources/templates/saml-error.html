@@ -2,60 +2,127 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>SAML Error</title>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
     <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem 1rem;
+        }
+
+        .config-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: #2a4561;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            color: #2a4561;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        h4 {
+            color: #2a4561;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
         .debug-info {
-            background: #f5f5f5;
-            padding: 15px;
-            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(0,0,0,0.08);
         }
 
         pre {
             white-space: pre-wrap;
             word-wrap: break-word;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .btn-primary {
+            background-color: #2a4561;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a3248;
         }
     </style>
 </head>
 <body>
-<h1>Error</h1>
+<div th:insert="~{header :: header}"></div>
 
-<!-- Basic Error Info -->
-<div th:if="${errorMessage}">
-    <h3>Message:</h3>
-    <p th:text="${errorMessage}"></p>
-</div>
+<div class="main-container">
+    <div class="config-card">
+        <h1>Error</h1>
 
-<!-- SAML-Specific Details -->
-<div th:if="${errorCode}">
-    <h3>SAML Error Code:</h3>
-    <p th:text="${errorCode}"></p>
-    <p th:text="${errorDescription}"></p>
-</div>
+        <!-- Basic Error Info -->
+        <div th:if="${errorMessage}">
+            <h3>Message:</h3>
+            <p th:text="${errorMessage}"></p>
+        </div>
 
-<!-- Technical Debug Section -->
-<div class="debug-info">
-    <h3>Technical Details</h3>
+        <!-- SAML-Specific Details -->
+        <div th:if="${errorCode}">
+            <h3>SAML Error Code:</h3>
+            <p th:text="${errorCode}"></p>
+            <p th:text="${errorDescription}"></p>
+        </div>
 
-    <!-- SAML Response -->
-    <div th:if="${samlResponse}">
-        <h4>SAML Response (Base64):</h4>
-        <pre th:text="${samlResponse}"></pre>
-        <small><a th:href="|javascript:decodeSamlResponse('${samlResponse}')|">Decode</a></small>
+        <!-- Technical Debug Section -->
+        <div class="debug-info">
+            <h3>Technical Details</h3>
+
+            <!-- SAML Response -->
+            <div th:if="${samlResponse}">
+                <h4>SAML Response (Base64):</h4>
+                <pre th:text="${samlResponse}"></pre>
+                <small><a th:href="|javascript:decodeSamlResponse('${samlResponse}')|">Decode</a></small>
+            </div>
+
+            <!-- Stack Trace -->
+            <div th:if="${stackTrace}">
+                <h4>Stack Trace:</h4>
+                <pre th:text="${stackTrace}"></pre>
+            </div>
+
+            <!-- Contextual Data -->
+            <div>
+                <h4>Context:</h4>
+                <p>Timestamp: <span th:text="${timestamp}"></span></p>
+                <p>Session ID: <span th:text="${sessionId}"></span></p>
+                <p th:if="${relayState}">RelayState: <span th:text="${relayState}"></span></p>
+            </div>
+        </div>
     </div>
-
-    <!-- Stack Trace -->
-    <div th:if="${stackTrace}">
-        <h4>Stack Trace:</h4>
-        <pre th:text="${stackTrace}"></pre>
-    </div>
-
-    <!-- Contextual Data -->
-    <div>
-        <h4>Context:</h4>
-        <p>Timestamp: <span th:text="${timestamp}"></span></p>
-        <p>Session ID: <span th:text="${sessionId}"></span></p>
-        <p th:if="${relayState}">RelayState: <span th:text="${relayState}"></span></p>
-    </div>
 </div>
+<div th:insert="~{footer :: footer}"></div>
 
 <!-- SAML Response Decoder (Base64) -->
 <script>

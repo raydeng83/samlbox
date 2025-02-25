@@ -3,187 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAML Box</title>
+    <title>SAML BOX</title>
 
-    <!-- Common CSS Styles -->
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
+    <!-- Custom CSS -->
     <style>
-        /* Navigation Styles */
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
         .nav-bar {
-            background-color: #2c3e50;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            background-color: #2a4561;
+            padding: 1rem 0;
         }
 
         .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             align-items: center;
-            width: 100%;
-        }
-
-        .saml-icon {
-            width: 100px;
-            height: 100px;
-            margin-right: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .saml-icon:hover {
-            transform: rotate(15deg);
+            justify-content: space-between;
         }
 
         .brand {
             color: white;
-            text-decoration: none;
-            font-weight: bold;
             font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 1rem;
-        }
-        /* Common styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #f5f5f5;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
+        .saml-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
         }
 
-        /* Hero Section */
         .hero {
-            background-color: #2c3e50;
+            background-color: #2a4561;
             color: white;
-            padding: 4rem 2rem;
-            margin-bottom: 2rem;
+            padding: 4rem 0;
+            text-align: center;
         }
 
         .hero h1 {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
-        /* Detailed Intro Section */
         .intro-section {
-            background-color: white;
-            border-radius: 8px;
+            background: white;
+            border-radius: 12px;
             padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
             margin: 2rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .intro-section h2 {
-            color: #2c3e50;
+            color: #2a4561;
+            font-weight: 600;
             margin-bottom: 1.5rem;
         }
 
         .intro-section p {
+            color: #333;
             line-height: 1.6;
-            margin-bottom: 1rem;
         }
 
-        /* Action Cards */
-        .action-cards {
-            display: flex;
-            gap: 2rem;
-            margin: 3rem 0;
-            justify-content: center;
-        }
-
-        .action-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .action-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .action-card h2 {
-            color: #2c3e50;
+        .intro-section ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
-        .btn-secondary {
-            background-color: #3498db;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 4px;
+        .intro-section a {
+            color: #2a4561;
+            font-weight: 500;
             text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s;
         }
 
-        .btn-secondary:hover {
-            background-color: #2980b9;
+        .intro-section a:hover {
+            color: #0066cc;
         }
 
-        /* Footer Styles */
-        footer {
-            background-color: #2c3e50;
+        .action-cards {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            flex: 1;
+        }
+
+        .action-card h2 {
+            color: #2a4561;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-card p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .drop-zone:hover {
+            border-color: #2a4561;
+        }
+
+        .btn-primary {
+            background-color: #2a4561;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a3248;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .footer {
+            background-color: #2a4561;
             color: white;
             padding: 2rem 0;
-            margin-top: auto;
+            margin-top: 4rem;
         }
 
         .footer-content {
+            display: flex;
+            justify-content: space-between;
             max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 0 20px;
+            margin: auto;
+            padding: 0 1rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
         }
 
         .footer-section h3 {
-            color: #3498db;
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 1rem;
         }
 
         .footer-section ul {
-            list-style: none;
-            padding: 0;
+            list-style-type: none;
+            padding-left: 0;
         }
 
         .footer-section ul li {
             margin-bottom: 0.5rem;
         }
 
-        .footer-section a {
-            color: #ecf0f1;
+        .footer-section ul li a {
+            color: white;
             text-decoration: none;
         }
 
-        .footer-section a:hover {
-            color: #3498db;
+        .footer-section ul li a:hover {
+            text-decoration: underline;
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
             margin-top: 2rem;
-            border-top: 1px solid #34495e;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
     </style>
 </head>
@@ -214,7 +224,7 @@
                       stroke-width="2"
                       stroke-linecap="round"/>
             </svg>
-            SAML Box
+            SAML BOX
         </a>
     </div>
 </nav>
@@ -222,8 +232,7 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
-        <h1>Identity Provider & Service Provider Configuration Portal</h1>
-        <p>Welcome to our centralized configuration management platform. Simplify your SAML integration by managing your Identity Provider and Service Provider configurations through our secure portal.</p>
+        <h1>SAML Identity Provider & Service Provider for Your Development</h1>
     </div>
 </section>
 
@@ -231,22 +240,20 @@
     <!-- Detailed Intro Section -->
     <section class="intro-section">
         <h2>About This Platform</h2>
-        <p>
-            This platform is designed to streamline the management of Identity Provider (IDP) and Service Provider (SP) configurations for SAML-based authentication systems. Whether you're integrating with enterprise systems or third-party applications, our portal provides a secure and user-friendly interface to handle metadata uploads, configuration updates, and integration testing.
-        </p>
+        <p>Welcome to SAML Box. This platform can act as both SAML Identity Provider (IDP) and Service Provider (SP). You can upload your own entity metadata and test integration via SAML SSO flow. </p>
+
         <p>
             With this platform, you can:
         </p>
         <ul>
-            <li>Securely upload and manage IDP and SP metadata files</li>
-            <li>Validate configurations for compliance with SAML standards</li>
-            <li>Generate configuration reports for auditing purposes</li>
+            <li>Upload your own IDP and SP metadata files</li>
             <li>Test integrations in a sandbox environment</li>
+            <li>Configure both IDP and SP for different settings and workflows</li>
         </ul>
         <p>
-            Our goal is to make SAML integration as seamless as possible, reducing the complexity and time required for configuration management.
+            The main goal for this platform is to provide real IDP and SP for development.
         </p>
-        <p><a href="/saml2/metadata/samlbox" >SP Metadata</a>  <a href="http://localhost:8080/realms/master/protocol/saml/descriptor" >IDP Metadata</a></p>
+        <p><a href="/saml2/metadata/samlbox">SP Metadata</a>  <a href="http://localhost:8080/realms/master/protocol/saml/descriptor">IDP Metadata</a></p>
     </section>
 
     <!-- Action Cards -->
@@ -255,20 +262,65 @@
         <div class="action-card">
             <h2>Upload <span style="color: red">IDP</span> Metadata</h2>
             <p>Your app is acting as an IDP and SAML Box (this website) is acting as SP</p>
-            <a href="/idp/upload" class="btn-secondary" target="_blank">Upload IDP Metadata</a>
+            <form method="post" enctype="multipart/form-data" action="/idp/upload" id="uploadFormIdp" target="_blank">
+                <!-- Drag & Drop Zone -->
+                <div class="drop-zone" id="dropZoneIdp">
+                    <span class="text-muted">Drag and drop files here</span>
+                    <div class="my-2">or</div>
+
+                    <!-- Hidden File Input -->
+                    <input type="file" name="file" id="fileInputIdp" class="hidden" required>
+                    <button type="button" class="btn btn-primary"
+                            onclick="document.getElementById('fileInputIdp').click()">
+                        Choose File
+                    </button>
+
+                    <!-- Selected File Name -->
+                    <div id="file-nameIdp" class="mt-2"></div>
+                </div>
+
+                <!-- Upload Button -->
+                <button type="submit" class="btn btn-primary mt-3">
+                    Upload
+                </button>
+            </form>
         </div>
 
         <!-- SP Card -->
         <div class="action-card">
             <h2>Upload <span style="color: red">SP</span> metadata</h2>
             <p>Your app is acting as an SP and SAML Box (this website) is acting as IDP</p>
-            <a href="/sp/upload" class="btn-secondary" target="_blank">Upload SP Metadata</a>
+            <form id="uploadFormSp" enctype="multipart/form-data">
+                <div class="upload-box" onclick="document.getElementById('fileInputSp').click()">
+                    <p class="text-muted mb-2">Click to select a SAML metadata file</p>
+                    <small class="text-muted">Supported format: .xml</small>
+                    <input type="file" id="fileInputSp" class="form-control hidden" accept=".xml" required>
+                    <div id="fileNameSp" class="mt-2 fw-bold text-primary"></div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-5">
+                        Submit
+                    </button>
+                </div>
+            </form>
+
+            <div id="resultSection" class="hidden">
+                <div class="card">
+                    <div class="card-body">
+                        <pre id="resultContent" class="mb-0"></pre>
+                    </div>
+                    <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong></p>
+                </div>
+            </div>
+
+            <div id="errorAlert" class="alert alert-danger mt-4 hidden" role="alert"></div>
         </div>
     </div>
 </main>
 
 <!-- Footer -->
-<footer>
+<footer class="footer">
     <div class="footer-content">
         <div class="footer-section">
             <h3>About Us</h3>
@@ -299,5 +351,7 @@
         <p>&copy; 2023 IDP/SP Configuration Portal. All rights reserved.</p>
     </div>
 </footer>
+
+<script th:src="@{/js/custom.js}"></script>
 </body>
 </html>

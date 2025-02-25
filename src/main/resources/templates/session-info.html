@@ -7,46 +7,39 @@
     <!-- Bootstrap CSS -->
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
+    <!-- Custom CSS -->
     <style>
-        :root {
-            --primary-blue: #007bff;
-            --hover-blue: #0056b3;
-            --bg-light: #f8f9fa;
-            --text-dark: #212529;
-            --border-color: #dee2e6;
-        }
-
         body {
-            background-color: var(--bg-light);
+            background-color: #f8f9fa;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
-            color: var(--text-dark);
         }
 
-        .container {
+        .main-container {
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
+            margin: auto;
+            padding: 2rem 1rem;
         }
 
-        .card {
-            background-color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .config-card {
+            background: white;
+            border-radius: 12px;
             padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
         }
 
         .section-title {
-            font-size: 1.5rem;
+            color: #2a4561;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: var(--text-dark);
         }
 
         .badge {
-            padding: 0.5em 0.75em;
-            font-size: 0.9em;
-            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border-radius: 6px;
         }
 
         .table {
@@ -56,29 +49,59 @@
         }
 
         .table th {
-            background-color: var(--bg-light);
+            background-color: #f8f9fa;
             font-weight: 600;
             padding: 12px;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 2px solid #e9ecef;
+            color: #2a4561;
         }
 
         .table td {
             padding: 12px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #e9ecef;
         }
 
         .attribute-card {
-            border: 1px solid var(--border-color);
+            background: white;
             border-radius: 8px;
             padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
             margin-bottom: 1rem;
-            background-color: white;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .btn-outline-secondary {
+            border-color: #2a4561;
+            color: #2a4561;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #2a4561;
+            color: white;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
+<div th:insert="~{header :: header}"></div>
+
+<div class="main-container">
+    <div class="config-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0">Session Details</h1>
             <a th:href="@{/}" class="btn btn-outline-secondary">
@@ -200,6 +223,5 @@
 
 <!-- Bootstrap JS -->
 <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
 </body>
 </html>

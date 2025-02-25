@@ -9,60 +9,93 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.css">
-    <style>
-        :root {
-            --primary-blue: #007bff;
-            --hover-blue: #0056b3;
-            --bg-light: #f8f9fa;
-            --text-dark: #212529;
-            --border-color: #dee2e6;
-        }
 
+    <!-- Custom CSS -->
+    <style>
         body {
-            background-color: var(--bg-light);
+            background-color: #f8f9fa;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
         }
 
-        .container {
+        .main-container {
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
+            margin: auto;
+            padding: 2rem 1rem;
         }
 
-        .card {
-            background-color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        .config-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
         }
 
         pre[class*="language-"] {
             margin: 0;
-            padding: 1em;
+            padding: 1rem;
             overflow: auto;
             white-space: pre-wrap;
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            background-color: #f8f9fa;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 8px;
         }
 
         .controls {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
             display: flex;
-            gap: 10px;
+            gap: 1rem;
             align-items: center;
         }
 
+        .btn-primary {
+            background-color: #2a4561;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a3248;
+        }
+
+        .btn-outline-secondary {
+            border-color: #2a4561;
+            color: #2a4561;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #2a4561;
+            color: white;
+        }
+
         .form-check-input:checked {
-            background-color: var(--primary-blue);
-            border-color: var(--primary-blue);
+            background-color: #2a4561;
+            border-color: #2a4561;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .toast-header {
+            background-color: #2a4561;
+            color: white;
+        }
+
+        .toast-body {
+            background-color: white;
+            color: #333;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
+<div class="main-container">
+    <div class="config-card">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Metadata XML for: <span th:text="${entityId}"></span></h2>
@@ -88,7 +121,7 @@
         </div>
 
         <!-- XML Container -->
-        <div class="card">
+        <div class="config-card">
             <pre class="line-numbers"><code class="language-xml" th:text="${xmlContent}"></code></pre>
         </div>
     </div>
@@ -131,11 +164,11 @@
 </script>
 
 <!-- Toast Notifications -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
+<div class="toast-container">
     <div id="copyToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-success text-white">
+        <div class="toast-header">
             <strong class="me-auto">Success</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
             Copied to clipboard!
@@ -143,9 +176,9 @@
     </div>
 
     <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-danger text-white">
+        <div class="toast-header">
             <strong class="me-auto">Error</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
             Failed to copy to clipboard

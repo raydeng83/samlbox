@@ -6,52 +6,43 @@
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-blue: #007bff;
-            --hover-blue: #0056b3;
-            --bg-light: #f8f9fa;
-            --text-dark: #212529;
-            --border-color: #dee2e6;
-        }
-
         body {
-            background-color: var(--bg-light);
+            background-color: #f8f9fa;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
-            color: var(--text-dark);
         }
 
-        .container {
+        .main-container {
             max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
+            margin: auto;
+            padding: 2rem 1rem;
         }
 
-        .card {
-            background-color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+        .config-card {
+            background: white;
+            border-radius: 12px;
             padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
             text-align: center;
         }
 
         .success-icon {
             font-size: 4rem;
-            color: var(--primary-blue);
+            color: #2a4561;
             margin-bottom: 1.5rem;
         }
 
         .btn-primary {
-            background-color: var(--primary-blue);
+            background-color: #2a4561;
             border: none;
-            border-radius: 4px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
         }
 
         .btn-primary:hover {
-            background-color: var(--hover-blue);
+            background-color: #1a3248;
             transform: translateY(-2px);
         }
 
@@ -75,8 +66,11 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
+<div th:insert="~{header :: header}"></div>
+
+<div class="main-container">
+    <!-- Logout Success Card -->
+    <div class="config-card">
         <div class="d-flex flex-column align-items-center">
             <div class="success-icon">✓</div>
             <h1 class="mb-3">Logout Successful</h1>
@@ -89,8 +83,8 @@
         </div>
     </div>
 
-    <!-- Security Tips -->
-    <div class="card">
+    <!-- Security Tips Card -->
+    <div class="config-card">
         <h3 class="mb-3">Security Checklist</h3>
         <ul class="checklist">
             <li>
@@ -108,9 +102,9 @@
         </ul>
     </div>
 </div>
+<div th:insert="~{footer :: footer}"></div>
 
 <!-- Bootstrap JS -->
 <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Header</title>
+  <!-- Bootstrap 5 CSS -->
+  <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+  <style>
+    .saml-icon {
+      width: 40px;
+      height: 40px;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<!-- Define the header fragment -->
+<header th:fragment="header" class=" text-white p-3" style="background-color: #2a4561 !important;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Logo -->
+      <div class="logo">
+        <a href="/" class="text-white text-decoration-none h4">
+          SAML BOX
+        </a>
+      </div>
+      <!-- Navigation -->
+      <nav>
+        <ul class="nav">
+          <li class="nav-item">
+            <a href="/saml2/metadata/samlbox" class="nav-link text-white">SP-Metadata</a>
+          </li>
+          <li class="nav-item">
+            <a href="http://localhost:8080/realms/master/protocol/saml/descriptor" class="nav-link text-white">IDP-Metadata</a>
+          </li>
+          <li class="nav-item">
+            <a href="/contact" class="nav-link text-white">Contact</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+</body>
+</html>

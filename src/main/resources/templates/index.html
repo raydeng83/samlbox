@@ -7,93 +7,84 @@
 
     <!-- Custom CSS -->
     <style>
-        :root {
-            --primary-blue: #007bff;
-            --hover-blue: #0056b3;
-            --bg-grey: #f8f9fa;
-            --text-dark: #333;
-            --border-color: #dee2e6;
-        }
-
         body {
-            background-color: var(--bg-grey);
-            font-family: Arial, sans-serif;
-            color: var(--text-dark);
-            padding: 20px;
+            background-color: #f8f9fa;
+            min-height: 100vh;
         }
 
-        .container-main {
+        .main-container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: auto;
+            padding: 2rem 1rem;
         }
 
-        .card {
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+        .config-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+            margin-bottom: 2rem;
         }
 
-        .card-header {
-            background-color: var(--primary-blue);
-            color: white;
-            border-radius: 8px 8px 0 0;
-            padding: 12px 16px;
-            font-size: 18px;
-            font-weight: bold;
+        .config-card:hover {
+            transform: translateY(-2px);
         }
 
-        .card-body {
-            padding: 20px;
+        .section-title {
+            color: #2a4561;
+            font-weight: 600;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
         }
 
         .idp-item {
-            background-color: white;
-            border: 1px solid var(--border-color);
+            background: white;
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
         }
 
         .idp-item:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .btn-primary {
-            background-color: var(--primary-blue);
+            background-color: #2a4561;
             border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
         }
 
         .btn-primary:hover {
-            background-color: var(--hover-blue);
+            background-color: #1a3248;
         }
 
         .btn-danger {
             background-color: #dc3545;
             border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
         }
 
         .btn-danger:hover {
-            background-color: #c82333;
+            background-color: #bb2d3b;
         }
 
         .btn-success {
             background-color: #28a745;
             border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
         }
 
         .btn-success:hover {
@@ -104,28 +95,39 @@
             background-color: #d1ecf1;
             border-color: #bee5eb;
             color: #0c5460;
-            border-radius: 4px;
-            padding: 12px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .badge {
-            background-color: var(--primary-blue);
+            background-color: #2a4561;
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .text-decoration-none {
+            color: #2a4561;
+            font-weight: 500;
+        }
+
+        .text-decoration-none:hover {
+            color: #0066cc;
         }
     </style>
 </head>
 <body>
-<div class="container-main">
+<div th:insert="~{header :: header}"></div>
+
+<div class="main-container">
     <!-- Header -->
-    <h1 class="text-center mb-4">Configured Identity Providers</h1>
+    <h1 class="display-6 fw-bold text-center mb-4">Configured Identity Providers</h1>
 
     <!-- Session Info -->
     <div class="text-center mb-4">
-        <a th:href="@{/session-info}" class="btn btn-primary">
+        <a th:href="@{/session-info}" class="btn btn-primary me-2">
             View Session Information
             <span sec:authorize="isAuthenticated()" class="badge">
                 Logged in as: <span sec:authentication="name"></span>
@@ -145,20 +147,17 @@
     </div>
 
     <!-- IDP List -->
-    <div class="card">
-        <div class="card-header">Identity Providers</div>
-        <div class="card-body">
-            <div th:each="idp : ${idps}" class="idp-item">
-                <a th:href="@{/metadata-summary(entityId=${idp.entityId})}" th:text="${idp.entityId}"
-                   class="text-decoration-none fw-bold"></a>
-                <div>
-                    <a th:href="@{/saml/login(idp=${idp.entityId})}" class="btn btn-primary me-2">Login with this
-                        IDP</a>
-                    <a th:href="@{/idp/configure(entityId=${idp.entityId})}" class="btn btn-outline-primary me-2">Configure</a>
-                    <form th:action="@{/delete(id=${idp.entityId})}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
+    <div class="config-card">
+        <h3 class="section-title">Identity Providers</h3>
+        <div th:each="idp : ${idps}" class="idp-item">
+            <a th:href="@{/metadata-summary(entityId=${idp.entityId})}" th:text="${idp.entityId}"
+               class="text-decoration-none"></a>
+            <div>
+                <a th:href="@{/saml/login(idp=${idp.entityId})}" class="btn btn-primary me-2">Login with this IDP</a>
+                <a th:href="@{/idp/configure(entityId=${idp.entityId})}" class="btn btn-outline-primary me-2">Configure</a>
+                <form th:action="@{/delete(id=${idp.entityId})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             </div>
         </div>
     </div>

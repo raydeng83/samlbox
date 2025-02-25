@@ -20,10 +20,10 @@
             color: var(--text-dark);
         }
 
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
+        .main-container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 2rem 1rem;
         }
 
         .card {
@@ -59,25 +59,30 @@
         }
 
         .btn-primary {
-            background-color: var(--primary-blue);
+            background-color: #2a4561;
             border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
         }
 
         .btn-primary:hover {
-            background-color: var(--hover-blue);
+            background-color: #1a3248;
         }
     </style>
 </head>
 <body>
-<div class="container">
+<div th:insert="~{header :: header}"></div>
+
+<div class="main-container">
     <div class="card">
         <h2 class="text-center mb-4">Metadata Summary</h2>
 
         <!-- Action Buttons -->
+
         <div class="d-flex gap-3 mb-4">
-            <a th:href="@{/view-xml(entityId=${entityId})}" class="btn btn-primary">
+            <a th:href="@{/sso-config(idpEntityId=${entityId})}" class="btn btn-primary">Go to Uploaded IDP Home page</a>
+
+            <a th:href="@{/view-xml(entityId=${entityId})}" class="btn btn-light">
                 View Raw XML
             </a>
         </div>
@@ -193,13 +198,10 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="d-flex gap-3 mt-4">
-<!--            <a th:href="@{/saml/login(idp=${entityId})}" class="btn btn-primary">Initiate SAML Flow</a>-->
-<!--            <a href="/" class="btn btn-outline-secondary">Return to List</a>-->
-            <a th:href="@{/sso-config(idpEntityId=${entityId})}" class="btn btn-primary">Go to Uploaded IDP Home page</a>
-        </div>
+
     </div>
 </div>
+<div th:insert="~{footer :: footer}"></div>
 
 <!-- Bootstrap JS -->
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
