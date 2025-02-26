@@ -1,5 +1,7 @@
 package com.bostonidentity.samlbox.controller;
 
+import com.bostonidentity.samlbox.repository.DynamicRelyingPartyRegistrationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,11 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 public class HomeController {
     @Value("{sp.entity-id}")
     private String spEntityId;
+
+    @Autowired
+    private DynamicRelyingPartyRegistrationRepository repo;
 
     @GetMapping("/home")
     public String home() {
@@ -28,5 +34,21 @@ public class HomeController {
         model.addAttribute("idpEntityId", entityId);
 
         return "idp-home";
+    }
+
+    @GetMapping("/list")
+    public String index(Model model) {
+        List<IDPController.IdpInfo> idps = repo.getAllRegistrations().stream()
+                .map(reg -> new IDPController.IdpInfo(
+                        reg.getRegistrationId(),
+                        reg.getAssertingPartyDetails().getEntityId()))
+                .toList();
+        model.addAttribute("idps", idps);
+        return "index";
+    }
+
+    @GetMapping("/")
+    public String landingPage() {
+        return "redirect:/home";
     }
 }

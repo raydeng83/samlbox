@@ -25,8 +25,8 @@
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
         }
 
@@ -65,8 +65,8 @@
             background: white;
             border-radius: 8px;
             padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             margin-bottom: 1rem;
         }
 
@@ -103,120 +103,127 @@
 <div class="main-container">
     <div class="config-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">Session Details</h1>
-            <a th:href="@{/}" class="btn btn-outline-secondary">
+            <a th:href="@{/sso-config(idpEntityId=${entityId})}" class="btn btn-outline-secondary">
                 ← Back to Home
             </a>
+            <h2 th:if="${isAuthenticated}" class="mb-0">Session Details</h2>
+            <form th:if="${isAuthenticated}" method="post" action="/logout" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger">SAML SP-Init Single Logout</button>
+            </form>
         </div>
 
-        <!-- Session Information Section -->
-        <div class="mb-5">
-            <h2 class="section-title">Session Properties</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <th scope="row">Session ID</th>
-                        <td><code th:text="${sessionId}"></code></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Creation Time</th>
-                        <td th:text="${#dates.format(creationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Last Accessed</th>
-                        <td th:text="${#dates.format(lastAccessedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Max Inactive Interval</th>
-                        <td><span class="badge bg-secondary" th:text="${maxInactiveInterval} + ' seconds'"></span></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">New Session?</th>
-                        <td>
-                            <span th:if="${isNew}" class="badge bg-success">Yes</span>
-                            <span th:unless="${isNew}" class="badge bg-warning">No</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Session Attributes Section -->
-        <div class="mb-5">
-            <h2 class="section-title">Session Attributes</h2>
-            <div th:if="${#lists.isEmpty(sessionAttributes)}" class="alert alert-info">
-                No session attributes found
-            </div>
-            <div th:unless="${#lists.isEmpty(sessionAttributes)}" class="row">
-                <div class="col-md-4" th:each="attrName : ${sessionAttributes}">
-                    <div class="attribute-card">
-                        <h3 class="h6 mb-2" th:text="${attrName}"></h3>
-                        <div class="text-muted" th:text="${session.attrName}"></div>
-                    </div>
+        <div th:if="${isAuthenticated}">
+            <!-- Session Information Section -->
+            <div class="mb-5">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Entity ID</th>
+                            <td th:text="${entityId}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Session Creation Time</th>
+                            <td th:text="${#dates.format(creationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
 
-        <!-- User Information Section -->
-        <div class="mb-4">
-            <h2 class="section-title">User Information</h2>
-            <div th:if="${isAuthenticated}">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <h3 class="card-title h5">Authentication Status</h3>
-                                <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <span class="fw-bold">Username:</span>
-                                        <span th:text="${username}" class="text-primary"></span>
-                                    </li>
-                                    <li th:if="${userEmail != null}">
-                                        <span class="fw-bold">Email:</span>
-                                        <span th:text="${userEmail}" class="text-primary"></span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title h5">Security Details</h3>
-                                <dl class="row">
-                                    <dt class="col-sm-3">Authorities/Roles</dt>
-                                    <dd class="col-sm-9">
-                                        <div th:each="authority : ${authorities}" class="mb-2">
-                                            <span class="badge bg-success"
-                                                  th:text="${authority.authority}"></span>
-                                        </div>
-                                    </dd>
-
-                                    <dt th:if="${accountNonExpired != null}" class="col-sm-3">Account Status</dt>
-                                    <dd th:if="${accountNonExpired != null}" class="col-sm-9">
-                                        <div class="d-flex gap-2">
-                                            <span class="badge"
-                                                  th:classappend="${accountNonExpired} ? 'bg-success' : 'bg-danger'">
-                                                Account Non-Expired
-                                            </span>
-                                            <span class="badge"
-                                                  th:classappend="${accountNonLocked} ? 'bg-success' : 'bg-danger'">
-                                                Account Non-Locked
-                                            </span>
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
+            <!-- User Information Section -->
+            <div class="mb-5">
+                <h4 class="section-title">User Information</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr th:each="attribute : ${attributes}">
+                            <th scope="row" th:text="${attribute.key}"></th>
+                            <td th:text="${attribute.value[0]}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div th:unless="${isAuthenticated}" class="alert alert-warning">
-                No authenticated user associated with this session
+
+            <!-- SAML Information Section -->
+            <div class="mb-5">
+                <h4 class="section-title">SAML Information</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Session Indexes</th>
+                            <td th:text="${sessionIndexes}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Registration ID</th>
+                            <td th:text="${registrationId}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+<!--            <div class="mb-4">-->
+<!--                <h3 class="section-title">User Information</h3>-->
+<!--                <div>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 mb-3">-->
+<!--                            <div class="card bg-light">-->
+<!--                                <div class="card-body">-->
+<!--                                    <h3 class="card-title h5">Authentication Status</h3>-->
+<!--                                    <ul class="list-unstyled">-->
+<!--                                        <li class="mb-2">-->
+<!--                                            <span class="fw-bold">Username:</span>-->
+<!--                                            <span th:text="${username}" class="text-primary"></span>-->
+<!--                                        </li>-->
+<!--                                        <li th:if="${userEmail != null}">-->
+<!--                                            <span class="fw-bold">Email:</span>-->
+<!--                                            <span th:text="${userEmail}" class="text-primary"></span>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="col-md-8">-->
+<!--                            <div class="card">-->
+<!--                                <div class="card-body">-->
+<!--                                    <h3 class="card-title h5">Security Details</h3>-->
+<!--                                    <dl class="row">-->
+<!--                                        <dt class="col-sm-3">Authorities/Roles</dt>-->
+<!--                                        <dd class="col-sm-9">-->
+<!--                                            <div th:each="authority : ${authorities}" class="mb-2">-->
+<!--                                            <span class="badge bg-success"-->
+<!--                                                  th:text="${authority.authority}"></span>-->
+<!--                                            </div>-->
+<!--                                        </dd>-->
+
+<!--                                        <dt th:if="${accountNonExpired != null}" class="col-sm-3">Account Status</dt>-->
+<!--                                        <dd th:if="${accountNonExpired != null}" class="col-sm-9">-->
+<!--                                            <div class="d-flex gap-2">-->
+<!--                                            <span class="badge"-->
+<!--                                                  th:classappend="${accountNonExpired} ? 'bg-success' : 'bg-danger'">-->
+<!--                                                Account Non-Expired-->
+<!--                                            </span>-->
+<!--                                                <span class="badge"-->
+<!--                                                      th:classappend="${accountNonLocked} ? 'bg-success' : 'bg-danger'">-->
+<!--                                                Account Non-Locked-->
+<!--                                            </span>-->
+<!--                                            </div>-->
+<!--                                        </dd>-->
+<!--                                    </dl>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+        </div>
+
+        <div th:unless="${isAuthenticated}" class="alert alert-warning">
+            No authenticated session
         </div>
     </div>
 </div>

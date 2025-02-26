@@ -29,16 +29,7 @@ public class IDPController {
         this.repo = repo;
     }
 
-    @GetMapping("/")
-    public String index(Model model) {
-        List<IdpInfo> idps = repo.getAllRegistrations().stream()
-                .map(reg -> new IdpInfo(
-                        reg.getRegistrationId(),
-                        reg.getAssertingPartyDetails().getEntityId()))
-                .toList();
-        model.addAttribute("idps", idps);
-        return "index";
-    }
+
 
 
 
