@@ -60,7 +60,7 @@ public class IdpMetadataService {
     public String saveMetadata(MultipartFile file) throws IOException {
         try {
             // Parse the entity ID from the metadata
-            String entityId = parseEntityId(file.getInputStream());
+            String entityId = SamlUtils.parseEntityId(file.getInputStream());
             String registrationId;
 
             // Check if IDP exists
@@ -126,13 +126,6 @@ public class IdpMetadataService {
         }
     }
 
-    private String parseEntityId(InputStream inputStream) throws Exception {
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(inputStream);
-        return doc.getDocumentElement().getAttribute("entityID");
-    }
-
     public String getRawXmlContent(String registrationId) throws Exception {
         Optional<IdpMetadata> metadata = idpMetadataRepository.findByRegistrationId(registrationId);
         if (metadata.isPresent()) {
@@ -144,25 +137,7 @@ public class IdpMetadataService {
 
     public String getFormattedXml(String registrationId) throws Exception {
         String rawXml = getRawXmlContent(registrationId);
-        return formatXml(rawXml);
-    }
-
-    private String formatXml(String xml) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setFeature("http://xml.org/sax/features/external-general-entities", false); // Prevent XXE
-        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(new InputSource(new StringReader(xml)));
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setAttribute("indent-number", 2); // Set indentation to 2 spaces
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-
-        StringWriter writer = new StringWriter();
-        transformer.transform(new DOMSource(doc), new StreamResult(writer));
-        return writer.toString().trim();
+        return SamlUtils.formatXml(rawXml);
     }
 
     public ResponseEntity<Resource> downloadXml(String registrationId) throws Exception {

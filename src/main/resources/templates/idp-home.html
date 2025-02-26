@@ -100,20 +100,20 @@
     </div>
 
     <div class="config-card">
-        <h4 class="section-title"><i class="bi bi-fingerprint me-2"></i>Entity ID: <span th:text="${idpEntityId}"></span></h4>
+        <h4 class="section-title">Entity ID: <span th:text="${idpEntityId}"></span></h4>
 
         <div class="mb-4">
-            <p class="text-muted mb-3"><i class="bi bi-bookmark-star me-2"></i>First, copy and save the URL of this page:</p>
+            <p class="text-muted mb-3">First, copy and save the URL of this page:</p>
             <div class="alert alert-secondary mb-4 d-flex align-items-center justify-content-between">
                 <code class="fs-6"><a th:href="${fullUrl}" th:text="${fullUrl}" target="_blank"></a></code>
             </div>
-            <p class="text-muted"><i class="bi bi-link-45deg me-2"></i>Alternative access pattern:</p>
+            <p class="text-muted">Alternative access pattern:</p>
             <div class="alert alert-secondary mb-4 d-flex align-items-center justify-content-between">
                 <code class="fs-6">/sso-config?idpEntityId={your-uploaded-idp-entity-id}</code>
             </div>
         </div>
 
-        <h5 class="mb-4 text-muted"><i class="bi bi-list-task me-2"></i>Available Actions:</h5>
+        <p class="mb-4 text-muted">And, available Actions:</p>
 
         <div class="list-group">
             <div class="list-group-item border-0 p-3">
@@ -133,7 +133,7 @@
                     <i class="bi bi-file-earmark-code me-3 fs-5 text-primary"></i>
                     <div>
                         <a class="info-link" th:href="@{/metadata-summary(entityId=${idpEntityId})}">
-                            IDP Metadata Summary
+                            View IDP Metadata
                         </a>
                         <div class="text-muted small mt-1" th:text="@{/metadata-summary(entityId=${idpEntityId})}"></div>
                     </div>

@@ -1,9 +1,45 @@
-// Upload SP
-// document.getElementById('fileInputSp').addEventListener('change', function (e) {
-//     const fileName = e.target.files[0]?.name || 'No file selected';
-//     document.getElementById('fileNameSp').textContent = fileName;
-// });
 
+
+// Upload IDP
+const dropZoneIdp = document.getElementById('dropZoneIdp');
+const fileInputIdp = document.getElementById('fileInputIdp');
+const fileNameIdp = document.getElementById('file-nameIdp');
+
+// Handle file selection
+fileInputIdp.addEventListener('change', function (e) {
+    handleFilesIdp(this.files);
+});
+
+// Drag & Drop handlers
+dropZoneIdp.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZoneIdp.classList.add('dragover');
+});
+
+dropZoneIdp.addEventListener('dragleave', () => {
+    dropZoneIdp.classList.remove('dragover');
+});
+
+dropZoneIdp.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZoneIdp.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length) {
+        fileInput.files = files;
+        handleFiles(files);
+    }
+});
+
+function handleFilesIdp(files) {
+    if (files.length > 0) {
+        fileNameIdp.textContent = `Selected file: ${files[0].name}`;
+    }
+}
+
+
+
+
+// Upload SP
 document.getElementById('uploadFormSp').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -28,6 +64,25 @@ document.getElementById('uploadFormSp').addEventListener('submit', async functio
 
         if (response.ok) {
             showResult(result);
+
+            const jsonObject = JSON.parse(result);
+            const clientId = jsonObject.clientId;
+            console.log("clientId:" + clientId);
+
+            let countdown = 10; // Initial countdown time in seconds
+            const countdownElement = document.getElementById('countdown');
+
+            // Update the countdown every second
+            const interval = setInterval(function() {
+                countdown--;
+                countdownElement.textContent = countdown;
+
+                // Redirect when the countdown reaches 0
+                if (countdown <= 0) {
+                    clearInterval(interval); // Stop the countdown
+                    window.location.href = '/view-sp-xml?entityId=' + clientId; // Redirect to the relative path
+                }
+            }, 1000); // 1000 milliseconds = 1 second
 
         } else {
             showError(result);
@@ -83,48 +138,3 @@ function handleFiles(files) {
         fileName.textContent = `Selected file: ${files[0].name}`;
     }
 }
-
-
-
-
-
-
-
-// Upload IDP
-const dropZoneIdp = document.getElementById('dropZoneIdp');
-const fileInputIdp = document.getElementById('fileInputIdp');
-const fileNameIdp = document.getElementById('file-nameIdp');
-
-// Handle file selection
-fileInputIdp.addEventListener('change', function (e) {
-    handleFilesIdp(this.files);
-});
-
-// Drag & Drop handlers
-dropZoneIdp.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZoneIdp.classList.add('dragover');
-});
-
-dropZoneIdp.addEventListener('dragleave', () => {
-    dropZoneIdp.classList.remove('dragover');
-});
-
-dropZoneIdp.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZoneIdp.classList.remove('dragover');
-    const files = e.dataTransfer.files;
-    if (files.length) {
-        fileInput.files = files;
-        handleFiles(files);
-    }
-});
-
-function handleFilesIdp(files) {
-    if (files.length > 0) {
-        fileNameIdp.textContent = `Selected file: ${files[0].name}`;
-    }
-}
-
-
-

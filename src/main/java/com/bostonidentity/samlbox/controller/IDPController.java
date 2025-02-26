@@ -29,10 +29,6 @@ public class IDPController {
         this.repo = repo;
     }
 
-
-
-
-
     @GetMapping("/saml/login")
     public String initiateSamlLogin(@RequestParam("idp") String idpId, HttpServletRequest request) {
 
@@ -55,7 +51,8 @@ public class IDPController {
             model.addAttribute("metadata", details);
             model.addAttribute("registrationId", registrationId);
             model.addAttribute("entityId", details.getEntityId());
-            return "metadata-summary";
+//            return "metadata-summary";
+            return "redirect:view-xml?entityId=" + entityId;
         } catch (Exception e) {
             return "redirect:/?error=Metadata+parse+failed";
         }

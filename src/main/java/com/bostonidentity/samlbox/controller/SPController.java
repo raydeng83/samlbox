@@ -2,48 +2,36 @@ package com.bostonidentity.samlbox.controller;
 
 import com.bostonidentity.samlbox.model.ClientSettings;
 import com.bostonidentity.samlbox.service.KeycloakClientService;
+import com.bostonidentity.samlbox.service.SpMetadataService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Base64;
 import java.util.List;
 
 @Controller
-@RequestMapping("/clients")
 public class SPController {
 
     private final KeycloakClientService keycloakClientService;
+    private final SpMetadataService spMetadataService;
 
-    public SPController(KeycloakClientService keycloakClientService) {
+    public SPController(KeycloakClientService keycloakClientService, SpMetadataService spMetadataService) {
         this.keycloakClientService = keycloakClientService;
+        this.spMetadataService = spMetadataService;
     }
 
-//    @GetMapping("/edit-redirect-uris")
-//    public String showEditForm(@RequestParam String clientId, Model model) {
-//        List<String> currentUris = keycloakClientService.getRedirectUris(clientId);
-//        model.addAttribute("clientId", clientId);
-//        model.addAttribute("redirectUris", currentUris);
-//        return "edit-redirect-uris";
-//    }
-
-    @PostMapping("/update-redirect-uris")
-    public String updateRedirectUris(
-            @RequestParam String clientId,
-            @RequestParam List<String> redirectUris) {
-        keycloakClientService.updateRedirectUris(clientId, redirectUris);
-        return "redirect:/clients/edit-redirect-uris?clientId=" + clientId + "&success=true";
-    }
-
-
-    @GetMapping("/edit")
+    @GetMapping("/clients/edit")
     public String showEditForm(@RequestParam String clientId, Model model) {
         model.addAttribute("clientId", clientId);
         model.addAttribute("settings", keycloakClientService.getClientSettings(clientId));
         return "client-settings";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/clients/update")
     public String updateSettings(
             @RequestParam String clientId,
             @ModelAttribute ClientSettings settings,
@@ -58,5 +46,26 @@ public class SPController {
             redirectAttributes.addFlashAttribute("messageType", "danger");
         }
         return "redirect:/clients/edit?clientId=" + clientId;
+    }
+
+    @GetMapping("/view-sp-xml")
+    public String viewXmlContent(@RequestParam("entityId") String entityId, Model model) {
+        try {
+            String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
+            String xmlContent = spMetadataService.getFormattedXml(registrationId);
+            model.addAttribute("xmlContent", xmlContent);
+            model.addAttribute("registrationId", registrationId);
+            model.addAttribute("entityId", entityId);
+            return "view-xml";
+        } catch (Exception e) {
+            return "redirect:/?error=XML+not+found";
+        }
+    }
+
+    @GetMapping("/download-sp-xml")
+    public ResponseEntity<Resource> downloadXml(@RequestParam("entityId") String entityId) throws Exception {
+        String registrationId = Base64.getUrlEncoder().withoutPadding().encodeToString(entityId.getBytes());
+
+        return spMetadataService.downloadXml(registrationId);
     }
 }

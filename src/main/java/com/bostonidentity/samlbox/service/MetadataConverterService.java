@@ -28,6 +28,9 @@ public class MetadataConverterService {
     @Autowired
     private Keycloak keycloak;
 
+    @Autowired
+    private SpMetadataService spMetadataService;
+
     @Value("${keycloak.converter.url}")
     private String keycloakConverterUrl;
 
@@ -64,13 +67,12 @@ public class MetadataConverterService {
         }
     }
 
-    public ResponseEntity<?> convertAndCreateClient(MultipartFile file) {
+    public ResponseEntity<Map<String,String>> convertAndCreateClient(MultipartFile file) {
         try {
-            // 1. Convert metadata to ClientRepresentation
             ClientRepresentation clientRep = convertMetadata(file);
-
-            // 2. Create client using Admin Client
             String createdClientId = createOrUpdateKeycloakClient(clientRep);
+
+            spMetadataService.saveMetadata(file);
 
             return ResponseEntity.ok(Map.of(
                     "status", "created",
@@ -105,13 +107,15 @@ public class MetadataConverterService {
             // Preserve client ID for update
             clientRep.setId(existingClientId);
             clientResource.update(clientRep);
-            return existingClientId;
+
+            String clientId = clientRep.getClientId();
+            return clientId;
         } else {
             // Create new client
             try (Response response = clientsResource.create(clientRep)) {
                 if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
-                    String location = response.getLocation().toString();
-                    return location.substring(location.lastIndexOf('/') + 1);
+//                    String location = response.getLocation().toString();
+                    return clientRep.getClientId();
                 }
                 throw new RuntimeException("Failed to create client: " + response.readEntity(String.class));
             }
