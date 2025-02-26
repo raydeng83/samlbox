@@ -51,6 +51,6 @@ public class IdpConfigController {
             @ModelAttribute IdpConfig idpConfig
     ) {
         idpConfigService.updateIdpConfig(idpConfig);
-        return "redirect:/";
+        return "redirect:/sso-idp-config?idpEntityId=" + entityId;
     }
 }

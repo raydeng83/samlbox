@@ -120,10 +120,10 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-box-arrow-in-right me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/saml/login(sp=${spEntityId})}" >
+                        <a class="info-link" th:href="@{${'http://localhost:8080/realms/master/protocol/saml/clients/' + spEntityId +'-idp-init'}}" >
                             IDP Initiated Login
                         </a>
-                        <div class="text-muted small mt-1">Endpoint: <span th:text="@{/saml/login(sp=${spEntityId})}"></span></div>
+                        <div class="text-muted small mt-1">Endpoint: <span th:text="@{${'http://localhost:8080/realms/master/protocol/saml/clients/' + spEntityId +'-idp-init'}}"></span></div>
                     </div>
                 </div>
             </div>
@@ -151,18 +151,6 @@
                     </div>
                 </div>
             </div>
-
-<!--            <div class="list-group-item border-0 p-3">-->
-<!--                <div class="d-flex align-items-center">-->
-<!--                    <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>-->
-<!--                    <div>-->
-<!--                        <a class="info-link" th:href="@{/session-info(entityId=${spEntityId})}">-->
-<!--                            Session Information-->
-<!--                        </a>-->
-<!--                        <div class="text-muted small mt-1">View active SAML sessions</div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     </div>
 </div>

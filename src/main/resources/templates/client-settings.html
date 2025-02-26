@@ -40,7 +40,7 @@
         }
 
         .entity-id {
-            font-family: 'Courier New', Courier, monospace;
+            /*font-family: 'Courier New', Courier, monospace;*/
             background-color: #f8f9fa;
             padding: 0.5rem;
             border-radius: 6px;
@@ -99,10 +99,8 @@
 <div class="main-container">
 
     <div class="text-center mb-5">
-        <h1 class="display-6 fw-bold mb-3">Uploaded SAML SP Settings</h1>
-        <div class="entity-id">
-            <h4>SP Entity ID: <span th:text="${clientId}"></span></h4>
-        </div>
+        <h3>Settings for SAML SSO</h3>
+        <div class="entity-id"></div>
     </div>
 
     <!-- Success/Error Messages -->
@@ -115,7 +113,8 @@
         <!-- SAML Configuration -->
         <div class="config-card">
 
-            <h3 class="section-title">SP Configuration on IDP Server</h3>
+            <h4 class="section-title">SP Entity ID: <span th:text="${clientId}"></span>
+            </h4>
             <div class="mb-4">
                 <label class="form-label">IDP-Initiated SSO URL</label>
                 <input type="text" class="form-control" name="idpInitiatedSsoUrl"
@@ -237,7 +236,7 @@ MIICizCCAfQCCQC4..." th:text="${settings.encryptionCert}"></textarea>
         <!-- Go Back and Save Buttons -->
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary px-5 py-2">Save Changes</button>
-            <a class="btn btn-light px-5 py-2" th:href="@{/sso-sp-config(spEntityId=${clientId})}">Cancel</a>
+            <a class="btn btn-light px-5 py-2" th:href="@{/sso-sp-config(spEntityId=${clientId})}">← Back</a>
         </div>
     </form>
 
