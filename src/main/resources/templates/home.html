@@ -7,6 +7,8 @@
 
     <!-- Bootstrap CSS -->
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
     <!-- Custom CSS -->
     <style>
@@ -91,9 +93,9 @@
         }
 
         .action-cards {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
-            margin: 2rem 0;
         }
 
         .action-card {
@@ -102,7 +104,11 @@
             padding: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(0, 0, 0, 0.08);
-            /* Remove flex: 1 */
+            transition: transform 0.2s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
         }
 
         .action-card h2 {
@@ -123,11 +129,12 @@
             padding: 2rem;
             text-align: center;
             cursor: pointer;
-            transition: border-color 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .drop-zone:hover {
             border-color: #2a4561;
+            background-color: #f8f9fa;
         }
 
         .btn-primary {
@@ -139,6 +146,17 @@
 
         .btn-primary:hover {
             background-color: #1a3248;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
 
         .hidden {
@@ -196,24 +214,23 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .action-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+        #resultSection {
+            margin-top: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
-        .action-card {
-            width: 100%;
-            min-width: 0; /* Prevent content from expanding beyond grid constraints */
-            overflow: hidden; /* Contain all child elements */
+        #errorAlert {
+            margin-top: 1.5rem;
         }
 
-        /*#resultSection,*/
-        /*#errorAlert {*/
-        /*    width: 100%;*/
-        /*    box-sizing: border-box;*/
-        /*    padding: 5px 5px 5px 5px;*/
-        /*}*/
+        .file-name {
+            color: #2a4561;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -281,7 +298,7 @@
     <div class="action-cards">
         <!-- IDP Card -->
         <div class="action-card">
-            <h2>Upload <span style="color: red">IDP</span> Metadata</h2>
+            <h2><i class="bi bi-upload me-2"></i>Upload <span style="color: red">IDP</span> Metadata</h2>
             <p>Your app is acting as an IDP and SAML Box (this website) is acting as SP</p>
             <form method="post" enctype="multipart/form-data" action="/idp/upload" id="uploadFormIdp" target="_blank">
                 <!-- Drag & Drop Zone -->
@@ -293,23 +310,23 @@
                     <input type="file" name="file" id="fileInputIdp" class="hidden" required>
                     <button type="button" class="btn btn-primary"
                             onclick="document.getElementById('fileInputIdp').click()">
-                        Choose IDP File
+                        <i class="bi bi-file-earmark-arrow-up me-2"></i>Choose IDP File
                     </button>
 
                     <!-- Selected File Name -->
-                    <div id="file-nameIdp" class="mt-2"></div>
+                    <div id="file-nameIdp" class="file-name"></div>
                 </div>
 
                 <!-- Upload Button -->
                 <button type="submit" class="btn btn-primary mt-3">
-                    Upload IDP
+                    <i class="bi bi-cloud-upload me-2"></i>Upload IDP
                 </button>
             </form>
         </div>
 
         <!-- SP Card -->
         <div class="action-card">
-            <h2>Upload <span style="color: red">SP</span> Metadata</h2>
+            <h2><i class="bi bi-upload me-2"></i>Upload <span style="color: red">SP</span> Metadata</h2>
             <p>Your app is acting as an SP and SAML Box (this website) is acting as IDP</p>
             <form enctype="multipart/form-data" id="uploadFormSp">
                 <!-- Drag & Drop Zone -->
@@ -321,25 +338,25 @@
                     <input type="file" name="file" id="fileInputSp" class="hidden" required>
                     <button type="button" class="btn btn-secondary"
                             onclick="document.getElementById('fileInputSp').click()">
-                        Choose SP File
+                        <i class="bi bi-file-earmark-arrow-up me-2"></i>Choose SP File
                     </button>
 
                     <!-- Selected File Name -->
-                    <div id="file-nameSp" class="mt-2"></div>
+                    <div id="file-nameSp" class="file-name"></div>
                 </div>
 
                 <!-- Upload Button -->
                 <button type="submit" class="btn btn-secondary mt-3">
-                    Upload SP
+                    <i class="bi bi-cloud-upload me-2"></i>Upload SP
                 </button>
             </form>
 
             <div id="resultSection" class="hidden">
                 <div class="card">
-                    <div style="padding: 5px 5px 5px 5px;">
-                    <p id="resultContent" class="mb-0"></p>
-                    <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong>
-                    </p>
+                    <div class="card-body">
+                        <p id="resultContent" class="mb-0"></p>
+                        <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -361,19 +378,19 @@
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="#">Documentation</a></li>
-                <li><a href="#">Support</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#"><i class="bi bi-file-earmark-text me-2"></i>Documentation</a></li>
+                <li><a href="#"><i class="bi bi-headset me-2"></i>Support</a></li>
+                <li><a href="#"><i class="bi bi-shield-lock me-2"></i>Privacy Policy</a></li>
+                <li><a href="#"><i class="bi bi-file-text me-2"></i>Terms of Service</a></li>
             </ul>
         </div>
 
         <div class="footer-section">
             <h3>Contact</h3>
             <ul>
-                <li>Email: support@idp-portal.com</li>
-                <li>Phone: (555) 123-4567</li>
-                <li>Address: 123 Tech Street, Silicon Valley</li>
+                <li><i class="bi bi-envelope me-2"></i>support@idp-portal.com</li>
+                <li><i class="bi bi-telephone me-2"></i>(555) 123-4567</li>
+                <li><i class="bi bi-geo-alt me-2"></i>123 Tech Street, Silicon Valley</li>
             </ul>
         </div>
     </div>

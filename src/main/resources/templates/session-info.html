@@ -164,62 +164,6 @@
                     </table>
                 </div>
             </div>
-<!--            <div class="mb-4">-->
-<!--                <h3 class="section-title">User Information</h3>-->
-<!--                <div>-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-md-4 mb-3">-->
-<!--                            <div class="card bg-light">-->
-<!--                                <div class="card-body">-->
-<!--                                    <h3 class="card-title h5">Authentication Status</h3>-->
-<!--                                    <ul class="list-unstyled">-->
-<!--                                        <li class="mb-2">-->
-<!--                                            <span class="fw-bold">Username:</span>-->
-<!--                                            <span th:text="${username}" class="text-primary"></span>-->
-<!--                                        </li>-->
-<!--                                        <li th:if="${userEmail != null}">-->
-<!--                                            <span class="fw-bold">Email:</span>-->
-<!--                                            <span th:text="${userEmail}" class="text-primary"></span>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                        <div class="col-md-8">-->
-<!--                            <div class="card">-->
-<!--                                <div class="card-body">-->
-<!--                                    <h3 class="card-title h5">Security Details</h3>-->
-<!--                                    <dl class="row">-->
-<!--                                        <dt class="col-sm-3">Authorities/Roles</dt>-->
-<!--                                        <dd class="col-sm-9">-->
-<!--                                            <div th:each="authority : ${authorities}" class="mb-2">-->
-<!--                                            <span class="badge bg-success"-->
-<!--                                                  th:text="${authority.authority}"></span>-->
-<!--                                            </div>-->
-<!--                                        </dd>-->
-
-<!--                                        <dt th:if="${accountNonExpired != null}" class="col-sm-3">Account Status</dt>-->
-<!--                                        <dd th:if="${accountNonExpired != null}" class="col-sm-9">-->
-<!--                                            <div class="d-flex gap-2">-->
-<!--                                            <span class="badge"-->
-<!--                                                  th:classappend="${accountNonExpired} ? 'bg-success' : 'bg-danger'">-->
-<!--                                                Account Non-Expired-->
-<!--                                            </span>-->
-<!--                                                <span class="badge"-->
-<!--                                                      th:classappend="${accountNonLocked} ? 'bg-success' : 'bg-danger'">-->
-<!--                                                Account Non-Locked-->
-<!--                                            </span>-->
-<!--                                            </div>-->
-<!--                                        </dd>-->
-<!--                                    </dl>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--            </div>-->
         </div>
 
         <div th:unless="${isAuthenticated}" class="alert alert-warning">
@@ -229,6 +173,6 @@
 </div>
 
 <!-- Bootstrap JS -->
-<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </body>
 </html>

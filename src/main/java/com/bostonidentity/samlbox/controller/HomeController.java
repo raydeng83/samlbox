@@ -1,6 +1,7 @@
 package com.bostonidentity.samlbox.controller;
 
 import com.bostonidentity.samlbox.repository.DynamicRelyingPartyRegistrationRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,8 +31,16 @@ public class HomeController {
     }
 
     @GetMapping("/sso-config")
-    public String showConfigPage(Model model, @RequestParam("idpEntityId") String entityId) {
+    public String showConfigPage(Model model, @RequestParam("idpEntityId") String entityId, HttpServletRequest request) {
         model.addAttribute("idpEntityId", entityId);
+
+        String fullUrl = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        if (queryString != null) {
+            fullUrl += "?" + queryString;
+        }
+
+        model.addAttribute("fullUrl", fullUrl);
 
         return "idp-home";
     }

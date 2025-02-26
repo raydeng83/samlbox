@@ -4,6 +4,8 @@
     <title>SAML SSO Configuration</title>
     <!-- Bootstrap 5 CSS -->
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
     <style>
         body {
@@ -21,8 +23,8 @@
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease;
         }
 
@@ -44,6 +46,7 @@
             border-bottom: 2px solid #e9ecef;
             padding-bottom: 0.75rem;
             margin-bottom: 1.5rem;
+            font-size: 1.5rem;
         }
 
         .info-link {
@@ -55,56 +58,110 @@
 
         .info-link:hover {
             color: #0066cc;
+            text-decoration: underline;
+        }
+
+        .intro-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #2a4561;
+        }
+
+        .list-group-item {
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .list-group-item:hover {
+            border-left-color: #2a4561;
+            background-color: #f8f9fa;
+        }
+
+        .copy-btn {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
 <div class="main-container">
-    <div class="text-center mb-5">
-        <h1 class="display-6 fw-bold mb-3">Uploaded IDP Home</h1>
-        <div class="entity-id mb-4">
-            <h4 >Entity ID: <span th:text="${idpEntityId}"></span></h4>
-        </div>
+    <div class="intro-card">
+        <h4 class="text-primary mb-3"><i class="bi bi-info-circle-fill me-2"></i>Getting Started</h4>
+        <p class="mb-3">Here is your uploaded IDP landing page.</p>
+        <p class="mb-0">You can trigger SP-Init SSO, configure how SAML request should be sent, check the uploaded IDP metadata info,
+            view session info created by SAML BOX after successful SSO, and SP-Init Single Logout.</p>
     </div>
 
     <div class="config-card">
-        <h3 class="section-title">Configuration Details</h3>
+        <h4 class="section-title"><i class="bi bi-fingerprint me-2"></i>Entity ID: <span th:text="${idpEntityId}"></span></h4>
 
         <div class="mb-4">
-            <p class="text-muted mb-3">Bookmark this configuration page using:</p>
-            <div class="alert alert-secondary mb-4">
-                <code class="fs-6">/sso-config?idpEntityId={idp-entity-id}</code>
+            <p class="text-muted mb-3"><i class="bi bi-bookmark-star me-2"></i>First, copy and save the URL of this page:</p>
+            <div class="alert alert-secondary mb-4 d-flex align-items-center justify-content-between">
+                <code class="fs-6"><a th:href="${fullUrl}" th:text="${fullUrl}" target="_blank"></a></code>
+            </div>
+            <p class="text-muted"><i class="bi bi-link-45deg me-2"></i>Alternative access pattern:</p>
+            <div class="alert alert-secondary mb-4 d-flex align-items-center justify-content-between">
+                <code class="fs-6">/sso-config?idpEntityId={your-uploaded-idp-entity-id}</code>
             </div>
         </div>
 
+        <h5 class="mb-4 text-muted"><i class="bi bi-list-task me-2"></i>Available Actions:</h5>
+
         <div class="list-group">
             <div class="list-group-item border-0 p-3">
-                <i class="bi bi-file-earmark-code me-2"></i>
-                <a class="info-link" th:href="@{/metadata-summary(entityId=${idpEntityId})}">
-                    IDP Metadata Summary
-                </a>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-box-arrow-in-right me-3 fs-5 text-primary"></i>
+                    <div>
+                        <a class="info-link" th:href="@{/saml/login(idp=${idpEntityId})}" >
+                            SP Initiated Login
+                        </a>
+                        <div class="text-muted small mt-1" th:text="@{/saml/login(idp=${idpEntityId})}"></div>
+                    </div>
+                </div>
             </div>
 
             <div class="list-group-item border-0 p-3">
-                <i class="bi bi-box-arrow-in-right me-2"></i>
-                <a class="info-link" th:href="@{/saml/login(idp=${idpEntityId})}" target="_blank">
-                    SP Initiated Login
-                </a>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-file-earmark-code me-3 fs-5 text-primary"></i>
+                    <div>
+                        <a class="info-link" th:href="@{/metadata-summary(entityId=${idpEntityId})}">
+                            IDP Metadata Summary
+                        </a>
+                        <div class="text-muted small mt-1" th:text="@{/metadata-summary(entityId=${idpEntityId})}"></div>
+                    </div>
+                </div>
             </div>
 
             <div class="list-group-item border-0 p-3">
-                <i class="bi bi-gear me-2"></i>
-                <a class="info-link" th:href="@{/idp/configure(entityId=${idpEntityId})}">
-                    Configure Authentication Request
-                </a>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-gear me-3 fs-5 text-primary"></i>
+                    <div>
+                        <a class="info-link" th:href="@{/idp/configure(entityId=${idpEntityId})}">
+                            Configure Authentication Request
+                        </a>
+                        <div class="text-muted small mt-1" th:text="@{/idp/configure(entityId=${idpEntityId})}"></div>
+                    </div>
+                </div>
             </div>
 
             <div class="list-group-item border-0 p-3">
-                <i class="bi bi-gear me-2"></i>
-                <a class="info-link" th:href="@{/session-info(entityId=${idpEntityId})}">
-                    Session Information
-                </a>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>
+                    <div>
+                        <a class="info-link" th:href="@{/session-info(entityId=${idpEntityId})}">
+                            Session Information
+                        </a>
+                        <div class="text-muted small mt-1">View active SAML sessions</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -112,7 +169,7 @@
 
 <div th:insert="~{footer :: footer}"></div>
 <!-- Bootstrap 5 JS Bundle -->
-<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 
 </body>
 </html>
