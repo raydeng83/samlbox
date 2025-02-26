@@ -123,7 +123,7 @@
                         <a class="info-link" th:href="@{/saml/login(sp=${spEntityId})}" >
                             IDP Initiated Login
                         </a>
-                        <div class="text-muted small mt-1" th:text="@{/saml/login(sp=${spEntityId})}"></div>
+                        <div class="text-muted small mt-1">Endpoint: <span th:text="@{/saml/login(sp=${spEntityId})}"></span></div>
                     </div>
                 </div>
             </div>
@@ -132,10 +132,10 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-file-earmark-code me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/metadata-summary(entityId=${spEntityId})}">
+                        <a class="info-link" th:href="@{/view-sp-xml(entityId=${spEntityId})}">
                             View SP Metadata
                         </a>
-                        <div class="text-muted small mt-1" th:text="@{/metadata-summary(entityId=${spEntityId})}"></div>
+                        <div class="text-muted small mt-1" >Endpoint: <span th:text="@{/view-sp-xml(entityId=${spEntityId})}"></span></div>
                     </div>
                 </div>
             </div>
@@ -144,25 +144,25 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-gear me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/idp/configure(entityId=${spEntityId})}">
-                            Configure Authentication Request
+                        <a class="info-link" th:href="@{/clients/edit(clientId=${spEntityId})}">
+                            Update Settings for Uploaded SP
                         </a>
-                        <div class="text-muted small mt-1" th:text="@{/idp/configure(entityId=${spEntityId})}"></div>
+                        <div class="text-muted small mt-1" >Endpoint: <span th:text="@{/clients/edit(clientId=${spEntityId})}"></span></div>
                     </div>
                 </div>
             </div>
 
-            <div class="list-group-item border-0 p-3">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>
-                    <div>
-                        <a class="info-link" th:href="@{/session-info(entityId=${spEntityId})}">
-                            Session Information
-                        </a>
-                        <div class="text-muted small mt-1">View active SAML sessions</div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="list-group-item border-0 p-3">-->
+<!--                <div class="d-flex align-items-center">-->
+<!--                    <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>-->
+<!--                    <div>-->
+<!--                        <a class="info-link" th:href="@{/session-info(entityId=${spEntityId})}">-->
+<!--                            Session Information-->
+<!--                        </a>-->
+<!--                        <div class="text-muted small mt-1">View active SAML sessions</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
 </div>

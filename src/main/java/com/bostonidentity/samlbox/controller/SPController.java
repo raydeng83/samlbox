@@ -56,7 +56,7 @@ public class SPController {
             model.addAttribute("xmlContent", xmlContent);
             model.addAttribute("registrationId", registrationId);
             model.addAttribute("entityId", entityId);
-            return "view-xml";
+            return "view-sp-xml";
         } catch (Exception e) {
             return "redirect:/?error=XML+not+found";
         }

@@ -97,6 +97,7 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main-container">
+
     <div class="text-center mb-5">
         <h1 class="display-6 fw-bold mb-3">Uploaded SAML SP Settings</h1>
         <div class="entity-id">
@@ -110,9 +111,11 @@
     </div>
 
     <form th:action="@{/clients/update(clientId=${clientId})}" method="post">
+
         <!-- SAML Configuration -->
         <div class="config-card">
-            <h3 class="section-title">SAML Configuration</h3>
+
+            <h3 class="section-title">SP Configuration on IDP Server</h3>
             <div class="mb-4">
                 <label class="form-label">IDP-Initiated SSO URL</label>
                 <input type="text" class="form-control" name="idpInitiatedSsoUrl"
@@ -231,12 +234,15 @@ MIICizCCAfQCCQC4..." th:text="${settings.encryptionCert}"></textarea>
             </div>
         </div>
 
-        <!-- Save Button -->
+        <!-- Go Back and Save Buttons -->
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary px-5 py-2">Save Changes</button>
+            <a class="btn btn-light px-5 py-2" th:href="@{/sso-sp-config(spEntityId=${clientId})}">Cancel</a>
         </div>
     </form>
+
 </div>
+
 <div th:insert="~{footer :: footer}"></div>
 
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
