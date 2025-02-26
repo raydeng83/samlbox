@@ -94,13 +94,13 @@
 <div class="main-container">
     <div class="intro-card">
         <h4 class="text-primary mb-3"><i class="bi bi-info-circle-fill me-2"></i>Getting Started</h4>
-        <p class="mb-3">Here is your uploaded IDP landing page.</p>
-        <p class="mb-0">You can trigger SP-Init SSO, configure how SAML request should be sent, check the uploaded IDP metadata info,
-            view session info created by SAML BOX after successful SSO, and SP-Init Single Logout.</p>
+        <p class="mb-3">Here is your uploaded SP landing page.</p>
+        <p class="mb-0">You can trigger IDP-Init SSO, configure how SAML response should be managed, check the uploaded SP metadata info,
+            view session info from IDP, and IDP-Init Single Logout.</p>
     </div>
 
     <div class="config-card">
-        <h4 class="section-title">IDP Entity ID: <span th:text="${idpEntityId}"></span></h4>
+        <h4 class="section-title">SP Entity ID: <span th:text="${spEntityId}"></span></h4>
 
         <div class="mb-4">
             <p class="text-muted mb-3">First, copy and save the URL of this page:</p>
@@ -109,7 +109,7 @@
             </div>
             <p class="text-muted">Alternative access pattern:</p>
             <div class="alert alert-secondary mb-4 d-flex align-items-center justify-content-between">
-                <code class="fs-6">/sso-idp-config?idpEntityId={your-uploaded-idp-entity-id}</code>
+                <code class="fs-6">/sso-sp-config?spEntityId={your-uploaded-sp-entity-id}</code>
             </div>
         </div>
 
@@ -120,10 +120,10 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-box-arrow-in-right me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/saml/login(idp=${idpEntityId})}" >
-                            SP Initiated Login
+                        <a class="info-link" th:href="@{/saml/login(sp=${spEntityId})}" >
+                            IDP Initiated Login
                         </a>
-                        <div class="text-muted small mt-1" th:text="@{/saml/login(idp=${idpEntityId})}"></div>
+                        <div class="text-muted small mt-1" th:text="@{/saml/login(sp=${spEntityId})}"></div>
                     </div>
                 </div>
             </div>
@@ -132,10 +132,10 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-file-earmark-code me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/metadata-summary(entityId=${idpEntityId})}">
-                            View IDP Metadata
+                        <a class="info-link" th:href="@{/metadata-summary(entityId=${spEntityId})}">
+                            View SP Metadata
                         </a>
-                        <div class="text-muted small mt-1" th:text="@{/metadata-summary(entityId=${idpEntityId})}"></div>
+                        <div class="text-muted small mt-1" th:text="@{/metadata-summary(entityId=${spEntityId})}"></div>
                     </div>
                 </div>
             </div>
@@ -144,10 +144,10 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-gear me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/idp/configure(entityId=${idpEntityId})}">
+                        <a class="info-link" th:href="@{/idp/configure(entityId=${spEntityId})}">
                             Configure Authentication Request
                         </a>
-                        <div class="text-muted small mt-1" th:text="@{/idp/configure(entityId=${idpEntityId})}"></div>
+                        <div class="text-muted small mt-1" th:text="@{/idp/configure(entityId=${spEntityId})}"></div>
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/session-info(entityId=${idpEntityId})}">
+                        <a class="info-link" th:href="@{/session-info(entityId=${spEntityId})}">
                             Session Information
                         </a>
                         <div class="text-muted small mt-1">View active SAML sessions</div>

@@ -1,5 +1,3 @@
-
-
 // Upload IDP
 const dropZoneIdp = document.getElementById('dropZoneIdp');
 const fileInputIdp = document.getElementById('fileInputIdp');
@@ -37,8 +35,6 @@ function handleFilesIdp(files) {
 }
 
 
-
-
 // Upload SP
 document.getElementById('uploadFormSp').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -63,27 +59,27 @@ document.getElementById('uploadFormSp').addEventListener('submit', async functio
         const result = await response.text();
 
         if (response.ok) {
-            showResult(result);
+            // showResult(result);
 
+            // const jsonObject = JSON.parse(result);
+            // const clientId = jsonObject.clientId;
+            // console.log("clientId:" + clientId);
+            //
+            // let countdown = 1;
+            // const countdownElement = document.getElementById('countdown');
+            //
+            // const interval = setInterval(function() {
+            //     countdown--;
+            //     countdownElement.textContent = countdown;
+            //
+            //     if (countdown <= 0) {
+            //         clearInterval(interval);
+            //         window.location.href = '/view-sp-xml?entityId=' + clientId;
+            //     }
+            // }, 1000);
             const jsonObject = JSON.parse(result);
             const clientId = jsonObject.clientId;
-            console.log("clientId:" + clientId);
-
-            let countdown = 10; // Initial countdown time in seconds
-            const countdownElement = document.getElementById('countdown');
-
-            // Update the countdown every second
-            const interval = setInterval(function() {
-                countdown--;
-                countdownElement.textContent = countdown;
-
-                // Redirect when the countdown reaches 0
-                if (countdown <= 0) {
-                    clearInterval(interval); // Stop the countdown
-                    window.location.href = '/view-sp-xml?entityId=' + clientId; // Redirect to the relative path
-                }
-            }, 1000); // 1000 milliseconds = 1 second
-
+            window.location.href = '/view-sp-xml?entityId=' + clientId;
         } else {
             showError(result);
         }

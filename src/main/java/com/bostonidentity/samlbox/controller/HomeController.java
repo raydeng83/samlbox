@@ -30,8 +30,8 @@ public class HomeController {
         return "redirect:/saml2/metadata/" + Base64.getUrlEncoder().withoutPadding().encodeToString(spEntityId.getBytes());
     }
 
-    @GetMapping("/sso-config")
-    public String showConfigPage(Model model, @RequestParam("idpEntityId") String entityId, HttpServletRequest request) {
+    @GetMapping("/sso-idp-config")
+    public String showIdpConfigPage(Model model, @RequestParam("idpEntityId") String entityId, HttpServletRequest request) {
         model.addAttribute("idpEntityId", entityId);
 
         String fullUrl = request.getRequestURL().toString();
@@ -43,6 +43,21 @@ public class HomeController {
         model.addAttribute("fullUrl", fullUrl);
 
         return "idp-home";
+    }
+
+    @GetMapping("/sso-sp-config")
+    public String showSpConfigPage(Model model, @RequestParam("spEntityId") String entityId, HttpServletRequest request) {
+        model.addAttribute("spEntityId", entityId);
+
+        String fullUrl = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        if (queryString != null) {
+            fullUrl += "?" + queryString;
+        }
+
+        model.addAttribute("fullUrl", fullUrl);
+
+        return "sp-home";
     }
 
     @GetMapping("/list")

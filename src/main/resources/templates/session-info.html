@@ -103,12 +103,12 @@
 <div class="main-container">
     <div class="config-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <a th:href="@{/sso-config(idpEntityId=${entityId})}" class="btn btn-outline-secondary">
+            <a th:href="@{/sso-idp-config(idpEntityId=${entityId})}" class="btn btn-outline-secondary">
                 ← Back to Home
             </a>
             <h2 th:if="${isAuthenticated}" class="mb-0">Session Details</h2>
             <form th:if="${isAuthenticated}" method="post" action="/logout" class="d-inline">
-                <button type="submit" class="btn btn-outline-danger">SAML SP-Init Single Logout</button>
+                <button type="submit" class="btn btn-outline-primary">SAML SP-Init Single Logout</button>
             </form>
         </div>
 
