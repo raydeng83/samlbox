@@ -75,4 +75,9 @@ public class HomeController {
     public String landingPage() {
         return "redirect:/home";
     }
+
+    @GetMapping("/platform-intro")
+    public String platformIntro() {
+        return "platform-intro";
+    }
 }
