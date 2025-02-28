@@ -54,9 +54,9 @@
 <div class="container">
     <!-- Overview Section -->
     <div class="narrative-section">
-        <h2>Overview - A Shared Platform for Development and Testing</h2>
+        <h2>Overview</h2>
         <p>This platform provides readily available IDP/SP services for development and testing.
-        <p class="warning"><strong >Never upload production data</strong>.</p>
+        <p class="warning"><strong>Never upload production data</strong>.</p>
         SAML Entities are identified by their Entity ID - use unique IDs to prevent overwrites.</p>
 
         <p>The SAML BOX platform consists of two core components working together:</p>
@@ -70,8 +70,8 @@
             <li>Managing user sessions and Single Logout (SLO)</li>
         </ul>
 
-        <p>For the <span class="technical-term">Identity Provider (IDP)</span>, we implement <a
-                href="https://www.keycloak.org/" target="_blank">Keycloak 26.1.2</a> as Spring doesn't natively support
+        <p>For the <span class="technical-term">Identity Provider (IDP)</span>, we leverage <a
+                href="https://www.keycloak.org/" target="_blank">Keycloak 26.1.2</a>, as Spring doesn't natively support
             IDP functionality. Keycloak provides:</p>
         <ul>
             <li>Centralized identity management across protocols (SAML/OAuth/OIDC)</li>
@@ -91,7 +91,9 @@
         <h2>Metadata Management</h2>
         <p>SAML integration requires mutual metadata exchange between SP and IDP:</p>
         <div class="emphasis-box">
-            <p>Both SP and IDP metadata can be downloaded from SAML BOX. Corresponding partner metadata must be uploaded
+            <p>Both SAML SP and IDP metadata can be downloaded here: <a href="/saml2/metadata/samlbox">SAML BOX SP
+                Metadata</a> and <a href="http://localhost:8080/realms/master/protocol/saml/descriptor">SAML BOX IDP
+                Metadata</a>. Your corresponding partner metadata must be uploaded
                 to establish trust relationships. Metadata is identified by Entity ID - ensure uniqueness when creating
                 new entities.</p>
         </div>
@@ -100,48 +102,62 @@
     <!-- SP Functionality -->
     <div class="narrative-section">
         <h2>SAML BOX as Service Provider</h2>
-        <p>SAML BOX supports both <span class="technical-term">SP-initiated</span> and <span class="technical-term">IDP-initiated</span>
-            SSO flows. The SP-initiated flow follows this sequence:</p>
-        <ol>
-            <li>User accesses SP-protected resource</li>
-            <li>SP generates SAML AuthnRequest</li>
-            <li>User is redirected to IDP for authentication</li>
-            <li>IDP returns SAML Response</li>
-            <li>SP validates response and establishes session</li>
-        </ol>
-
         <div class="emphasis-box">
-            <h3>Configurable SP Parameters</h3>
-            <p><strong>Request Bindings:</strong> Choose between HTTP POST (recommended) or HTTP Redirect binding for
-                sending AuthnRequests. Legacy SOAP and Artifact bindings are not supported.</p>
-
-            <p><strong>NameID Formats:</strong> Specify how subject identifiers should be interpreted. Supported formats
-                include:</p>
-            <code>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</code><br>
-            <code>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</code><br>
-            <p>Custom formats can be entered for special requirements.</p>
-
-            <p><strong>Request Signing:</strong> While optional, signing AuthnRequests is recommended for
-                production-grade implementations. Uses SP's private key for signing.</p>
+            <p>There are two types of workflows in SAML: SP-Initiated SSO and IDP-Initiated SSO. (If you are interested
+                in
+                learning more details, you can check out the tutorial blogs <a
+                        href="https://www.bostonidentity.com/post/saml-2-0-explained-in-simple-words-part-i"
+                        target="_blank">here</a>).</p>
         </div>
 
-        <h3>Session Management</h3>
-        <p>Successful authentication creates a Spring Security session containing:</p>
+        <p>In SP-Init SSO, a SAML AuthnRequest is sent to IDP and IDP will generate a response after validating a user
+            and send back to SP. For that SAML AuthnRequest, there are various things we can configure to tweak the
+            AuthnRequest so that IDP can respond differently based on the ask. Here are some of them that you can play
+            with in SAML BOX.</p>
+        <br>
+        <h3>SAML Request Bindings</h3>
+        <p>In SAML, bindings are methods used to transport SAML messages between IDP and SP. There are different
+            bindings
+            defined in the SAML specification:</p>
         <ul>
-            <li>NameID and session index</li>
-            <li>Authentication instant</li>
-            <li>Assertion attributes</li>
+            <li>HTTP POST Binding</li>
+            <li>HTTP Redirect Binding</li>
+            <li>HTTP Artifact Binding</li>
+            <li>SOAP Binding</li>
         </ul>
-        <p>Session details are visible in the SAML BOX UI. New authentications overwrite existing sessions.</p>
+        <p>HTTP POST is the most used while HTTP Redirect is still seen. </p>
+        <div class="warning"> Artifact and SOAP bindings are legacy ones and
+            are not used anymore in general.
+        </div>
+        <p>
+            SAML BOX supports switching between HTTP POST and HTTP Redirect. Note that this is regarding the SAML
+            Authentication Request Binding, which is the request that sent from SP to IDP, not SAML Response which is
+            sent from IDP to SP.</p>
+        <br>
+        <h3>NameID-Format</h3>
+        <p>NameID-Format depicts how the subject value (the value that identifies the user authenticated to IDP)
+            returned in the SAML response should be interpreted by SP. For example, if it's shown as 'emailAddress', the
+            subject value should be interpreted as an email value.
 
-        <h3>Single Logout (SLO)</h3>
-        <p>SP-initiated SLO propagates logout through these steps:</p>
-        <ol>
-            <li>SP sends LogoutRequest to IDP</li>
-            <li>IDP invalidates global session</li>
-            <li>IDP sends LogoutResponses to registered SPs</li>
-            <li>SAML BOX processes logout and clears local session</li>
-        </ol>
+            Here are some NameID-Format values:
+        </p>
+        <ul>
+            <li>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</li>
+            <li>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</li>
+            <li>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</li>
+            <li>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</li>
+            <li>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</li>
+            <li>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos</li>
+            <li>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</li>
+        </ul>
+        <p>SAML BOX supports selecting one of them or type in custom format value.</p>
+        <br>
+
+        <h3>SAML Request Signature</h3>
+        <p>The signature information is not required in the SAML Request, but is good to have. In this case, IDP can
+            verify the signature using the Public Cert provided (e.g. in SP Metadata) to make sure the request is not
+            tampered.</p>
+        <p>You can specify whether SAML BOX should add a signature when sending the SAML request.</p>
         <div class="warning">
             <p>IDP-initiated SLO is currently not supported due to Keycloak limitations.</p>
         </div>
@@ -150,31 +166,56 @@
     <!-- IDP Functionality -->
     <div class="narrative-section">
         <h2>SAML BOX as Identity Provider</h2>
-        <p>Powered by Keycloak's SAML implementation, the IDP functionality supports:</p>
+        <div class="emphasis-box">
+            <p>As Spring Security SAML is NOT supporting IDP yet, Keycloak is used here as IDP provider.</p>
+        </div>
+        <p>Keycloak is an Open Source Identity and Access Management platform. It adds authentication to applications
+            and secure services with minimum effort and it provides user federation, strong authentication, user
+            management, fine-grained authorization, and etc.</p>
+
+        <p>SAML BOX leverages Keycloak APIs to fulfill the IDP role. When a SAML SP client is registered (Keycloak calls
+            SP as client, same as in OAuth/OIDC), a list of settings is available for this specific SP. Note that since
+            Keycloak is a centralized IAM platform, it can register multiple SPs and each SP will have its own specific
+            settings for the login flow.</p>
+        <br>
+
+        <h3>IDP-Initiated SSO</h3>
+        <p>Normally an IDP generates a SAML response based on the incoming SAML request. Occassionaly, IDP can generate
+            an unsolicited SAML response and directly send to SP, and this is called IDP-Initiated SSO. This flow is
+            useful when SP can't generate SAML request but can accept SAML response.</p>
+
+        <div class="warning">
+        <p>Note that When using IDP-Initiated SSO, a URL endpoint needs to be specified in the registered SP in
+            Keycloak, which is supported by SAML BOX as well.</p>
+        </div>
+        <br>
+
+        <h3>SAML Response Bindings (ACS)</h3>
+        <p>Similar to SAML Request Bindings, the different binding types can be used in the SAML response too. SAML BOX
+            (Keycloak) supports both HTTP POST and HTTP Redirect, which can be specified in the SAML BOX settings.</p>
+        <br>
+
+        <h3>NameID-Format</h3>
+        Some NameID-formats are supported by Keycloak:
         <ul>
-            <li>SP registration as Keycloak clients</li>
-            <li>Per-SP configuration of authentication flows</li>
-            <li>Flexible assertion mapping and attribute release</li>
+            <li>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</li>
+            <li>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</li>
+            <li>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</li>
         </ul>
 
         <div class="emphasis-box">
-            <h3>IDP-initiated SSO</h3>
-            <p>Enables direct SP access without initial AuthnRequest:</p>
-            <ol>
-                <li>User authenticates directly at IDP</li>
-                <li>IDP generates unsolicited SAML Response</li>
-                <li>User is redirected to SP with valid assertion</li>
-            </ol>
-            <p>Requires pre-configured SP ACS URL in Keycloak client settings.</p>
+        <p>When a name NameID-format is selected, that seleced one will be the format returned in the SAML response.</p>
         </div>
+        <br>
 
-        <h3>Response Configuration</h3>
-        <p>Keycloak supports multiple response configurations:</p>
-        <ul>
-            <li><strong>Bindings:</strong> HTTP POST or Redirect for Assertion Consumer Service</li>
-            <li><strong>Signing:</strong> Configurable at assertion or response level</li>
-            <li><strong>Encryption:</strong> Optional using SP's public certificate</li>
-        </ul>
+        <h3>SAML Response Signature</h3>
+        <p>The signature for SAML Response can be at either Assertion level or the entire Message level or both (check
+            <a href="https://www.bostonidentity.com/post/saml-2-0-explained-in-simple-words-part-ii">here</a> for more info).</p>
+        <br>
+
+        <h3>SAML Response Encryption</h3>
+        <p>SAML BOX supports encryption when acting as an IDP. Note that an encryption public cert is required when
+            uploading SP metadata.</p>
     </div>
 </div>
 <div th:insert="~{footer :: footer}"></div>

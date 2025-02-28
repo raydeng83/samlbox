@@ -231,6 +231,17 @@
             font-weight: 500;
             margin-top: 1rem;
         }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -271,16 +282,12 @@
                 <a href="/platform-intro" class="nav-link text-white">Overview</a>
             </li>
             <li class="nav-item">
-                <a href="/saml2/metadata/samlbox" class="nav-link text-white">SP-Metadata</a>
-            </li>
-            <li class="nav-item">
-                <a href="http://localhost:8080/realms/master/protocol/saml/descriptor" class="nav-link text-white">IDP-Metadata</a>
-            </li>
-            <li class="nav-item">
                 <a href="/faq" class="nav-link text-white">FAQ</a>
             </li>
+            <span class="text-white" style="font-size: small;text-align: right; margin-left: 30px;">SAML BOX is designed and developed by<br> <a
+                    href="https://linkedin.com/in/le-deng-82829710a"
+                    style="color: #a9c8fa; font-family: 'Arial', sans-serif" target="_blank">Le Deng</a></span>
         </ul>
-        <span class="text-white" style="font-size: small;text-align: right">SAML BOX is designed and developed by<br> <a href="https://linkedin.com/in/le-deng-82829710a" style="color: #a9c8fa; font-family: 'Arial', sans-serif" target="_blank">Le Deng</a></span>
 
     </div>
 
@@ -297,7 +304,7 @@
 <main class="container">
     <!-- Detailed Intro Section -->
     <section class="intro-section">
-        <h2>About This Platform</h2>
+        <h3>About This Platform</h3>
         <p>Welcome to SAML BOX. This platform can act as both SAML Identity Provider (IDP) and Service Provider (SP).
             You can upload your own entity metadata and test integration via SAML SSO flow. </p>
 
@@ -312,15 +319,32 @@
         <p>
             The main goal for this platform is to provide real IDP and SP for development.
         </p>
-        <p><a href="/saml2/metadata/samlbox">SP Metadata</a> <a
-                href="http://localhost:8080/realms/master/protocol/saml/descriptor">IDP Metadata</a></p>
+        <br>
+
+        <h3>How to Use This Platform</h3>
+        <p>Simply start by uploading your SAML metadata file.
+        <ul>
+            <li>If you want this platform to be an SP, 'Upload Your IDP Metadata' below.</li>
+            <li>If you want this platform to be IDP, 'Upload Your SP Metadata' below.</li>
+        </ul>
+        <p>Once uploaded, you can access a landing page where you have a list of SAML actions available. Yet, in order
+            for the SAML SSO to work, you will need to upload/import the metadata of this platform to your application.
+            You can get them from below:</p>
+        <ul>
+            <li><a href="/saml2/metadata/samlbox">SAML BOX SP Metadata</a></li>
+            <li><a href="http://localhost:8080/realms/master/protocol/saml/descriptor">SAML BOX IDP Metadata</a></li>
+        </ul>
+        <br>
+
+        <h3>A Shared Platform</h3>
+        <p>This platform is open and shared. SAML Entity information uploaded is identified by its Entity ID. Hence, to avoid being overwritten by others, best practice is to choose a unique SAML Entity ID when uploading metadata.</p>
     </section>
 
     <!-- Action Cards -->
     <div class="action-cards">
         <!-- IDP Card -->
         <div class="action-card">
-            <h2><i class="bi bi-upload me-2"></i>Upload <span style="color: red">IDP</span> Metadata</h2>
+            <h3><i class="bi bi-upload me-2"></i>Upload Your <span style="color: red">IDP</span> Metadata</h3>
             <p>Your app is acting as an IDP and SAML Box (this website) is acting as SP</p>
             <form method="post" enctype="multipart/form-data" action="/idp/upload" id="uploadFormIdp" target="_blank">
                 <!-- Drag & Drop Zone -->
@@ -348,7 +372,7 @@
 
         <!-- SP Card -->
         <div class="action-card">
-            <h2><i class="bi bi-upload me-2"></i>Upload <span style="color: red">SP</span> Metadata</h2>
+            <h3><i class="bi bi-upload me-2"></i>Upload Your <span style="color: red">SP</span> Metadata</h3>
             <p>Your app is acting as an SP and SAML Box (this website) is acting as IDP</p>
             <form enctype="multipart/form-data" id="uploadFormSp">
                 <!-- Drag & Drop Zone -->
@@ -374,15 +398,15 @@
             </form>
 
             <div id="resultSection" class="hidden">
-<!--                <div class="card">-->
-<!--                    <div class="card-body">-->
-<!--                        <p id="resultContent" class="mb-0"></p>-->
-<!--                        <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong>-->
-<!--                        </p>-->
+                <!--                <div class="card">-->
+                <!--                    <div class="card-body">-->
+                <!--                        <p id="resultContent" class="mb-0"></p>-->
+                <!--                        <p>You can now access the SP setting page via <strong style="color: red;">/clients/edit?clientId={sp-entity-id}</strong>-->
+                <!--                        </p>-->
 
-<!--                        <p>You will be redirected in <span id="countdown">10</span> seconds...</p>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <!--                        <p>You will be redirected in <span id="countdown">10</span> seconds...</p>-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
 
             <div id="errorAlert" class="alert alert-danger mt-4 hidden" role="alert"></div>
@@ -401,13 +425,17 @@
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="https://www.bostonidentity.com/blog" target="_blank"><i class="bi bi-shield-lock me-2"></i>IAM Blogs</a></li>
+                <li><a href="https://www.bostonidentity.com/blog" target="_blank"><i class="bi bi-shield-lock me-2"></i>IAM
+                    Blogs</a></li>
             </ul>
         </div>
     </div>
 
     <div class="footer-bottom">
-        <p class="mb-0"><span style="font-family: 'Arial', sans-serif; font-size: small;">SAML BOX is brought to you by</span> <a href="https://bostonidentity.com" class="text-white" target="_blank" style="text-decoration: none;">Boston Identity</a></p>
+        <p class="mb-0"><span
+                style="font-family: 'Arial', sans-serif; font-size: small;">SAML BOX is brought to you by</span> <a
+                href="https://bostonidentity.com" class="text-white" target="_blank" style="text-decoration: none;">Boston
+            Identity</a></p>
     </div>
 </footer>
 <script th:src="@{/js/custom.js}"></script>
