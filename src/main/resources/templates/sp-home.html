@@ -151,6 +151,18 @@
                     </div>
                 </div>
             </div>
+
+            <div class="list-group-item border-0 p-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>
+                    <div>
+                        <a class="info-link" th:href="@{/keycloak-log(entityId=${spEntityId})}">
+                            View Logs
+                        </a>
+                        <div class="text-muted small mt-1" >Endpoint: <span th:text="@{/keycloak-log(entityId=${spEntityId})}"></span></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

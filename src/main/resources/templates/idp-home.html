@@ -159,7 +159,19 @@
                         <a class="info-link" th:href="@{/session-info(entityId=${idpEntityId})}">
                             Session Information
                         </a>
-                        <div class="text-muted small mt-1">View active SAML sessions</div>
+                        <div class="text-muted small mt-1" th:text="@{/session-info(entityId=${idpEntityId})}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-group-item border-0 p-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>
+                    <div>
+                        <a class="info-link" th:href="@{/session-info(entityId=${idpEntityId})}">
+                            View Logs
+                        </a>
+                        <div class="text-muted small mt-1" th:href="@{/session-info(entityId=${idpEntityId})}"></div>
                     </div>
                 </div>
             </div>

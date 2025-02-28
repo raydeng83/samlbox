@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Logs Viewer</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .log-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .log-container {
+            background-color: white;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 70vh;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .log-line {
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .line-number {
+            color: #666;
+            min-width: 3.5rem;
+            padding-right: 1rem;
+            text-align: right;
+            user-select: none;
+        }
+
+        .log-content {
+            flex-grow: 1;
+            word-break: break-all;
+        }
+
+        .log-content.nowrap {
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .log-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .log-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lines-input {
+            width: 120px;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<div class="container">
+    <!-- Log Controls -->
+    <div class="log-section">
+        <div class="log-controls">
+            <div class="button-group">
+                <!-- Back Button -->
+                <a class="btn btn-primary btn-sm" th:href="@{/sso-sp-config(spEntityId=${entityId})}">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+
+                <!-- Refresh Button -->
+                <button class="btn btn-outline-secondary btn-sm" onclick="refreshLogs()">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh Logs
+                </button>
+            </div>
+
+            <!-- Lines Input and Wrap Line Switch -->
+            <div class="d-flex align-items-center">
+                <!-- Lines Input -->
+                <div class="input-group input-group-sm lines-input" style="width: 150px;">
+                    <input type="number" id="linesInput" class="form-control" value="1000" min="1" max="50000" >
+                    <span class="input-group-text">Lines</span>
+                </div>
+
+                <!-- Wrap Line Switch -->
+                <div class="form-check form-switch ms-3">
+                    <input class="form-check-input" type="checkbox" id="wrapToggle" checked>
+                    <label class="form-check-label" for="wrapToggle">Wrap Lines</label>
+                </div>
+            </div>
+        </div>
+
+        <h2>Server Logs Viewer</h2>
+
+        <!-- Log Container -->
+        <div class="log-container log-content">
+            <span th:each="line,iter : ${logContent.lines}" class="log-line d-flex">
+                <span class="line-number"></span>
+                <span th:text="${line}"></span>
+            </span>
+
+            <!-- Empty State -->
+            <div th:if="${logContent.lines.isEmpty()}" class="text-warning p-3">
+                Log file is empty
+            </div>
+
+            <!-- Error Message -->
+            <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+        </div>
+    </div>
+</div>
+<div th:insert="~{footer :: footer}"></div>
+
+<!-- Add Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+<script>
+    // Toggle line wrapping
+    document.getElementById('wrapToggle').addEventListener('change', function () {
+        const logContents = document.querySelectorAll('.log-content');
+        logContents.forEach(content => {
+            content.classList.toggle('nowrap', !this.checked);
+        });
+    });
+
+    // Auto-scroll to bottom
+    window.addEventListener('load', () => {
+        const container = document.querySelector('.log-container');
+        container.scrollTop = container.scrollHeight;
+    });
+
+    // Auto-scroll to bottom
+    function autoScroll() {
+        const container = document.querySelector('.log-container');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // Refresh logs using AJAX
+    async function refreshLogs() {
+        const lines = document.getElementById('linesInput').value;
+        const container = document.querySelector('.log-container');
+        const errorDiv = document.querySelector('.alert-danger');
+        const emptyDiv = document.querySelector('.text-warning');
+        const fileInfo = document.querySelector('.file-info');
+
+        try {
+            const response = await fetch(`/logs/data?lines=${lines}`);
+            if (!response.ok) throw new Error(await response.text());
+
+            const data = await response.json();
+
+            // Clear existing content
+            container.innerHTML = '';
+            errorDiv?.remove();
+            emptyDiv?.remove();
+
+            // Update file info
+            // fileInfo.innerHTML = `
+            //     ${data.filePath} |
+            //     Size: ${(data.fileSize/1024).toFixed(1)} KB |
+            //     Modified: ${new Date(data.lastModified).toLocaleString()}
+            // `;
+
+            // Add new log lines
+            if (data.lines.length === 0) {
+                container.innerHTML = '<div class="text-warning p-3">Log file is empty</div>';
+            } else {
+                data.lines.forEach(line => {
+                    let lineDiv = document.createElement('span');
+                    lineDiv.className = 'log-line d-flex';
+                    console.log(lineDiv);
+                    lineDiv.innerHTML = `
+                        <span class="line-number"></span>
+                        <span class="${getLineClass(line)}">${line}</span>
+                    `;
+                    container.appendChild(lineDiv);
+                });
+            }
+
+            autoScroll();
+        } catch (error) {
+            let errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger mt-3';
+            errorDiv.textContent = `Error loading logs: ${error.message}`;
+            container.appendChild(errorDiv);
+        }
+    }
+
+    // Helper to determine line class
+    function getLineClass(line) {
+        if (line.startsWith('ERROR')) return 'error';
+        if (line.startsWith('WARN')) return 'warn';
+        if (line.startsWith('INFO')) return 'info';
+        if (line.startsWith('DEBUG')) return 'debug';
+        return 'timestamp';
+    }
+</script>
+</body>
+</html>

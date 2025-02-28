@@ -80,4 +80,9 @@ public class HomeController {
     public String platformIntro() {
         return "platform-intro";
     }
+
+    @GetMapping("/faq")
+    public String faq() {
+        return "faq";
+    }
 }

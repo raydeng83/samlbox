@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAML BOX FAQs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; background-color: #f8f9fa; }
+        .faq-section { margin-bottom: 30px; padding: 20px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .faq-item { margin-bottom: 20px; }
+        .faq-question { color: #3498db; cursor: pointer; }
+        .faq-answer { padding: 15px; background-color: #f8f9fa; border-radius: 4px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<div class="container">
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+                <strong>Q:</strong> How do I exchange metadata between SP and IDP?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq1" class="collapse faq-answer">
+                <p>Metadata exchange follows these steps:</p>
+                <ol>
+                    <li>Download SP metadata from SAML BOX SP section</li>
+                    <li>Upload this metadata to your IDP configuration</li>
+                    <li>Download IDP metadata from your IDP</li>
+                    <li>Upload IDP metadata to SAML BOX SP section</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+                <strong>Q:</strong> What's the difference between SP-initiated and IDP-initiated SSO?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq2" class="collapse faq-answer">
+                <p><strong>SP-initiated SSO:</strong> Starts at the Service Provider. User attempts to access SP resource → SP generates AuthnRequest → Redirect to IDP.</p>
+                <p><strong>IDP-initiated SSO:</strong> Starts at the Identity Provider. User authenticates at IDP first → IDP generates unsolicited SAML Response → Redirect to SP.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+                <strong>Q:</strong> How are sessions managed in SAML BOX?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq3" class="collapse faq-answer">
+                <p>SAML BOX uses Spring Security sessions:</p>
+                <ul>
+                    <li>Session created on successful SAML response validation</li>
+                    <li>Session contains NameID, session index, and attributes</li>
+                    <li>New authentication overwrites existing session</li>
+                    <li>Session visible in UI until expiration or logout</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+                <strong>Q:</strong> Can I use custom NameID formats?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq4" class="collapse faq-answer">
+                <p>Yes, SAML BOX supports both standard and custom NameID formats:</p>
+                <code>urn:oasis:names:tc:SAML:1.1:nameid-format:customFormat</code>
+                <p class="mt-2">When using custom formats:</p>
+                <ul>
+                    <li>Ensure IDP supports the format</li>
+                    <li>Specify format in SP configuration</li>
+                    <li>Handle parsing in your application logic</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+                <strong>Q:</strong> How does Keycloak integration work?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq5" class="collapse faq-answer">
+                <p>SAML BOX integrates with Keycloak through:</p>
+                <ol>
+                    <li>Keycloak's SAML client configuration</li>
+                    <li>Realm settings for identity management</li>
+                    <li>Custom API adapters for metadata exchange</li>
+                </ol>
+                <div class="note" style="background-color: #e8f4fc; padding: 10px; margin-top: 10px;">
+                    <p>Keycloak version 26.1.2 is pre-configured in SAML BOX. Ensure your SP metadata matches Keycloak client configuration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div th:insert="~{footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</body>
+</html>
