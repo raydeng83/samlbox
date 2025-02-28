@@ -19,14 +19,14 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class LogService {
-    private static final Logger logger = LoggerFactory.getLogger(LogService.class);
+public class KeycloakLogService {
+    private static final Logger logger = LoggerFactory.getLogger(KeycloakLogService.class);
 
     private final Path logDirectory;
     private final int maxAllowedLines = 10000; // Safety limit
 
     @Autowired
-    public LogService(@Value("${logging.file.directory:logs}") String logDir) {
+    public KeycloakLogService(@Value("${keycloak-log.file.directory:logs}") String logDir) {
         this.logDirectory = Paths.get(logDir).toAbsolutePath().normalize();
         validateLogDirectory();
     }

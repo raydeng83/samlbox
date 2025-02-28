@@ -43,7 +43,7 @@ public class KeycloakAdminConfig {
 
     @Bean
     public ServletContextInitializer servletContextInitializer(
-            @Value("${logging.file.directory:logs}") String logDir) {
+            @Value("${keycloak-log.file.directory:logs}") String logDir) {
         return servletContext -> {
             Path path = Paths.get(logDir).toAbsolutePath().normalize();
             if (!Files.exists(path)) {

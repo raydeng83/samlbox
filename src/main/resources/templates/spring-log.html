@@ -98,7 +98,7 @@
         <div class="log-controls">
             <div class="button-group">
                 <!-- Back Button -->
-                <a class="btn btn-primary btn-sm" th:href="@{/sso-sp-config(spEntityId=${entityId})}">
+                <a class="btn btn-primary btn-sm" th:href="@{/sso-idp-config(idpEntityId=${entityId})}">
                     <i class="bi bi-arrow-left"></i> Back
                 </a>
 
@@ -180,7 +180,7 @@
         const fileInfo = document.querySelector('.file-info');
 
         try {
-            const response = await fetch(`/keycloak-log/data?lines=${lines}`);
+            const response = await fetch(`/spring-log/data?lines=${lines}`);
             if (!response.ok) throw new Error(await response.text());
 
             const data = await response.json();

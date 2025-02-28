@@ -168,10 +168,10 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-person-badge me-3 fs-5 text-primary"></i>
                     <div>
-                        <a class="info-link" th:href="@{/session-info(entityId=${idpEntityId})}">
-                            View Logs
+                        <a class="info-link" th:href="@{/spring-log(entityId=${idpEntityId})}">
+                            View Server Logs
                         </a>
-                        <div class="text-muted small mt-1" th:href="@{/session-info(entityId=${idpEntityId})}"></div>
+                        <div class="text-muted small mt-1" th:text="@{/spring-log(entityId=${idpEntityId})}"></div>
                     </div>
                 </div>
             </div>
