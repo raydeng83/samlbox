@@ -21,81 +21,95 @@
     <section class="faq-section">
         <h2>Frequently Asked Questions</h2>
 
+        <p>This is FAQ page.</p>
+
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
-                <strong>Q:</strong> How do I exchange metadata between SP and IDP?
+                <strong>Q:</strong> What is SAML BOX?
                 <i class="bi bi-chevron-down float-end"></i>
             </div>
             <div id="faq1" class="collapse faq-answer">
-                <p>Metadata exchange follows these steps:</p>
-                <ol>
-                    <li>Download SP metadata from SAML BOX SP section</li>
-                    <li>Upload this metadata to your IDP configuration</li>
-                    <li>Download IDP metadata from your IDP</li>
-                    <li>Upload IDP metadata to SAML BOX SP section</li>
-                </ol>
+                <p>SAML BOX is a custom developed application deployed to help you test your SAML integration.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
-                <strong>Q:</strong> What's the difference between SP-initiated and IDP-initiated SSO?
+                <strong>Q:</strong> Why do you deploy this platform?
                 <i class="bi bi-chevron-down float-end"></i>
             </div>
             <div id="faq2" class="collapse faq-answer">
-                <p><strong>SP-initiated SSO:</strong> Starts at the Service Provider. User attempts to access SP resource → SP generates AuthnRequest → Redirect to IDP.</p>
-                <p><strong>IDP-initiated SSO:</strong> Starts at the Identity Provider. User authenticates at IDP first → IDP generates unsolicited SAML Response → Redirect to SP.</p>
+                <p>From time to time, I want some test IDP and SP so that I can debug/troubleshoot my SAML integration, but couldn't find any useful ones online. Hence, I developed this website which could be helpful for others too. Plus, could be a good way to market ourselves.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
-                <strong>Q:</strong> How are sessions managed in SAML BOX?
+                <strong>Q:</strong> How to use SAML BOX?
                 <i class="bi bi-chevron-down float-end"></i>
             </div>
             <div id="faq3" class="collapse faq-answer">
-                <p>SAML BOX uses Spring Security sessions:</p>
-                <ul>
-                    <li>Session created on successful SAML response validation</li>
-                    <li>Session contains NameID, session index, and attributes</li>
-                    <li>New authentication overwrites existing session</li>
-                    <li>Session visible in UI until expiration or logout</li>
-                </ul>
+                <p>First, you will need to have some understanding on the SAML protocols and then, your own app (either IDP or SP) to do SSO with SAML BOX</p>
+                <p>Then, go to <a th:href="@{/}">Getting Started</a> page to get started.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
-                <strong>Q:</strong> Can I use custom NameID formats?
+                <strong>Q:</strong> What is Boston Identity?
                 <i class="bi bi-chevron-down float-end"></i>
             </div>
             <div id="faq4" class="collapse faq-answer">
-                <p>Yes, SAML BOX supports both standard and custom NameID formats:</p>
-                <code>urn:oasis:names:tc:SAML:1.1:nameid-format:customFormat</code>
-                <p class="mt-2">When using custom formats:</p>
-                <ul>
-                    <li>Ensure IDP supports the format</li>
-                    <li>Specify format in SP configuration</li>
-                    <li>Handle parsing in your application logic</li>
-                </ul>
+                <p>Boston Identity is an IAM consulting firm based in Boston MA. They provide top quality service to fortune 500 clients.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
-                <strong>Q:</strong> How does Keycloak integration work?
+                <strong>Q:</strong> Who developed this platform?
                 <i class="bi bi-chevron-down float-end"></i>
             </div>
             <div id="faq5" class="collapse faq-answer">
-                <p>SAML BOX integrates with Keycloak through:</p>
-                <ol>
-                    <li>Keycloak's SAML client configuration</li>
-                    <li>Realm settings for identity management</li>
-                    <li>Custom API adapters for metadata exchange</li>
-                </ol>
-                <div class="note" style="background-color: #e8f4fc; padding: 10px; margin-top: 10px;">
-                    <p>Keycloak version 26.1.2 is pre-configured in SAML BOX. Ensure your SP metadata matches Keycloak client configuration.</p>
-                </div>
+                <p>This platform is developed by <a
+                        href="https://linkedin.com/in/le-deng-82829710a" target="_blank">Le Deng</a>, who is also a huge fan of Jazz music.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
+                <strong>Q:</strong> Are there any good resources to learn SAML, OAuth/OIDC, and other IAM topics?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq6" class="collapse faq-answer">
+                <p>Work on projects is best way to learn. For some basic theory, check out some <a href="https://www.bostonidentity.com/blog">blogs</a> here. Also, learn to use AI.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq7">
+                <strong>Q:</strong> What is SP or IDP landing page?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq7" class="collapse faq-answer">
+                <p>When you have uploaded either an IDP or SP metadata, a corresponding landing page for that entity is created, where you can browse a list of actions available, which is more convenient to manage.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq8">
+                <strong>Q:</strong> Am I able to view logs if I encounter any issue during SAML SSO?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq8" class="collapse faq-answer">
+                <p>Yes, go to either IDP or SP landing page, and there is view server log option.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq9">
+                <strong>Q:</strong> Who should I contact if I have any question?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq9" class="collapse faq-answer">
+                <p>Send an email to le.deng@bostonidentity.com</p>
             </div>
         </div>
     </section>
