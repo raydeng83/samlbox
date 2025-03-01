@@ -9,7 +9,7 @@ public record SamlResponseDetails(
         String subject,
         String responseId,
         String assertionId,
-        Map<String, List<String>> attributes,
+        Map<String, String> attributes,
         Date notBefore,
         Date notOnOrAfter,
         boolean isSignatureValid

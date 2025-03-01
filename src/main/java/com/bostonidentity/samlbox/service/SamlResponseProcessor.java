@@ -11,6 +11,7 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.saml2.core.*;
 import org.opensaml.saml.saml2.encryption.Decrypter;
@@ -99,7 +100,7 @@ public class SamlResponseProcessor {
 
         // Extract details
         Assertion assertion = samlResponse.getAssertions().get(0);
-        Map<String, List<String>> attributes = extractAttributes(assertion);
+        Map<String, String> attributes = extractAttributes(assertion);
         String issuer = samlResponse.getIssuer().getValue();
         String subject = assertion.getSubject().getNameID().getValue();
         String responseId = samlResponse.getID();
@@ -113,15 +114,17 @@ public class SamlResponseProcessor {
         );
     }
 
-    private static Map<String, List<String>> extractAttributes(Assertion assertion) {
-        Map<String, List<String>> attributesMap = new HashMap<>();
+    private static Map<String, String> extractAttributes(Assertion assertion) {
+        Map<String, String> attributesMap = new HashMap<>();
 
         for (AttributeStatement attributeStatement : assertion.getAttributeStatements()) {
             for (Attribute attribute : attributeStatement.getAttributes()) {
                 List<String> values = attribute.getAttributeValues().stream()
                         .map(XMLObject::toString)
                         .toList();
-                attributesMap.put(attribute.getName(), values);
+                XSString xsString = (XSString) attribute.getAttributeValues().getFirst();
+                String value = xsString.getValue();
+                attributesMap.put(attribute.getName(), value);
             }
         }
 

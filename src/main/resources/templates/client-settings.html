@@ -134,16 +134,20 @@
             <div class="mb-4">
                 <label class="form-label">NameID Format</label>
                 <select class="form-select" name="nameIdFormat">
-                    <option value="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
-                            th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'">
-                        Email Address
+                    <option value="username"
+                            th:selected="${settings.nameIdFormat} == 'username'">
+                        Username (unspecified)
                     </option>
-                    <option value="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
-                            th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'">
+                    <option value="email"
+                            th:selected="${settings.nameIdFormat} == 'email'">
+                        Email
+                    </option>
+                    <option value="persistent"
+                            th:selected="${settings.nameIdFormat} == 'persistent'">
                         Persistent
                     </option>
-                    <option value="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                            th:selected="${settings.nameIdFormat} == 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'">
+                    <option value="transient"
+                            th:selected="${settings.nameIdFormat} == 'transient'">
                         Transient
                     </option>
                 </select>

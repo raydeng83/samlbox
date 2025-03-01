@@ -138,6 +138,12 @@
             which is
             sent from IDP to SP.</p>
         <br>
+
+        <h3>SAML Response Bindings</h3>
+        <p>SAML Response binding can be different from Request binding. In theory, it can be either HTTP POST or HTTP Redirect. However, SAML BOX supports only HTTP POST here.</p>
+        <p class="emphasis-box">Regarding SAML Response from IDP, only HTTP POST bindings is supported by SAML BOX.</p>
+        <br>
+
         <h3>NameID-Format</h3>
         <p>NameID-Format depicts how the subject value (the value that identifies the user authenticated to IDP)
             returned in the SAML response should be interpreted by SP. For example, if it's shown as 'emailAddress', the
@@ -170,12 +176,11 @@
         <p>SAML Box supports <span class="technical-term">SP-init Single Logout</span>, where a SAML Single Logout
             request is sent to IDP.
         <p>
+        <p>Here for SAML BOX, when a Single Logout response is sent back, SAML BOX will validate and process it. </p>
         <p class="emphasis-box">Note that it's IDP's responsibility to process that request and send logout response to
-            other SPs.</p>
-
-        <p>Here for SAML BOX, when a Single Logout response is sent back, SAML BOX will validate and process it. Once
-            the logout is done, the SAML BOX session will be killed, which can be seen from the session info section in
-            SAML BOX UI.</p>
+            other SPs. Also, signature is required in the SLO response for SAML BOX to process it.</p>
+        <p>Once the logout is done, the SAML BOX session will be killed, which can be seen from the session info section
+            in SAML BOX UI.</p>
 
         <p class="warning">IDP-init Single Logout (unsolicited single logout, similar to IDP-init single sign-on) may
             not be supported here due to the limitation of Keycloak.</p>
@@ -220,7 +225,7 @@
         </div>
         <br>
 
-        <h3>SAML Response Bindings (ACS)</h3>
+        <h3>SAML Bindings (ACS)</h3>
         <p>Similar to SAML Request Bindings, the different binding types can be used in the SAML response too. SAML BOX
             (Keycloak) supports both HTTP POST and HTTP Redirect, which can be specified in the SAML BOX settings.</p>
         <br>
@@ -240,7 +245,8 @@
         <br>
 
         <h3>SAML Response Signature</h3>
-        <p>The signature for SAML Response is mandatory and can be at either Assertion level or the entire Message level or both (check
+        <p>The signature for SAML Response is mandatory and can be at either Assertion level or the entire Message level
+            or both (check
             <a href="https://www.bostonidentity.com/post/saml-2-0-explained-in-simple-words-part-ii" target="_blank">here</a>
             for more info).</p>
         <br>
