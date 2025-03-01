@@ -55,10 +55,12 @@
     <!-- Overview Section -->
     <div class="narrative-section">
         <h2>Overview</h2>
-        <p>The purpose of this platform is to provide a readily available IDP or SP for your development and integration testing.</p>
-        <p class="warning"><strong>Please don't upload production data</strong>.</p>
-        <p>SAML Entities are identified by their Entity ID - use unique IDs to prevent overwrites.</p>
-
+        <p>The purpose of this platform is to provide a readily available IDP or SP for your development and integration
+            testing.</p>
+        <!--        <p class="warning"><strong>Please don't upload production data</strong>.</p>-->
+        <div class="emphasis-box">
+            <p>SAML Entities are identified by their Entity ID - use unique IDs to prevent overwrites.</p>
+        </div>
         <p>The SAML BOX platform consists of two core components working together:</p>
 
         <p>For <span class="technical-term">Service Provider (SP)</span>, we use <a
@@ -91,11 +93,11 @@
         <h2>Metadata Management</h2>
         <p>SAML integration requires mutual metadata exchange between SP and IDP:</p>
 
-            <p>Both SAML SP and IDP metadata can be downloaded here: <a href="/saml2/metadata/samlbox">SAML BOX SP
-                Metadata</a> and <a href="http://localhost:8080/realms/master/protocol/saml/descriptor">SAML BOX IDP
-                Metadata</a>. Your corresponding partner metadata must be uploaded
-                to establish trust relationships. Metadata is identified by Entity ID - ensure uniqueness when creating
-                new entities.</p>
+        <p>Both SAML SP and IDP metadata can be downloaded here: <a href="/saml2/metadata/samlbox">SAML BOX SP
+            Metadata</a> and <a href="http://localhost:8080/realms/master/protocol/saml/descriptor">SAML BOX IDP
+            Metadata</a>. Your corresponding partner metadata must be uploaded
+            to establish trust relationships. Metadata is identified by Entity ID - ensure uniqueness when creating
+            new entities.</p>
 
     </div>
 
@@ -130,8 +132,10 @@
             are not used anymore in general.
         </div>
         <p>
-            SAML BOX supports switching between HTTP POST and HTTP Redirect. Note that this is regarding the <span class="technical-term">SAML
-            Authentication Request</span> Binding, which is the request that sent from SP to IDP, not SAML Response which is
+            SAML BOX supports switching between HTTP POST and HTTP Redirect. Note that this is regarding the <span
+                class="technical-term">SAML
+            Authentication Request</span> Binding, which is the request that sent from SP to IDP, not SAML Response
+            which is
             sent from IDP to SP.</p>
         <br>
         <h3>NameID-Format</h3>
@@ -157,9 +161,36 @@
             verify the signature using the Public Cert provided (e.g. in SP Metadata) to make sure the request is not
             tampered.</p>
         <p>You can specify whether SAML BOX should add a signature when sending the SAML request.</p>
-        <div class="warning">
-            <p>IDP-initiated SLO is currently not supported due to Keycloak limitations.</p>
-        </div>
+        <br>
+
+        <h3>SP-Initialized Single Logout (SLO)</h3>
+        <p>Single Logout allows a user to log out from all sessions across multiple applications (SPs) plus IDP itself
+            in a single action. In this case, a user doesn't need to manually logout each app.</p>
+
+        <p>SAML Box supports <span class="technical-term">SP-init Single Logout</span>, where a SAML Single Logout
+            request is sent to IDP.
+        <p>
+        <p class="emphasis-box">Note that it's IDP's responsibility to process that request and send logout response to
+            other SPs.</p>
+
+        <p>Here for SAML BOX, when a Single Logout response is sent back, SAML BOX will validate and process it. Once
+            the logout is done, the SAML BOX session will be killed, which can be seen from the session info section in
+            SAML BOX UI.</p>
+
+        <p class="warning">IDP-init Single Logout (unsolicited single logout, similar to IDP-init single sign-on) may
+            not be supported here due to the limitation of Keycloak.</p>
+        <br>
+
+        <h3>SAML Response Encryption</h3>
+        <p>While SAML response signature is required, SAML response encryption is optional. The former protects data
+            integrity of the response and the latter protects the data confidentiality of the response. When security
+            level is high, SAML encryption might be needed, and signature is usually required too. Note that IDP
+            usually signs response first and then encrypt.</p>
+
+        <p>When SAML BOX acts as SP, it supports SAML response encryption. </p>
+        <p class="emphasis-box"> A signature is required when encryption is enabled.</p>
+        <p>IDP uses SP's public cert to encrypt the response and SP will decrypt it using its private key.</p>
+
     </div>
 
     <!-- IDP Functionality -->
@@ -184,8 +215,8 @@
             useful when SP can't generate SAML request but can accept SAML response.</p>
 
         <div class="warning">
-        <p>Note that When using IDP-Initiated SSO, a URL endpoint needs to be specified in the registered SP in
-            Keycloak, which is supported by SAML BOX as well.</p>
+            <p>Note that When using IDP-Initiated SSO, a URL endpoint needs to be specified in the registered SP in
+                Keycloak, which is supported by SAML BOX as well.</p>
         </div>
         <br>
 
@@ -203,17 +234,20 @@
         </ul>
 
         <div class="emphasis-box">
-        <p>When a name NameID-format is selected, that seleced one will be the format returned in the SAML response.</p>
+            <p>When a name NameID-format is selected, that seleced one will be the format returned in the SAML
+                response.</p>
         </div>
         <br>
 
         <h3>SAML Response Signature</h3>
-        <p>The signature for SAML Response can be at either Assertion level or the entire Message level or both (check
-            <a href="https://www.bostonidentity.com/post/saml-2-0-explained-in-simple-words-part-ii" target="_blank">here</a> for more info).</p>
+        <p>The signature for SAML Response is mandatory and can be at either Assertion level or the entire Message level or both (check
+            <a href="https://www.bostonidentity.com/post/saml-2-0-explained-in-simple-words-part-ii" target="_blank">here</a>
+            for more info).</p>
         <br>
 
         <h3>SAML Response Encryption</h3>
-        <p>SAML BOX supports encryption when acting as an IDP. Note that an <span class="technical-term">encryption public cert</span> is required when
+        <p>SAML BOX supports encryption when acting as an IDP. Note that an <span class="technical-term">encryption public cert</span>
+            is required when
             uploading SP metadata.</p>
     </div>
 </div>
