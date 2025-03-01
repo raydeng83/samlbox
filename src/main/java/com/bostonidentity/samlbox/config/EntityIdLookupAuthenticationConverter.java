@@ -1,3 +1,4 @@
+
 package com.bostonidentity.samlbox.config;
 
 import com.bostonidentity.samlbox.repository.DynamicRelyingPartyRegistrationRepository;

@@ -21,6 +21,8 @@ public class IdpConfigService {
 
         existingIdpConfig.setSsoBinding(idpConfig.getSsoBinding());
         existingIdpConfig.setSsoLocationUrl(idpConfig.getSsoLocationUrl());
+        existingIdpConfig.setSloBinding(idpConfig.getSloBinding());
+        existingIdpConfig.setSloLocationUrl(idpConfig.getSloLocationUrl());
         existingIdpConfig.setSignRequests(idpConfig.isSignRequests());
         existingIdpConfig.setNameIdFormat(idpConfig.getNameIdFormat());
 

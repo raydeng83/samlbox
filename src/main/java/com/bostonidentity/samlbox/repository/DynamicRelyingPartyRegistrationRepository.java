@@ -51,7 +51,13 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
     }
 
     public List<RelyingPartyRegistration> updateRegistration(IdpConfig idpConfig) {
-        Saml2MessageBinding binding = switch (idpConfig.getSsoBinding()) {
+        Saml2MessageBinding ssoBinding = switch (idpConfig.getSsoBinding()) {
+            case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
+            case "HTTP_POST" -> Saml2MessageBinding.POST;
+            default -> Saml2MessageBinding.POST;
+        };
+
+        Saml2MessageBinding sloBinding = switch (idpConfig.getSloBinding()) {
             case "HTTP_REDIRECT" -> Saml2MessageBinding.REDIRECT;
             case "HTTP_POST" -> Saml2MessageBinding.POST;
             default -> Saml2MessageBinding.POST;
@@ -62,8 +68,10 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .authnRequestsSigned(idpConfig.isSignRequests())
                 .assertingPartyMetadata(apd ->
                         apd
-                                .singleSignOnServiceBinding(binding)
+                                .singleSignOnServiceBinding(ssoBinding)
                                 .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
+                                .singleLogoutServiceBinding(sloBinding)
+                                .singleLogoutServiceLocation(idpConfig.getSloLocationUrl())
                 )
                 .build();
 
@@ -147,7 +155,6 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                         .authnRequestsSigned(idpConfig.isSignRequests())
                         .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso")
                         .singleLogoutServiceLocation(baseUrl + "/logout/saml2/slo")
-//                        .singleLogoutServiceBinding(Saml2MessageBinding.REDIRECT)
                         .assertingPartyMetadata(apd ->
                                 apd
                                         .singleSignOnServiceBinding(ssoBinding)

@@ -125,6 +125,28 @@
                        autocomplete="off">
             </div>
 
+            <!-- SLO Binding Dropdown -->
+            <div class="mb-4">
+                <label class="form-label" for="sloBinding">Single Logout Binding</label>
+                <select id="sloBinding" name="sloBinding" class="form-select" th:field="${idpConfig.sloBinding}">
+                    <option th:each="binding : ${bindingList}"
+                            th:value="${binding}"
+                            th:text="${binding}"
+                            th:selected="${idpConfig.sloBinding==binding}"></option>
+                </select>
+            </div>
+
+            <!-- SLO Location URL -->
+            <div class="mb-4">
+                <label class="form-label" for="ssoLocationUrl">SLO Location URL</label>
+                <input type="text"
+                       id="sloLocationUrl"
+                       name="sloLocationUrl"
+                       class="form-control"
+                       th:value="${idpConfig.sloLocationUrl}"
+                       autocomplete="off">
+            </div>
+
             <!-- Name-ID Format -->
             <div class="mb-4">
                 <label class="form-label" for="nameIdFormatInput">Name-ID Format</label>

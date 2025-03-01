@@ -95,6 +95,7 @@ public class MetadataConverterService {
 
         Map<String, String> attributes = clientRep.getAttributes();
         attributes.put("saml.force.post.binding", "false");
+        attributes.put("saml.encrypt", "false");
 
         // Check if client already exists
         List<ClientRepresentation> existingClients = clientsResource.findByClientId(clientRep.getClientId());

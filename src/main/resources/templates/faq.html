@@ -112,6 +112,26 @@
                 <p>Send an email to le.deng@bostonidentity.com</p>
             </div>
         </div>
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq10">
+                <strong>Q:</strong> What SAML bindings are supported?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq10" class="collapse faq-answer">
+                <p>When SAML BOX acts as an SP, you can use either HTTP POST or HTTP Redirect for both SSO and SLO for SAML Request. However, SAML Response is required to be HTTP POST for SAML BOX to accept, and this is for both SSO and SLO.</p>
+                <p>When SAML BOX acts as an IDP, you can use either HTTP POST or HTTP Redirect for both SSO and SLO for SAML Request.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq11">
+                <strong>Q:</strong> Is SAML Encryption Supported?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq11" class="collapse faq-answer">
+                <p>When SAML BOX acts as an SP, signature is required in the SAML response even if it's encrypted.
+                <p>When SAML BOX acts as an IDP, you can turn the encryption on or off.</p>
+            </div>
+        </div>
     </section>
 </div>
 <div th:insert="~{footer :: footer}"></div>
