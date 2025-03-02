@@ -21,8 +21,6 @@
     <section class="faq-section">
         <h2>Frequently Asked Questions</h2>
 
-        <p>This is FAQ page.</p>
-
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
                 <strong>Q:</strong> What is SAML BOX?
@@ -87,7 +85,7 @@
 
         <div class="faq-item">
             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq7">
-                <strong>Q:</strong> What is SP or IDP landing page?
+                <strong>Q:</strong> What is SAML BOX SP or IDP landing page?
                 <i class="bi bi-chevron-down float-end"></i>
             </div>
             <div id="faq7" class="collapse faq-answer">
@@ -130,6 +128,25 @@
             <div id="faq11" class="collapse faq-answer">
                 <p>When SAML BOX acts as an SP, signature is required in the SAML response even if it's encrypted.
                 <p>When SAML BOX acts as an IDP, you can turn the encryption on or off.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq12">
+                <strong>Q:</strong> Is IDP-Init SAML SSO supported?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq12" class="collapse faq-answer">
+                <p>Yes. When SAML BOX acts as IDP, you can add a IDP-init endpoint and then use that endpoint to trigger the IDP-init SSO flow.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq13">
+                <strong>Q:</strong> Is SAML Single Logout (SLO) supported?
+                <i class="bi bi-chevron-down float-end"></i>
+            </div>
+            <div id="faq13" class="collapse faq-answer">
+                <p>When SAML BOX acts as SP, SP-init SLO is supported, and SLO response from IDP needs to be signed. It works with HTTP POST.</p>
+                <p>When SAML BOX acts as IDP, SP-init SLO is supported with both HTTP POST and HTTP Redirect. You just need to specify the corresponding URLs in the setting.</p>
             </div>
         </div>
     </section>

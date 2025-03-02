@@ -68,6 +68,7 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
                 .authnRequestsSigned(idpConfig.isSignRequests())
                 .assertingPartyMetadata(apd ->
                         apd
+                                .wantAuthnRequestsSigned(idpConfig.isSignRequests())
                                 .singleSignOnServiceBinding(ssoBinding)
                                 .singleSignOnServiceLocation(idpConfig.getSsoLocationUrl())
                                 .singleLogoutServiceBinding(sloBinding)
