@@ -1,6 +1,7 @@
 package com.bostonidentity.samlbox.api;
 
 import com.bostonidentity.samlbox.service.MetadataConverterService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@Log4j2
 public class MetadataConverterController {
 
     private final MetadataConverterService converterService;

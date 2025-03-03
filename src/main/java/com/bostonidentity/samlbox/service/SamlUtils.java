@@ -19,7 +19,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.net.URLDecoder;
 import java.util.Base64;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
@@ -84,17 +83,6 @@ public class SamlUtils {
             inflater.end();
         }
         return outputStream.toByteArray();
-    }
-
-    private static String getIssuer(byte[] xmlBytes) throws Exception {
-        // Your existing parsing logic
-        Response response = parseSamlResponse(xmlBytes);
-        Issuer issuer = response.getIssuer();
-        return issuer != null ? issuer.getValue() : null;
-    }
-
-    public static String extractRelayState(HttpServletRequest request) {
-        return request.getParameter("RelayState"); // Case-sensitive parameter name
     }
 
     public static String sanitize(String input) {

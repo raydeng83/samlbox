@@ -4,6 +4,7 @@ package com.bostonidentity.samlbox.config;
 import com.bostonidentity.samlbox.repository.DynamicRelyingPartyRegistrationRepository;
 import com.bostonidentity.samlbox.repository.IdpConfigRepository;
 import com.bostonidentity.samlbox.repository.IdpMetadataRepository;
+import lombok.extern.log4j.Log4j2;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -44,7 +45,6 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
-// SamlConfig.java
 @Configuration
 public class SamlConfig {
 
@@ -65,11 +65,13 @@ public class SamlConfig {
     private static final Path SIGN_PRIVATE_KEY = KEY_DIR.resolve("sp-signing.key");
     private static final Path SIGN_CERTIFICATE = KEY_DIR.resolve("sp-signing.crt");
 
-    @Autowired
-    private IdpMetadataRepository idpMetadataRepository;
+    private final IdpMetadataRepository idpMetadataRepository;
+    private final IdpConfigRepository idpConfigRepository;
 
-    @Autowired
-    private IdpConfigRepository idpConfigRepository;
+    public SamlConfig(IdpMetadataRepository idpMetadataRepository, IdpConfigRepository idpConfigRepository) {
+        this.idpMetadataRepository = idpMetadataRepository;
+        this.idpConfigRepository = idpConfigRepository;
+    }
 
     @Bean
     public DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository(
@@ -267,6 +269,4 @@ public class SamlConfig {
             throw new IOException("File does not contain a X.509 certificate");
         }
     }
-
-
 }

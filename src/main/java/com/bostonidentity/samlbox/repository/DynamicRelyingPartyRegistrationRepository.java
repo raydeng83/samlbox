@@ -189,10 +189,6 @@ public class DynamicRelyingPartyRegistrationRepository implements RelyingPartyRe
 
     @Override
     public RelyingPartyRegistration findByRegistrationId(String id) {
-//        return registrations.stream()
-//                .filter(r -> r.getRegistrationId().equals(id))
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid registration ID"));
 
         for (RelyingPartyRegistration r : registrations) {
             if (r.getRegistrationId().equals(id)) {

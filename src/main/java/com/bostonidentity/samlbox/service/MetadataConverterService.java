@@ -2,12 +2,12 @@ package com.bostonidentity.samlbox.service;
 
 import com.bostonidentity.samlbox.config.AuthClient;
 import jakarta.ws.rs.core.Response;
+import lombok.extern.log4j.Log4j2;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.ClientResource;
 import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.ClientRepresentation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -20,21 +20,23 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Log4j2
 public class MetadataConverterService {
 
-    @Autowired
-    private AuthClient authClient;
-
-    @Autowired
-    private Keycloak keycloak;
-
-    @Autowired
-    private SpMetadataService spMetadataService;
+    private final AuthClient authClient;
+    private final Keycloak keycloak;
+    private final SpMetadataService spMetadataService;
 
     @Value("${keycloak.converter.url}")
     private String keycloakConverterUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
+
+    public MetadataConverterService(AuthClient authClient, Keycloak keycloak, SpMetadataService spMetadataService) {
+        this.authClient = authClient;
+        this.keycloak = keycloak;
+        this.spMetadataService = spMetadataService;
+    }
 
     public ClientRepresentation convertMetadata(MultipartFile file) throws IOException {
         try {

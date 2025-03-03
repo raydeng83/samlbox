@@ -3,6 +3,7 @@ package com.bostonidentity.samlbox.config;
 
 import com.bostonidentity.samlbox.repository.DynamicRelyingPartyRegistrationRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.log4j.Log4j2;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
@@ -33,23 +34,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Component
+@Log4j2
 public class EntityIdLookupAuthenticationConverter implements AuthenticationConverter {
 
-    @Autowired
-    private EntityIdRelyingPartyRegistrationResolver relyingPartyRegistrationResolver;
-
-    @Autowired
-    private Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> authnRequestRepository;
-
-    @Autowired
-    private Saml2X509Credential signingCredential;
-
+    private final EntityIdRelyingPartyRegistrationResolver relyingPartyRegistrationResolver;
+    private final Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> authnRequestRepository;
+    private final Saml2X509Credential signingCredential;
     private final DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository;
 
     public EntityIdLookupAuthenticationConverter(
-            DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository
-    ) {
+            DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository,
+            EntityIdRelyingPartyRegistrationResolver relyingPartyRegistrationResolver, Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> authnRequestRepository, Saml2X509Credential signingCredential) {
         this.dynamicRelyingPartyRegistrationRepository = dynamicRelyingPartyRegistrationRepository;
+        this.relyingPartyRegistrationResolver = relyingPartyRegistrationResolver;
+        this.authnRequestRepository = authnRequestRepository;
+        this.signingCredential = signingCredential;
     }
 
     @Override
@@ -57,6 +56,7 @@ public class EntityIdLookupAuthenticationConverter implements AuthenticationConv
         Saml2AuthenticationToken token =
                 new Saml2AuthenticationTokenConverter(relyingPartyRegistrationResolver).convert(request);
         if (token == null) {
+            log.error("Can't generate Saml2AuthenticationToken. Not a SAML Response.");
             return null; // Not a SAML response
         }
 

@@ -62,12 +62,6 @@ public class SamlResponseProcessor {
         }
     }
 
-    public static ParserPool getParserPool() {
-        BasicParserPool pool = new BasicParserPool();
-        pool.setMaxPoolSize(50);
-        return pool;
-    }
-
     public SamlResponseProcessor(@Qualifier("decryptingCredential") Saml2X509Credential decryptingCredential) {
         this.decryptingCredential = decryptingCredential;
     }
@@ -163,13 +157,6 @@ public class SamlResponseProcessor {
         return null;
     }
 
-    private static Element extractEncryptedAssertionElement(String xml) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new ByteArrayInputStream(xml.getBytes())).getDocumentElement();
-    }
-
     private static Response decryptAssertions(Response encryptedResponse) throws Exception {
         BasicX509Credential credential = new BasicX509Credential(
                 decryptingCredential.getCertificate(),
@@ -232,14 +219,5 @@ public class SamlResponseProcessor {
                 decryptingCredential.getPrivateKey()
         );
     }
-
-    private static Response cloneResponse(Response original) throws MarshallingException, UnmarshallingException {
-        // Create a new response object with same metadata
-        Response newResponse = (Response) XMLObjectSupport.cloneXMLObject(original);
-        newResponse.getEncryptedAssertions().clear();
-        return newResponse;
-    }
-
-
 }
 

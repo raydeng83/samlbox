@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class IdpConfigService {
 
-    @Autowired
-    private DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository;
+    private final DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository;
+    private final IdpConfigRepository idpConfigRepository;
 
-    @Autowired
-    private IdpConfigRepository idpConfigRepository;
+    public IdpConfigService(DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository, IdpConfigRepository idpConfigRepository) {
+        this.dynamicRelyingPartyRegistrationRepository = dynamicRelyingPartyRegistrationRepository;
+        this.idpConfigRepository = idpConfigRepository;
+    }
 
     public void updateIdpConfig(IdpConfig idpConfig) {
         IdpConfig existingIdpConfig = idpConfigRepository.findByEntityId(idpConfig.getEntityId())

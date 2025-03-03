@@ -122,20 +122,4 @@ public class SecurityConfig {
             response.sendError(HttpStatus.FORBIDDEN.value(), "Access Denied");
         };
     }
-
-//    @Bean
-//    Saml2AuthenticationRequestResolver authenticationRequestResolver(DynamicRelyingPartyRegistrationRepository registrations) {
-//        RelyingPartyRegistrationResolver registrationResolver =
-//                new DefaultRelyingPartyRegistrationResolver(registrations);
-//        OpenSaml4AuthenticationRequestResolver authenticationRequestResolver =
-//                new OpenSaml4AuthenticationRequestResolver(registrationResolver);
-//        authenticationRequestResolver.setAuthnRequestCustomizer((context) -> {
-//            NameIDPolicy nameIDPolicy = new NameIDPolicyBuilder().buildObject();
-//            nameIDPolicy.setAllowCreate(true);  // Set AllowCreate="true"
-//            nameIDPolicy.setFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified");
-//            context.getAuthnRequest().setNameIDPolicy(nameIDPolicy);
-//            context.getAuthnRequest().setProtocolBinding("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect");
-//        });
-//        return authenticationRequestResolver;
-//    }
 }

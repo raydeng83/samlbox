@@ -17,17 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,19 +33,18 @@ public class IdpMetadataService {
 
     private static final Logger logger = LoggerFactory.getLogger(IdpMetadataService.class);
 
-    @Autowired
-    private IdpConfigRepository idpConfigRepository;
-
+    private final IdpConfigRepository idpConfigRepository;
     private final Path storageDir = Paths.get("./idp-metadata");
     private final IdpMetadataRepository idpMetadataRepository;
     private final DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository;
 
-    public IdpMetadataService(IdpMetadataRepository idpMetadataRepository, DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository) throws IOException {
+    public IdpMetadataService(IdpMetadataRepository idpMetadataRepository, DynamicRelyingPartyRegistrationRepository dynamicRelyingPartyRegistrationRepository, IdpConfigRepository idpConfigRepository) throws IOException {
         this.idpMetadataRepository = idpMetadataRepository;
         if (!Files.exists(storageDir)) {
             Files.createDirectories(storageDir);
         }
         this.dynamicRelyingPartyRegistrationRepository = dynamicRelyingPartyRegistrationRepository;
+        this.idpConfigRepository = idpConfigRepository;
     }
 
     @Transactional

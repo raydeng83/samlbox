@@ -3,6 +3,10 @@ package com.bostonidentity.samlbox.config;
 // In your configuration class or a dedicated service class (e.g., AuthClient.java)
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Log4j2
 public class AuthClient {
 
     @Value("${keycloak.auth-server-url}") // From your application.properties
@@ -48,7 +53,7 @@ public class AuthClient {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "password"); // For service-to-service
+        body.add("grant_type", "password"); //
         body.add("client_id", clientId);
         body.add("client_secret", clientSecret);
         body.add("username", username);
@@ -71,7 +76,7 @@ public class AuthClient {
                     return accessToken;
                 }
             } else {
-                System.err.println("Failed to get token: " + response.getStatusCode());
+               log.error("Failed to get access token for Keycloak: " + response.getStatusCode());
             }
         } catch (Exception e) {
             e.printStackTrace(); // Handle exceptions appropriately
@@ -91,7 +96,6 @@ public class AuthClient {
 
         @JsonProperty("expires_in")
         private long expires_in;
-        // ... other fields if needed
 
         public String getAccessToken() {
             return access_token;
@@ -101,6 +105,5 @@ public class AuthClient {
             return expires_in;
         }
 
-        // Getters and setters for other fields
     }
 }

@@ -3,6 +3,7 @@ package com.bostonidentity.samlbox.config;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.saml2.core.Saml2Error;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationException;
@@ -15,6 +16,7 @@ import java.io.StringWriter;
 import java.util.Date;
 
 @Component
+@Log4j2
 public class Saml2AuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override

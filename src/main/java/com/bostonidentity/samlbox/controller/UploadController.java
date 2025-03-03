@@ -13,8 +13,11 @@ import java.io.IOException;
 @Controller
 public class UploadController {
 
-    @Autowired
-    private IdpMetadataService metadataService;
+    private final IdpMetadataService metadataService;
+
+    public UploadController(IdpMetadataService metadataService) {
+        this.metadataService = metadataService;
+    }
 
     @GetMapping("/idp/upload")
     public String uploadPage() {
