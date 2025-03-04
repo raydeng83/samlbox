@@ -85,4 +85,9 @@ public class HomeController {
     public String faq() {
         return "faq";
     }
+
+    @GetMapping("/guide")
+    public String guide() {
+        return "guide";
+    }
 }

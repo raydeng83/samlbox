@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAML BOX Documentation</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body {
+            line-height: 1.6;
+        }
+
+        .narrative-section {
+            max-width: 1000px;
+            margin: 0 auto 40px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin: 30px 0 20px;
+        }
+
+        .emphasis-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+        }
+
+        .technical-term {
+            color: #669df3;
+            font-weight: 500;
+        }
+
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        code {
+            background: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<div class="container">
+    <!-- Overview Section -->
+    <div class="narrative-section">
+        <h2>Usage Guide</h2>
+        <p>Follow these steps to use SAML BOX.</p>
+<!--        <ol>-->
+<!--            <li>Identify whether you want SAML BOX to act as SP or IDP.</li>-->
+<!--            <li>Upload your metadata <a th:href="@{/home}">here</a>, and a landing page will be displayed.</li>-->
+<!--            <li>Copy and save the landing page URL.</li>-->
+<!--            <li>Review/update configuration settings.</li>-->
+<!--            <li>Test SSO flow.</li>-->
+<!--            <li>Review server logs if needed.</li>-->
+<!--        </ol>-->
+        <div class="mermaid text-center">
+            graph TD;
+            A[1. Identify whether SAML BOX acts as SP or IDP] --> B[2. Upload your metadata <a th:href="@{/home}">here</a>];
+            B --> D[3. Copy and save the landing page URL];
+            D --> E[4. Update configuration settings];
+            E --> F[5. Test SSO flow];
+            F --> G[6. Review server logs if needed for debugging];
+        </div>
+    </div>
+
+
+</div>
+<div th:insert="~{footer :: footer}"></div>
+
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

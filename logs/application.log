@@ -1,64 +1,472 @@
-2025-03-03 08:28:42 [restartedMain] INFO  c.b.samlbox.SamlboxApplication - Starting SamlboxApplication using Java 21.0.6 with PID 1747 (/Users/ledeng/projects/saml-projects/samlbox/target/classes started by ledeng in /Users/ledeng/projects/saml-projects/samlbox)
-2025-03-03 08:28:42 [restartedMain] INFO  c.b.samlbox.SamlboxApplication - No active profile set, falling back to 1 default profile: "default"
-2025-03-03 08:28:42 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-03-03 08:28:42 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-03-03 08:28:43 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-03-03 08:28:43 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 54 ms. Found 3 JPA repository interfaces.
-2025-03-03 08:28:43 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
-2025-03-03 08:28:44 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2025-03-03 08:28:44 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.36]
-2025-03-03 08:28:44 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2025-03-03 08:28:44 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1823 ms
-2025-03-03 08:28:44 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-03-03 08:28:44 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.8.Final
-2025-03-03 08:28:44 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2025-03-03 08:28:44 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-03-03 08:28:44 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2025-03-03 08:28:44 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/saml-idp user=SA
-2025-03-03 08:28:44 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2025-03-03 08:28:44 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-03-03 08:28:44 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 2.3.232
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2025-03-03 08:28:45 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-03-03 08:28:45 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-03-03 08:28:46 [restartedMain] INFO  c.b.samlbox.config.SamlConfig - Loading existing SAML signing keys
-2025-03-03 08:28:46 [restartedMain] INFO  c.b.samlbox.config.SamlConfig - Loading existing SAML decryption keys
-2025-03-03 08:28:47 [restartedMain] INFO  o.o.c.config.InitializationService - Initializing OpenSAML using the Java Services API
-2025-03-03 08:28:47 [restartedMain] INFO  o.o.x.algorithm.AlgorithmRegistry - Algorithm failed runtime support check, will not be usable: http://www.w3.org/2001/04/xmlenc#ripemd160
-2025-03-03 08:28:47 [restartedMain] INFO  o.o.x.algorithm.AlgorithmRegistry - Algorithm failed runtime support check, will not be usable: http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160
-2025-03-03 08:28:47 [restartedMain] INFO  o.o.x.algorithm.AlgorithmRegistry - Algorithm failed runtime support check, will not be usable: http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Initialized OpenSAML
-2025-03-03 08:28:48 [restartedMain] INFO  o.o.c.config.InitializationService - Initializing OpenSAML using the Java Services API
-2025-03-03 08:28:48 [restartedMain] INFO  o.o.x.algorithm.AlgorithmRegistry - Algorithm failed runtime support check, will not be usable: http://www.w3.org/2001/04/xmlenc#ripemd160
-2025-03-03 08:28:48 [restartedMain] INFO  o.o.x.algorithm.AlgorithmRegistry - Algorithm failed runtime support check, will not be usable: http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160
-2025-03-03 08:28:48 [restartedMain] INFO  o.o.x.algorithm.AlgorithmRegistry - Algorithm failed runtime support check, will not be usable: http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160
-2025-03-03 08:28:48 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.c.a.a.c.AuthenticationConfiguration$DefaultPasswordEncoderAuthenticationManagerBuilder - No authenticationProviders and no parentAuthenticationManager defined. Returning null.
-2025-03-03 08:28:48 [restartedMain] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.s.c.OpenSamlInitializationService - Refused to re-initialize OpenSAML
-2025-03-03 08:28:48 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, Saml2LogoutRequestFilter, Saml2LogoutResponseFilter, Saml2RelyingPartyInitiatedLogoutFilter, LogoutFilter, Saml2WebSsoAuthenticationRequestFilter, Saml2WebSsoAuthenticationFilter, Saml2MetadataFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
-2025-03-03 08:28:48 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
-2025-03-03 08:28:49 [restartedMain] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/saml-idp'
-2025-03-03 08:28:49 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2025-03-03 08:28:49 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
-2025-03-03 08:28:49 [restartedMain] INFO  c.b.samlbox.SamlboxApplication - Started SamlboxApplication in 7.457 seconds (process running for 8.966)
-2025-03-03 08:28:53 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2025-03-03 08:28:53 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-2025-03-03 08:28:53 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-03-03 08:28:53 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2025-03-03 08:28:53 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-04 01:54:37 [HikariPool-3 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Thread starvation or clock leap detected (housekeeper delta=4h23m39s801ms).
+2025-03-04 08:01:19 [HikariPool-3 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Thread starvation or clock leap detected (housekeeper delta=6h5m40s863ms).
+2025-03-04 08:01:42 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:01:42 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:01:42 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:01:42 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:01:42 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:01:42 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:01:42 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:01:42 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:01:42 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:01:42 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:01:42 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:01:42 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:01:43 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:01:43 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:01:43 [http-nio-8081-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:01:43 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:01:43 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:01:43 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:03:19 [HikariPool-3 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Retrograde clock change detected (housekeeper delta=29s651ms), soft-evicting connections from pool.
+2025-03-04 08:05:27 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:05:27 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:05:27 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:05:27 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:05:27 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:05:27 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:05:27 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:05:27 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:05:27 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:05:27 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:05:27 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:05:27 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:05:29 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:05:29 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:05:29 [http-nio-8081-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:05:29 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:05:29 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:05:29 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:53 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:06:53 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:06:53 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:53 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:06:53 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:06:53 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:06:53 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:06:53 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:06:53 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:06:53 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:53 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:53 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:53 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:06:53 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:06:53 [http-nio-8081-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:06:53 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:06:53 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:06:53 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:55 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2025-03-04 08:06:55 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2025-03-04 08:06:55 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:55 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /home
+2025-03-04 08:06:55 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /home
+2025-03-04 08:06:55 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:55 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:06:55 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:06:55 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:55 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:06:55 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:06:55 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:55 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/custom.js
+2025-03-04 08:06:55 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/custom.js
+2025-03-04 08:06:55 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:55 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:06:55 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:06:55 [http-nio-8081-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:06:55 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:06:55 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:06:55 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:57 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:06:57 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:06:57 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:57 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:06:57 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:06:57 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:06:57 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:06:57 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:06:57 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:06:57 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:57 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:57 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:06:58 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:06:58 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:06:58 [http-nio-8081-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:06:58 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:06:58 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:06:58 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:07:08 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:07:08 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:07:08 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:07:08 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:07:08 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:07:08 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:07:08 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:07:08 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:07:08 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:07:08 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:07:08 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:07:08 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:07:08 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:07:08 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:07:08 [http-nio-8081-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:07:08 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:07:08 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:07:08 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:08:21 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:08:21 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:08:21 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:08:21 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:08:21 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:08:21 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:08:21 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:08:21 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:08:21 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:08:21 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:08:21 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:08:21 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:08:21 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:08:21 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:08:21 [http-nio-8081-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:08:21 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:08:21 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:08:21 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:00 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:12:00 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:12:00 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:00 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:00 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:12:00 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:12:00 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:12:00 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:00 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:12:00 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:00 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:00 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:00 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:12:00 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:12:00 [http-nio-8081-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:12:00 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:12:00 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:12:00 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:04 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /home
+2025-03-04 08:12:04 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /home
+2025-03-04 08:12:04 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:04 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:04 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:04 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:04 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:12:04 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/custom.js
+2025-03-04 08:12:04 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:12:04 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/custom.js
+2025-03-04 08:12:04 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:04 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:04 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:12:04 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:12:04 [http-nio-8081-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:12:04 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:12:04 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:12:04 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:05 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:12:05 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:12:05 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:05 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:12:05 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:05 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:12:05 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:05 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:05 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:05 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:12:05 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:12:05 [http-nio-8081-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:12:05 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:12:05 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:12:05 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:53 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:12:53 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:12:53 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:53 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:53 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:12:53 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:12:53 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:12:53 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:12:53 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:12:53 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:53 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:53 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:12:53 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:12:53 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:12:53 [http-nio-8081-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:12:53 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:12:53 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:12:53 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:43 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:13:43 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:13:43 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:43 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:43 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:13:43 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:13:43 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:43 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:13:43 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:13:43 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:43 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:43 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:43 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:13:43 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:13:43 [http-nio-8081-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:13:43 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:13:43 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:13:43 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:48 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2025-03-04 08:13:48 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2025-03-04 08:13:48 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:48 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /home
+2025-03-04 08:13:48 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /home
+2025-03-04 08:13:48 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:48 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:48 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:48 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:48 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:13:48 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:13:48 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:48 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/custom.js
+2025-03-04 08:13:48 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/custom.js
+2025-03-04 08:13:48 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:48 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:13:48 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:13:48 [http-nio-8081-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:13:48 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:13:48 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:13:48 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:54 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /platform-intro
+2025-03-04 08:13:54 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /platform-intro
+2025-03-04 08:13:54 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:54 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:54 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:13:54 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox.png
+2025-03-04 08:13:54 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:13:54 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox.png
+2025-03-04 08:13:54 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:54 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:54 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:54 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:13:54 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:13:54 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:54 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:54 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:13:54 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:13:54 [http-nio-8081-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:13:54 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:13:54 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:13:54 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:59 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:13:59 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:13:59 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:59 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:59 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:13:59 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:13:59 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:13:59 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:13:59 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:13:59 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:59 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:59 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:13:59 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:13:59 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:13:59 [http-nio-8081-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:13:59 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:13:59 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:13:59 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:45 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2025-03-04 08:14:45 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2025-03-04 08:14:45 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:45 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /home
+2025-03-04 08:14:45 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /home
+2025-03-04 08:14:45 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:45 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:14:45 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:14:45 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/custom.js
+2025-03-04 08:14:45 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:14:45 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:14:45 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/custom.js
+2025-03-04 08:14:45 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:45 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:45 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:45 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:14:45 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:14:45 [http-nio-8081-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:14:45 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:14:45 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:14:45 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:49 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /platform-intro
+2025-03-04 08:14:49 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /platform-intro
+2025-03-04 08:14:49 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:49 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:14:49 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:14:49 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:49 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:14:49 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:14:49 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:14:49 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox.png
+2025-03-04 08:14:49 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:14:49 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox.png
+2025-03-04 08:14:49 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:49 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:49 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:49 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:14:49 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:14:49 [http-nio-8081-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:14:49 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:14:49 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:14:49 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:52 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /faq
+2025-03-04 08:14:52 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /faq
+2025-03-04 08:14:52 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:52 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:14:52 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:14:52 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:14:53 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:14:53 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:14:53 [http-nio-8081-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:14:53 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:14:53 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:14:53 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:00 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /faq
+2025-03-04 08:16:00 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /faq
+2025-03-04 08:16:00 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:00 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:16:00 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:16:00 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:00 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:16:00 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:16:00 [http-nio-8081-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:16:00 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:16:00 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:16:00 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:19 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /faq
+2025-03-04 08:16:19 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /faq
+2025-03-04 08:16:19 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:19 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:16:19 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:16:19 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:19 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:16:19 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:16:19 [http-nio-8081-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:16:19 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:16:19 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:16:19 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:23 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:16:23 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:16:23 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:23 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:16:23 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:16:23 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:16:23 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:16:23 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:16:23 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:16:23 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:23 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:23 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:16:23 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:16:23 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:16:23 [http-nio-8081-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:16:23 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:16:23 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:16:23 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:17:29 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:17:29 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:17:29 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:17:29 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:17:29 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:17:29 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:17:29 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:17:29 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:17:29 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:17:29 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:17:29 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:17:29 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:17:29 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:17:29 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:17:29 [http-nio-8081-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:17:29 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:17:29 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:17:29 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:18:18 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2025-03-04 08:18:18 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2025-03-04 08:18:18 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:18:18 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /home
+2025-03-04 08:18:18 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /home
+2025-03-04 08:18:18 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:18:18 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:18:18 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/custom.js
+2025-03-04 08:18:18 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:18:18 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:18:18 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/custom.js
+2025-03-04 08:18:18 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:18:18 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:18:18 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:18:18 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:18:18 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:18:18 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:18:18 [http-nio-8081-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:18:18 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:18:18 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:18:18 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:18 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /home
+2025-03-04 08:19:18 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /home
+2025-03-04 08:19:18 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:18 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:19:18 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:19:18 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /js/custom.js
+2025-03-04 08:19:18 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /js/custom.js
+2025-03-04 08:19:18 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:19:18 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:19:18 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:18 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:18 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:18 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:19:18 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:19:18 [http-nio-8081-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:19:18 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:19:18 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:19:18 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:20 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml2/metadata/samlbox
+2025-03-04 08:19:36 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /platform-intro
+2025-03-04 08:19:36 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /platform-intro
+2025-03-04 08:19:36 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:36 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:19:36 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:19:36 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox.png
+2025-03-04 08:19:36 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:19:36 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox.png
+2025-03-04 08:19:36 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:19:36 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:36 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:36 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:36 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:19:36 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:19:36 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:36 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:19:36 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:19:36 [http-nio-8081-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:19:36 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:19:36 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:19:36 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:47 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /guide
+2025-03-04 08:19:47 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /guide
+2025-03-04 08:19:47 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:47 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:19:47 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/css/bootstrap.min.css
+2025-03-04 08:19:47 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:47 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:19:47 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /image/samlbox-icon.png
+2025-03-04 08:19:47 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /bootstrap/js/bootstrap.min.js
+2025-03-04 08:19:47 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /image/samlbox-icon.png
+2025-03-04 08:19:47 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:47 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-03-04 08:19:47 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-03-04 08:19:47 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-03-04 08:19:47 [http-nio-8081-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2025-03-04 08:19:47 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /saml-error
+2025-03-04 08:19:47 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /saml-error
+2025-03-04 08:19:47 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext

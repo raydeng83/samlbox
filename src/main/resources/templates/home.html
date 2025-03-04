@@ -93,6 +93,7 @@
         }
 
         .action-cards {
+            margin-top: 10px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
@@ -266,6 +267,9 @@
                 <a href="/platform-intro" class="nav-link text-white">Overview</a>
             </li>
             <li class="nav-item">
+                <a href="/guide" class="nav-link text-white">Guide</a>
+            </li>
+            <li class="nav-item">
                 <a href="/faq" class="nav-link text-white">FAQ</a>
             </li>
 <!--            <span class="text-white" style="font-size: small;text-align: right; margin-left: 30px;">SAML BOX is designed and developed by<br> <a-->
@@ -286,47 +290,6 @@
 </section>
 
 <main class="container">
-    <!-- Detailed Intro Section -->
-    <section class="intro-section">
-        <h3>About This Platform</h3>
-        <p>Welcome to SAML BOX. This platform can act as both SAML Identity Provider (IDP) and Service Provider (SP).</p>
-        <p>
-            The main goal for this platform is to provide real IDP and SP for development.
-        </p>
-        <p>
-            With this platform, you can:
-        </p>
-        <ul>
-            <li>Upload your own IDP and SP metadata files</li>
-            <li>Test integrations in a sandbox environment</li>
-            <li>Configure both IDP and SP for different settings and workflows</li>
-        </ul>
-
-        <br>
-
-        <h3>How to Use This Platform</h3>
-        <p>Simply start by uploading your SAML metadata file.
-        <ul>
-            <li>If you want this platform to be an SP, 'Upload Your IDP Metadata' below.</li>
-            <li>If you want this platform to be IDP, 'Upload Your SP Metadata' below.</li>
-        </ul>
-        <p>Once uploaded, you can access a landing page where you have a list of SAML actions available. Yet, in order
-            for the SAML SSO to work, you will need to upload/import the metadata of this platform to your application.
-            You can get them from below:</p>
-        <ul>
-            <li><a href="/saml2/metadata/samlbox">SAML BOX SP Metadata</a></li>
-            <li><a href="http://localhost:8080/realms/master/protocol/saml/descriptor">SAML BOX IDP Metadata</a></li>
-        </ul>
-        <br>
-
-        <h3>A Shared Platform</h3>
-        <p>This platform is open and shared. SAML Entity information uploaded is identified by its Entity ID. Hence, to avoid being overwritten by others, best practice is to choose a unique SAML Entity ID when uploading metadata.</p>
-        <br>
-
-        <h3>Platform Overview and FAQ</h3>
-        <p>Check out <a th:href="@{/platform-intro}">Overview</a> and <a th:href="@{/faq}">FAQ</a> for more information about SAML BOX.</p>
-    </section>
-
     <!-- Action Cards -->
     <div class="action-cards">
         <!-- IDP Card -->
@@ -386,6 +349,49 @@
             <div id="errorAlert" class="alert alert-danger mt-4 hidden" role="alert"></div>
         </div>
     </div>
+
+    <!-- Detailed Intro Section -->
+    <section class="intro-section">
+        <h3>About This Platform</h3>
+        <p>Welcome to SAML BOX. This platform can act as both SAML Identity Provider (IDP) and Service Provider (SP).</p>
+        <p>
+            The main goal for this platform is to provide real IDP and SP for development.
+        </p>
+        <p>
+            With this platform, you can:
+        </p>
+        <ul>
+            <li>Upload your own IDP and SP metadata files</li>
+            <li>Test integrations in a sandbox environment</li>
+            <li>Configure both IDP and SP for different settings and workflows</li>
+        </ul>
+
+        <br>
+
+        <h3>How to Use This Platform</h3>
+        <p>Simply start by uploading your SAML metadata file.
+        <ul>
+            <li>If you want this platform to be an SP, 'Upload Your IDP Metadata' below.</li>
+            <li>If you want this platform to be IDP, 'Upload Your SP Metadata' below.</li>
+        </ul>
+        <p>Once uploaded, you can access a landing page where you have a list of SAML actions available. Yet, in order
+            for the SAML SSO to work, you will need to upload/import the metadata of this platform to your application.
+            You can get them from below:</p>
+        <ul>
+            <li><a href="/saml2/metadata/samlbox">SAML BOX SP Metadata</a></li>
+            <li><a href="http://localhost:8080/realms/master/protocol/saml/descriptor">SAML BOX IDP Metadata</a></li>
+        </ul>
+        <br>
+
+        <h3>A Shared Platform</h3>
+        <p>This platform is open and shared. SAML Entity information uploaded is identified by its Entity ID. Hence, to avoid being overwritten by others, best practice is to choose a unique SAML Entity ID when uploading metadata.</p>
+        <br>
+
+        <h3>Platform Overview and FAQ</h3>
+        <p>Check out <a th:href="@{/platform-intro}">Overview</a> and <a th:href="@{/faq}">FAQ</a> for more information about SAML BOX.</p>
+    </section>
+
+
 </main>
 
 <!-- Footer -->
@@ -406,10 +412,12 @@
     </div>
 
     <div class="footer-bottom">
-        <p class="mb-0"><span
-                style="font-family: 'Arial', sans-serif; font-size: small;">SAML BOX is brought to you by</span> <a
-                href="https://bostonidentity.com" class="text-white" target="_blank" style="text-decoration: none;">Boston
-            Identity</a></p>
+<!--        <p class="mb-0"><span-->
+<!--                style="font-family: 'Arial', sans-serif; font-size: small;">SAML BOX is brought to you by</span> <a-->
+<!--                href="https://bostonidentity.com" class="text-white" target="_blank" style="text-decoration: none;">Boston-->
+<!--            Identity</a></p>-->
+        <p class="mb-0"><span style="font-family: 'Arial', sans-serif; font-size: small;">SAML BOX is developed by </span> <a href="https://linkedin.com/in/le-deng-82829710a" class="text-white" target="_blank" style="text-decoration: none;">Le Deng</a> </p>
+
     </div>
 </footer>
 <script th:src="@{/js/custom.js}"></script>
