@@ -25,7 +25,7 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/samlbox-metadata/sp")
+    @GetMapping("/saml-box-metadata/sp")
     public String samlBoxMetadataSP() {
         return "redirect:/saml2/metadata/" + Base64.getUrlEncoder().withoutPadding().encodeToString(spEntityId.getBytes());
     }

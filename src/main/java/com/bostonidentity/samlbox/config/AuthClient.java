@@ -18,22 +18,22 @@ import org.springframework.web.client.RestTemplate;
 @Log4j2
 public class AuthClient {
 
-    @Value("${keycloak.auth-server-url}") // From your application.properties
+    @Value("${keycloak.auth-server-url}") // From your application-dev.properties
     private String authServerUrl;
 
-    @Value("${keycloak.realm}") // From your application.properties
+    @Value("${keycloak.realm}") // From your application-dev.properties
     private String realm;
 
-    @Value("${keycloak.client-id}") // From your application.properties
+    @Value("${keycloak.client-id}") // From your application-dev.properties
     private String clientId;
 
-    @Value("${keycloak.client-secret}") // From your application.properties
+    @Value("${keycloak.client-secret}") // From your application-dev.properties
     private String clientSecret;
 
-    @Value("${keycloak.adminUsername}") // From your application.properties
+    @Value("${keycloak.adminUsername}") // From your application-dev.properties
     private String username;
 
-    @Value("${keycloak.adminPassword}") // From your application.properties
+    @Value("${keycloak.adminPassword}") // From your application-dev.properties
     private String password;
 
     private String accessToken;
